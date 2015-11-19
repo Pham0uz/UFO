@@ -1,2 +1,2 @@
 # UFO
-Ultimate Festival Organisator
+Ultimate Festival Organizer
