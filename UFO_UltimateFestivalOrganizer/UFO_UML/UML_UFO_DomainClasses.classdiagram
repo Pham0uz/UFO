@@ -72,32 +72,6 @@
       </propertyInstances>
     </stereotypeInstance>
   </appliedStereotypesInternal>
-  <profileInstances>
-    <packageHasProfileInstances Id="b0fa8670-fe2c-49ef-9e91-c80ade3b0e8f">
-      <profileInstance Id="d28311d1-4da4-46c1-bdac-5dd83d9c7340" name="StandardProfileL2">
-        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
-      </profileInstance>
-      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="0e708527-c62c-435d-b88d-078184b35f05">
-      <profileInstance Id="78b1a92b-c0a1-4341-bdb1-7d67b4e97e3f" name="StandardProfileL3">
-        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-      </profileInstance>
-      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="fd6dafb2-414a-4a45-828b-9713795bda18">
-      <profileInstance Id="6fa8d35a-e76a-49f0-968b-bb1356687100" name="CSharpProfile">
-        <elementDefinition Id="95a46f23-ea9c-4bbd-b5cf-90e49b70054e" />
-      </profileInstance>
-      <elementDefinition Id="e6434fd7-a03e-49b2-886d-79d39bfe0577" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="7d1fbf03-f186-46e1-a4f5-9b79f6fa3216">
-      <profileInstance Id="417991ff-155f-4f4b-a61f-f81054dfc897" name="TextTemplateBindings">
-        <elementDefinition Id="1bd36f75-905a-48ab-8fab-f6f84a7f4481" />
-      </profileInstance>
-      <elementDefinition Id="802b7f28-39b8-4c0c-b718-f1535ea3e8a6" />
-    </packageHasProfileInstances>
-  </profileInstances>
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <class Id="84ecb23b-2f85-43c8-b332-ec687cb1938c" name="User" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -106,10 +80,10 @@
           <property Id="a95e619c-afc6-433c-8c34-8b7545dafda0" name="UserName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="7b3273fd-ab92-478e-912e-ef793b2e42a8" />
           </property>
-          <property Id="2e52842d-667d-49b9-8064-6b3f3e8459dc" name="E-Mail" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="2e52842d-667d-49b9-8064-6b3f3e8459dc" name="EMail" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="f65ca665-69c4-4b7f-94c2-48b32523a704" />
           </property>
-          <property Id="4413757f-a1af-4887-9912-4ef9b0498163" name="passwordHash" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="4413757f-a1af-4887-9912-4ef9b0498163" name="PasswordHash" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="19c3b23c-c0f0-4979-aabd-8b07e0b0ba41" />
           </property>
         </ownedAttributesInternal>
@@ -310,11 +284,8 @@
           </association>
         </targetEnds>
         <ownedAttributesInternal>
-          <property Id="8a1f6568-81a7-4903-8e76-10555a803887" name="Date" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="8a1f6568-81a7-4903-8e76-10555a803887" name="DateNTime" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="9f0f2412-0844-4b3d-b206-7b617f393545" />
-          </property>
-          <property Id="b79efde0-0d26-4f2c-8361-17d504c7c32f" name="Time" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="57afd534-42c6-41d0-9e0d-a2e4a3e18bba" />
           </property>
           <property Id="17d07149-d6c4-4315-9976-d5978cced8cc" name="Venue" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="a15ed073-8666-4343-9470-5f2a1add2937" />
@@ -344,5 +315,31 @@
   </packagedElements>
   <package Id="179c63ec-be15-4d85-9dd7-d68e1f25a5a2" name="UFO_UML">
     <elementDefinition Id="8f8b4563-97c2-4b8d-beb0-e2b1f2d46b30" />
+    <profileInstances>
+      <packageHasProfileInstances Id="b0fa8670-fe2c-49ef-9e91-c80ade3b0e8f">
+        <profileInstance Id="d28311d1-4da4-46c1-bdac-5dd83d9c7340" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="0e708527-c62c-435d-b88d-078184b35f05">
+        <profileInstance Id="78b1a92b-c0a1-4341-bdb1-7d67b4e97e3f" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="fd6dafb2-414a-4a45-828b-9713795bda18">
+        <profileInstance Id="6fa8d35a-e76a-49f0-968b-bb1356687100" name="CSharpProfile">
+          <elementDefinition Id="95a46f23-ea9c-4bbd-b5cf-90e49b70054e" />
+        </profileInstance>
+        <elementDefinition Id="e6434fd7-a03e-49b2-886d-79d39bfe0577" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="7d1fbf03-f186-46e1-a4f5-9b79f6fa3216">
+        <profileInstance Id="417991ff-155f-4f4b-a61f-f81054dfc897" name="TextTemplateBindings">
+          <elementDefinition Id="1bd36f75-905a-48ab-8fab-f6f84a7f4481" />
+        </profileInstance>
+        <elementDefinition Id="802b7f28-39b8-4c0c-b718-f1535ea3e8a6" />
+      </packageHasProfileInstances>
+    </profileInstances>
   </package>
 </logicalClassDesignerModel>

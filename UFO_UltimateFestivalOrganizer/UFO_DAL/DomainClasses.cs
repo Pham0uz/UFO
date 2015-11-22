@@ -16,9 +16,9 @@ namespace swk5.UFO.DAL
     {
         public string UserName { get; set; }
 
-        public string EMail { get; set; }
+        public string PasswordHash { get; set; }
 
-        public string passwordHash { get; set; }
+        public string EMail { get; set; }
 
         public User()
         {
@@ -32,18 +32,18 @@ namespace swk5.UFO.DAL
         /// <param name="email"></param>
         /// username and passowrd hashed with salt
         /// <param name="passwordhash"></param>
-        public User(string username, string email, string passwordhash)
+        public User(string username, string passwordhash, string email)
         {
             this.UserName = username;
+            this.PasswordHash = passwordhash;
             this.EMail = email;
-            this.passwordHash = passwordhash;
         }
 
 
 
         public override string ToString()
         {
-            return $"User: {UserName,20} | Password: {passwordHash,30} | E-Mail: {EMail,20}";
+            return $"User: {UserName,20} | Password: {PasswordHash,30} | E-Mail: {EMail,20}";
         }
     } // User
 
@@ -176,17 +176,23 @@ namespace swk5.UFO.DAL
     [Serializable]
     public class Performance
     {
-        public DateTime DateTime { get; set; }
+        public DateTime DateNTime { get; set; }
 
         public Artist Artist { get; set; }
 
         public Venue Venue { get; set; }
 
-        public Performance (DateTime datetime, Artist artist, Venue venue)
+        // for easier access of a Performance
+        public string ArtistName { get; set; }
+        public string VenueName { get; set; }
+
+        public Performance(DateTime datentime, Artist artist, Venue venue)
         {
-            this.DateTime = datetime;
+            this.DateNTime = datentime;
             this.Artist = artist;
             this.Venue = venue;
+            this.ArtistName = artist.Name;
+            this.VenueName = venue.ShortName;
         }
 
     } // Performance

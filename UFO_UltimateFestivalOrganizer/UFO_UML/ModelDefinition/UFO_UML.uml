@@ -133,7 +133,7 @@
             isComposite="false" />
           <property
             Id="f65ca665-69c4-4b7f-94c2-48b32523a704"
-            name="E-Mail"
+            name="EMail"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
@@ -144,7 +144,7 @@
             isComposite="false" />
           <property
             Id="19c3b23c-c0f0-4979-aabd-8b07e0b0ba41"
-            name="passwordHash"
+            name="PasswordHash"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
@@ -578,18 +578,7 @@
         <ownedAttributesInternal>
           <property
             Id="9f0f2412-0844-4b3d-b206-7b617f393545"
-            name="Date"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false" />
-          <property
-            Id="57afd534-42c6-41d0-9e0d-a2e4a3e18bba"
-            name="Time"
+            name="DateNTime"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
