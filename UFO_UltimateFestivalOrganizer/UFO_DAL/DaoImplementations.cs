@@ -10,8 +10,8 @@ namespace swk5.UFO.DAL
 {
     class UserDao : IUserDao
     {
-        const string SQL_GET_ALL = "select * from `User";
-        const string SQL_GET_BY_NAME = "select * from `User where Username=@Username";
+        const string SQL_GET_ALL = "select * from User";
+        const string SQL_GET_BY_NAME = "select * from User where Username=@Username";
 
         private IDatabase database;
 
@@ -361,7 +361,7 @@ namespace swk5.UFO.DAL
     class PerformanceDao : IPerformanceDao
     {
         const string SQL_GET_ALL = "select * from Performance";
-        const string SQL_GET_BY_ARTISTNAME_DATENTIME = "select * from Performance where ArtistName=@ArtistName"
+        const string SQL_GET_BY_ARTISTNAME_DATENTIME = "select * from Performance where Artist=@ArtistId"
                                                      + "AND DateNTime=@DateTime";
 
         private IDatabase database;
@@ -376,11 +376,11 @@ namespace swk5.UFO.DAL
             return database.CreateCommand(SQL_GET_ALL);
         }
 
-        private DbCommand CreateGetByArtistNameAndDateTime(string name, DateTime datetime)
+        private DbCommand CreateGetByArtistNameAndDateTime(int id, DateTime datetime)
         {
             var cmd = database.CreateCommand(SQL_GET_BY_ARTISTNAME_DATENTIME);
-            database.DefineParameter(cmd, "@ArtistName", DbType.String, name);
-            database.DefineParameter(cmd, "@Datetime", DbType.DateTime, datetime);
+            database.DefineParameter(cmd, "@ArtistId", DbType.Int32, id);
+            database.DefineParameter(cmd, "@DateTime", DbType.DateTime, datetime);
             return cmd;
         }
 
@@ -400,9 +400,10 @@ namespace swk5.UFO.DAL
             return performanceList;
         }
 
-        public Performance GetByArtistNameAndDateTime(string name, DateTime datetime)
+        // rework: get artist and venue extra
+        public Performance GetByArtistNameAndDateTime(int id, DateTime datetime)
         {
-            var cmd = CreateGetByArtistNameAndDateTime(name, datetime);
+            var cmd = CreateGetByArtistNameAndDateTime(id, datetime);
             using(var reader = database.ExecuteReader(cmd))
             {
                 if (!reader.Read())

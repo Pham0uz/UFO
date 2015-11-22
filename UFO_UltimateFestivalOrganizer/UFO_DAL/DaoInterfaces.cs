@@ -52,7 +52,7 @@ namespace swk5.UFO.DAL
     public interface IPerformanceDao
     {
         // Get Performance by Artist and the Date + Time of it
-        Performance GetByArtistNameAndDateTime(string name, DateTime datetime);
+        Performance GetByArtistNameAndDateTime(int id, DateTime datetime);
         IList<Performance> GetAll();
         bool Update(Performance performance); // returns true if updated, false if not --> used instead of exception
     } // IPerformanceDao

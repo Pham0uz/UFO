@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace swk5.UFO.DAL
 {
-    class DALFactory
+    public class DALFactory
     {
         private static string assemblyName;
         private static Assembly dalAssembly;

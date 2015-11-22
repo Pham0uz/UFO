@@ -180,19 +180,13 @@ namespace swk5.UFO.DAL
 
         public Artist Artist { get; set; }
 
-        public Venue Venue { get; set; }
-
-        // for easier access of a Performance
-        public string ArtistName { get; set; }
-        public string VenueName { get; set; }
+        public Venue Venue { get; set;} 
 
         public Performance(DateTime datentime, Artist artist, Venue venue)
         {
             this.DateNTime = datentime;
             this.Artist = artist;
             this.Venue = venue;
-            this.ArtistName = artist.Name;
-            this.VenueName = venue.ShortName;
         }
 
     } // Performance

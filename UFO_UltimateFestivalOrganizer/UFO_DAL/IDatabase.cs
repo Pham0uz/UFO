@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace swk5.UFO.DAL
 {
-    interface IDatabase
+    public interface IDatabase
     {
         // methods for building up commands
         DbCommand CreateCommand(string sql);
