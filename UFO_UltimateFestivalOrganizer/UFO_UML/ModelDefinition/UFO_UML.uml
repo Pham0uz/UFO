@@ -300,17 +300,6 @@
             </type_NamedElement>
           </property>
           <property
-            Id="d6ad7715-5453-45a0-977a-6a0d63bcd287"
-            name="Id"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false" />
-          <property
             Id="df36990d-0a80-414c-b968-6f14999d6388"
             name="PictureURL"
             isLeaf="false"

@@ -9,6 +9,8 @@ Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "UFO_UML", "UFO_UML\UFO_UML.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO_DAL", "UFO_DAL\UFO_DAL.csproj", "{342E35AC-D079-4954-B39A-54BB4B64A682}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO_DAOTests", "UFO_DAOTests\UFO_DAOTests.csproj", "{293F6E52-B55B-442D-8F45-BEF6B2200FE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{342E35AC-D079-4954-B39A-54BB4B64A682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{342E35AC-D079-4954-B39A-54BB4B64A682}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{342E35AC-D079-4954-B39A-54BB4B64A682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{293F6E52-B55B-442D-8F45-BEF6B2200FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{293F6E52-B55B-442D-8F45-BEF6B2200FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{293F6E52-B55B-442D-8F45-BEF6B2200FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{293F6E52-B55B-442D-8F45-BEF6B2200FE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

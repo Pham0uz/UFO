@@ -53,9 +53,7 @@ namespace swk5.UFO.DAL
     /// </summary>
     [Serializable]
     public class Artist
-    {
-        public int Id { get; set; }
-
+    { 
         public string Name { get; set; }
 
         public string PictureURL { get; set; }
@@ -81,9 +79,8 @@ namespace swk5.UFO.DAL
         /// <param name="cat"></param>
         /// country of the artist
         /// <param name="country"></param>
-        public Artist(int id, string name, string picurl, string vidurl, Category cat, Country country)
+        public Artist(string name, string picurl, string vidurl, Category cat, Country country)
         {
-            this.Id = id;
             this.Name = name;
             this.PictureURL = picurl;
             this.PromoVideoURL = vidurl;

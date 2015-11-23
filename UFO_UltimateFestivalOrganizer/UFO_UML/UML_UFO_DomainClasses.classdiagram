@@ -156,9 +156,6 @@
               <referencedTypeMoniker Id="4a765c83-2524-4300-a79b-c7ac2842867e" LastKnownName="Category" />
             </type_NamedElement>
           </property>
-          <property Id="38e8a98f-73ad-4a9a-aaf0-bfd39b852645" name="Id" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="d6ad7715-5453-45a0-977a-6a0d63bcd287" />
-          </property>
           <property Id="6b8299a5-6d4a-410b-a138-23d2f45b617e" name="PictureURL" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="df36990d-0a80-414c-b968-6f14999d6388" />
           </property>

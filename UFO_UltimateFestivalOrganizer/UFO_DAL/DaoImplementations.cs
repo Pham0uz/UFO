@@ -67,13 +67,24 @@ namespace swk5.UFO.DAL
             // not needed atm
             throw new NotImplementedException();
         }
+
+        public bool Insert(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string username)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class ArtistDao : IArtistDao
     {
         const string SQL_GET_ALL = "select * from Artist";
-        const string SQL_GET_BY_ID = "select * from Artist where Id=@Id";
         const string SQL_GET_BY_NAME = "select * from Artist where Name=@Name";
+        const string SQL_GET_COUNTRY_BY_CODE = "select * from Country where Code=@Code";
+        const string SQL_GET_CATEGORY_BY_NAME = "select * from Category where CategoryName=@CategoryName";
 
         private IDatabase database;
 
@@ -87,12 +98,6 @@ namespace swk5.UFO.DAL
             return database.CreateCommand(SQL_GET_ALL);
         }
 
-        private DbCommand CreateGetByIdCmd(int id)
-        {
-            var cmd = database.CreateCommand(SQL_GET_BY_ID);
-            database.DefineParameter(cmd, "@Id", DbType.Int32, id);
-            return cmd;
-        }
         private DbCommand CreateGetByNameCmd(string name)
         {
             var cmd = database.CreateCommand(SQL_GET_BY_NAME);
@@ -100,38 +105,112 @@ namespace swk5.UFO.DAL
             return cmd;
         }
 
+        private DbCommand CreateGetCountryByCodeCmd(string code)
+        {
+            var cmd = database.CreateCommand(SQL_GET_COUNTRY_BY_CODE);
+            database.DefineParameter(cmd, "@Code", DbType.String, code);
+            return cmd;
+        }
+
+        private DbCommand CreateCategoryGetByNameCmd(string name)
+        {
+            var cmd = database.CreateCommand(SQL_GET_CATEGORY_BY_NAME);
+            database.DefineParameter(cmd, "@CategoryName", DbType.String, name);
+            return cmd;
+        }
+
+        public Country GetCountryByCode(string code)
+        {
+            DbCommand cmd = CreateGetCountryByCodeCmd(code);
+            using (IDataReader reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+                return new Country((string)reader["Code"],
+                                   (string)reader["Name"]);
+            }
+        }
+
+        public Category GetCategoryByName(string name)
+        {
+            DbCommand cmd = CreateCategoryGetByNameCmd(name);
+            using (IDataReader reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+                return new Category((string)reader["CategoryName"]);
+            }
+        }
+
         public IList<Artist> GetAll()
         {
             var artistList = new List<Artist>();
             DbCommand cmd = CreateGetAllCmd();
+
             using (IDataReader reader = database.ExecuteReader(cmd))
             {
                 while (reader.Read())
                 {
-                    artistList.Add(new Artist((int)reader["Id"],
-                                              (string)reader["Name"],
+                    // get category
+                    Category category = GetCategoryByName((string)reader["Category"]);
+
+                    // get country
+                    Country country = GetCountryByCode((string)reader["Country"]);
+
+                    // add to artistList
+                    artistList.Add(new Artist((string)reader["Name"],
                                               (string)reader["PictureURL"],
                                               (string)reader["PromoVideoURL"],
-                                              (Category)reader["Category"],
-                                              (Country)reader["Country"]));
+                                              category,
+                                              country
+                    ));
                 }
             }
             return artistList;
         }
 
-        public Artist GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Artist GetByName(string name)
         {
-            throw new NotImplementedException();
+            DbCommand cmd = CreateGetByNameCmd(name);
+            using (var reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+
+                Category category = null;
+                Country country = null;
+
+                if (!Convert.IsDBNull((string)reader["Category"]))
+                {
+                    category = GetCategoryByName((string)reader["Category"]);
+                }
+
+                if (!Convert.IsDBNull((string)reader["Country"]))
+                {
+                    country = GetCountryByCode((string)reader["Country"]);
+                }
+
+                return new Artist((string)reader["Name"],
+                                  (string)reader["PictureURL"],
+                                  (string)reader["PromoVideoURL"],
+                                  category,
+                                  country);
+            }
         }
 
         public bool Update(Artist artist)
         {
             // not needed atm
+            throw new NotImplementedException();
+        }
+
+        public bool Insert(Artist artist)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string artistname)
+        {
             throw new NotImplementedException();
         }
     }
@@ -213,6 +292,16 @@ namespace swk5.UFO.DAL
             // not needed atm
             throw new NotImplementedException();
         }
+
+        public bool Insert(Country country)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string countrycode)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class CategoryDao : ICategoryDao
@@ -267,6 +356,16 @@ namespace swk5.UFO.DAL
         public bool Update(Category category)
         {
             // not needed atm
+            throw new NotImplementedException();
+        }
+
+        public bool Insert(Category category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string categoryname)
+        {
             throw new NotImplementedException();
         }
     }
@@ -355,14 +454,26 @@ namespace swk5.UFO.DAL
             throw new NotImplementedException();
         }
 
+        public bool Insert(Venue venue)
+        {
+            throw new NotImplementedException();
+        }
 
+        public bool Delete(string shortname)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class PerformanceDao : IPerformanceDao
     {
         const string SQL_GET_ALL = "select * from Performance";
-        const string SQL_GET_BY_ARTISTNAME_DATENTIME = "select * from Performance where Artist=@ArtistId"
+        const string SQL_GET_BY_ARTISTNAME_DATENTIME = "select * from Performance where Artist=@ArtistName "
                                                      + "AND DateNTime=@DateTime";
+        const string SQL_ARTIST_GET_BY_NAME = "select * from Artist where Name=@ArtistName";
+        const string SQL_VENUE_GET_BY_SHORTNAME = "select * from Venue where ShortName=@ShortName";
+        const string SQL_GET_COUNTRY_BY_CODE = "select * from Country where Code=@Code";
+        const string SQL_GET_CATEGORY_BY_NAME = "select * from Category where CategoryName=@CategoryName";
 
         private IDatabase database;
 
@@ -376,12 +487,106 @@ namespace swk5.UFO.DAL
             return database.CreateCommand(SQL_GET_ALL);
         }
 
-        private DbCommand CreateGetByArtistNameAndDateTime(int id, DateTime datetime)
+        private DbCommand CreateGetByArtistNameAndDateTime(string name, DateTime datetime)
         {
             var cmd = database.CreateCommand(SQL_GET_BY_ARTISTNAME_DATENTIME);
-            database.DefineParameter(cmd, "@ArtistId", DbType.Int32, id);
+            database.DefineParameter(cmd, "@ArtistName", DbType.String, name);
             database.DefineParameter(cmd, "@DateTime", DbType.DateTime, datetime);
             return cmd;
+        }
+
+        private DbCommand CreateArtistGetByNameCmd(string name)
+        {
+            var cmd = database.CreateCommand(SQL_ARTIST_GET_BY_NAME);
+            database.DefineParameter(cmd, "@ArtistName", DbType.String, name);
+            return cmd;
+        }
+
+        private DbCommand CreateGetCountryByCodeCmd(string code)
+        {
+            var cmd = database.CreateCommand(SQL_GET_COUNTRY_BY_CODE);
+            database.DefineParameter(cmd, "@Code", DbType.String, code);
+            return cmd;
+        }
+
+        private DbCommand CreateCategoryGetByNameCmd(string name)
+        {
+            var cmd = database.CreateCommand(SQL_GET_CATEGORY_BY_NAME);
+            database.DefineParameter(cmd, "@CategoryName", DbType.String, name);
+            return cmd;
+        }
+
+        private DbCommand CreateVenueGetByNAmeCmd(string name)
+        {
+            var cmd = database.CreateCommand(SQL_VENUE_GET_BY_SHORTNAME);
+            database.DefineParameter(cmd, "@ShortName", DbType.String, name);
+            return cmd;
+        }
+
+        public Country GetCountryByCode(string code)
+        {
+            DbCommand cmd = CreateGetCountryByCodeCmd(code);
+            using (IDataReader reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+                return new Country((string)reader["Code"],
+                                   (string)reader["Name"]);
+            }
+        }
+
+        public Category GetCategoryByName(string name)
+        {
+            DbCommand cmd = CreateCategoryGetByNameCmd(name);
+            using (IDataReader reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+                return new Category((string)reader["CategoryName"]);
+            }
+        }
+
+        public Artist GetArtistByName(string name)
+        {
+            DbCommand cmd = CreateArtistGetByNameCmd(name);
+            using (var reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+
+                Category category = null;
+                Country country = null;
+
+                if (!Convert.IsDBNull((string)reader["Category"]))
+                {
+                    category = GetCategoryByName((string)reader["Category"]);
+                }
+
+                if (!Convert.IsDBNull((string)reader["Country"]))
+                {
+                    country = GetCountryByCode((string)reader["Country"]);
+                }
+
+                return new Artist((string)reader["Name"],
+                                  (string)reader["PictureURL"],
+                                  (string)reader["PromoVideoURL"],
+                                  category,
+                                  country);
+            }
+        }
+
+        public Venue GetVenueByShortName(string name)
+        {
+            var cmd = CreateVenueGetByNAmeCmd(name);
+            using (var reader = database.ExecuteReader(cmd))
+            {
+                if (!reader.Read())
+                    return null;
+                return new Venue((string)reader["ShortName"],
+                                 (string)reader["Description"],
+                                 (double)reader["Latitude"],
+                                 (double)reader["Longitude"]);
+            }
         }
 
         public IList<Performance> GetAll()
@@ -392,31 +597,68 @@ namespace swk5.UFO.DAL
             {
                 while (reader.Read())
                 {
+                    Artist artist = null;
+                    Venue venue = null;
+
+                    if (!Convert.IsDBNull((string)reader["Artist"]))
+                    {
+                        artist = GetArtistByName((string)reader["Artist"]);
+                    }
+
+                    if (!Convert.IsDBNull((string)reader["Venue"]))
+                    {
+                        venue = GetVenueByShortName((string)reader["Venue"]);
+                    }
+
                     performanceList.Add(new Performance((DateTime)reader["DateNTime"],
-                                                        (Artist)reader["Artist"],
-                                                        (Venue)reader["Venue"]));
+                                                        artist,
+                                                        venue));
                 }
             }
             return performanceList;
         }
 
         // rework: get artist and venue extra
-        public Performance GetByArtistNameAndDateTime(int id, DateTime datetime)
+        public Performance GetByArtistNameAndDateTime(string name, DateTime datetime)
         {
-            var cmd = CreateGetByArtistNameAndDateTime(id, datetime);
-            using(var reader = database.ExecuteReader(cmd))
+            var cmd = CreateGetByArtistNameAndDateTime(name, datetime);
+            using (var reader = database.ExecuteReader(cmd))
             {
                 if (!reader.Read())
                     return null;
-                return new Performance((DateTime)reader["DateTime"],
-                                       (Artist)reader["Artist"],
-                                       (Venue)reader["Venue"]);
+
+                Artist artist = null;
+                Venue venue = null;
+
+                if (!Convert.IsDBNull((string)reader["Artist"]))
+                {
+                    artist = GetArtistByName((string)reader["Artist"]);
+                }
+
+                if (!Convert.IsDBNull((string)reader["Venue"]))
+                {
+                    venue = GetVenueByShortName((string)reader["Venue"]);
+                }
+
+                return new Performance((DateTime)reader["DateNTime"],
+                                        artist,
+                                        venue);
             }
         }
 
         public bool Update(Performance performance)
         {
             // not needed atm
+            throw new NotImplementedException();
+        }
+
+        public bool Insert(Performance performance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string performance)
+        {
             throw new NotImplementedException();
         }
     }
