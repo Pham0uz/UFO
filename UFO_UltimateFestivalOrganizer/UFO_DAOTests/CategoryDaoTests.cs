@@ -6,66 +6,66 @@ using System.Collections.Generic;
 namespace UFO_DAOTests
 {
     [TestClass]
-    public class UserDaoTests
+    public class CategoryDaoTests
     {
         private IDatabase database = DALFactory.CreateDatabase();
-        private IUserDao uDao;
+        private ICategoryDao cDao;
 
         [TestInitialize]
         public void MyTestInitialize()
         {
-            uDao = DALFactory.CreateUserDao(database);
+            cDao = DALFactory.CreateCategoryDao(database);
         }
 
         [TestMethod]
         public void TestGetByName()
         {
             // arrange
-            User user = new User("Ada", "3g!m4Cyr", "sogga@soto.co.uk");
+            string expectedValue = "Straßentheater";
 
             // act
-            User loadedUser = uDao.GetByName("Ada");
+            Category loadedCategory = cDao.GetByName("Straßentheater");
 
             // assert
-            Assert.AreEqual(user.PasswordHash, loadedUser.PasswordHash);
+            Assert.AreEqual(expectedValue, loadedCategory.CategoryName);
         }
 
         [TestMethod]
         public void TestGetByName2()
         {
             // arrange
-            User user = new User("Ada", "3g!m4Cyr", "sogga@soto.co.uk");
+            string expectedValue = "Straßentheater";
 
             // act
-            User loadedUser = uDao.GetByName("Albert");
+            Category loadedCategory = cDao.GetByName("Local Art");
 
             // assert
-            Assert.AreNotEqual(user.EMail, loadedUser.EMail);
+            Assert.AreNotEqual(expectedValue, loadedCategory.CategoryName);
         }
 
         [TestMethod]
         public void TestGetNameNotFound()
         {
             // act
-            User loadedUser = uDao.GetByName("Albertosc");
+            Category loadedCategory = cDao.GetByName("Babyweitwurf");
 
             // assert
-            Assert.AreEqual(loadedUser, null);
+            Assert.AreEqual(loadedCategory, null);
         }
 
         [TestMethod]
         public void TestGetAll()
         {
             // arrange
-            int expectedUserCount = 100;
+            int expectedValue = 11;
 
             //act
-            IList<User> userList = uDao.GetAll();
+            IList<Category> categoryList = cDao.GetAll();
 
             // assert
-            int actualUserCount = userList.Count;
+            int actualValue = categoryList.Count;
 
-            Assert.AreEqual(expectedUserCount, actualUserCount);
+            Assert.AreEqual(expectedValue, actualValue);
         }
     }
 }

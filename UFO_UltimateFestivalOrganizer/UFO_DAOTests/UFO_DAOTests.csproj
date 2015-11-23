@@ -51,6 +51,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PerformanceDao.cs" />
+    <Compile Include="ArtistDaoTests.cs" />
+    <Compile Include="VenueDaoTests.cs" />
+    <Compile Include="CountryDaoTests.cs" />
+    <Compile Include="CategoryDaoTests.cs" />
     <Compile Include="UserDaoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
