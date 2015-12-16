@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace swk5.UFO.DAL
+namespace swk5.ufo.dal
 {
     class UserDao : IUserDao
     {

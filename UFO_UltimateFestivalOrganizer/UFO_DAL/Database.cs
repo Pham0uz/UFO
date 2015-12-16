@@ -8,7 +8,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Transactions;
 
-namespace swk5.UFO.DAL
+namespace swk5.ufo.dal
 {
     public class Database : IDatabase
     {

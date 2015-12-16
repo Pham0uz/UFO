@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swk5.UFO.DAL;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using swk5.ufo.dal;
 using System.Collections.Generic;
 
 namespace UFO_DAOTests

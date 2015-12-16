@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Reflection;
 
-namespace swk5.UFO.DAL
+namespace swk5.ufo.dal
 {
     public class DALFactory
     {

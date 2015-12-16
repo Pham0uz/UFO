@@ -63,9 +63,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UFO_DAL\UFO_DAL.csproj">
+    <ProjectReference Include="..\UFO_DAL\ufo.dal.csproj">
       <Project>{342e35ac-d079-4954-b39a-54bb4b64a682}</Project>
-      <Name>UFO_DAL</Name>
+      <Name>ufo.dal</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

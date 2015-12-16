@@ -1,5 +1,4 @@
-﻿using System;
-using swk5.UFO.DAL;
+﻿using swk5.ufo.dal;
 
 namespace DAL_ConsoleClient
 {

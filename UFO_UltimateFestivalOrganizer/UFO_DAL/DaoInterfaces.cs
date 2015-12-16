@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 // of course i could have used a generic interface for all Daos (would have to cast them all)
 // but I chose not to, because of simplicity, altough its almost "copy paste"
 
-namespace swk5.UFO.DAL
+namespace swk5.ufo.dal
 {
     public interface IUserDao
     {
