@@ -121,17 +121,6 @@
         isActiveClass="false">
         <ownedAttributesInternal>
           <property
-            Id="7b3273fd-ab92-478e-912e-ef793b2e42a8"
-            name="UserName"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false" />
-          <property
             Id="f65ca665-69c4-4b7f-94c2-48b32523a704"
             name="EMail"
             isLeaf="false"

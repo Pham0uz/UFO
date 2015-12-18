@@ -77,9 +77,6 @@
       <class Id="84ecb23b-2f85-43c8-b332-ec687cb1938c" name="User" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="08fa07c7-1d9f-4bee-8675-bb120108f71a" />
         <ownedAttributesInternal>
-          <property Id="a95e619c-afc6-433c-8c34-8b7545dafda0" name="UserName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="7b3273fd-ab92-478e-912e-ef793b2e42a8" />
-          </property>
           <property Id="2e52842d-667d-49b9-8064-6b3f3e8459dc" name="EMail" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="f65ca665-69c4-4b7f-94c2-48b32523a704" />
           </property>

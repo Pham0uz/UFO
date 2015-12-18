@@ -20,33 +20,33 @@ namespace UFO_DAOTests
         public void TestGetByName()
         {
             // arrange
-            string expectedValue = "Akrobatik&Tanz";
+            string expectedValue = "Straßentheater";
 
             // act
-            Artist loadedArtist = aDao.GetByName("Anne & Mitja");
+            Artist loadedArtist = aDao.GetByName("figurentheater(isipisi)");
 
             // assert
-            Assert.AreEqual(expectedValue, loadedArtist.Category.CategoryName);
+            Assert.AreEqual(expectedValue, loadedArtist.CategoryName);
         }
 
         [TestMethod]
         public void TestGetByName2()
         {
             // arrange
-            string expectedValue = "DE";
+            string expectedValue = "AT";
 
             // act
-            Artist loadedArtist = aDao.GetByName("Anne & Mitja");
+            Artist loadedArtist = aDao.GetByName("figurentheater(isipisi)");
 
             // assert
-            Assert.AreEqual(expectedValue, loadedArtist.Country.Code);
+            Assert.AreEqual(expectedValue, loadedArtist.CountryCode);
         }
 
         [TestMethod]
         public void TestGetAll()
         {
             // arrange
-            int expectedValue = 74;
+            int expectedValue = 1;
 
             //act
             IList<Artist> ArtistList = aDao.GetAll();
@@ -54,6 +54,56 @@ namespace UFO_DAOTests
             // assert
             int actualValue = ArtistList.Count;
 
+            Assert.AreEqual(expectedValue, actualValue);
+        }
+
+        [TestMethod]
+        public void TestInsert()
+        {
+            // arrange
+            bool expectedValue = true;
+            Artist newArtist = new Artist("Anne & Mitja", "test.jpg", "test2.jpg", "Akrobatik&Tanz", "DE");
+            bool beforeInsert = aDao.GetAll().Count == 1;
+
+            // act
+            aDao.Insert(newArtist);
+            bool afterInsert = aDao.GetAll().Count == 2;
+
+            // assert
+            bool actualValue = (beforeInsert && afterInsert);
+            Assert.AreEqual(expectedValue, actualValue, "Artist has not been inserted successfully.");
+        }
+
+        [TestMethod]
+        public void TestUpdate()
+        {
+            // arrange
+            Artist a = aDao.GetByName("Anne & Mitja");
+            string expectedCountryCode = "DE";
+
+            // act
+            a.CountryCode = "DE";
+            aDao.Update(a);
+
+            // assert
+            a = aDao.GetByName("Anne & Mitja");
+            string actualCountryCode = a.CountryCode;
+            Assert.AreEqual(expectedCountryCode, actualCountryCode);
+        }
+
+        [TestMethod]
+        public void TestDelete()
+        {
+            // arrange
+            bool expectedValue = true;
+            bool beforeDelete = aDao.GetAll().Count == 2;
+
+            // act
+            aDao.Delete("Anne & Mitja");
+            bool afterDelete = aDao.GetAll().Count == 1;
+
+            // assert
+            bool actualValue = (beforeDelete && afterDelete);
             Assert.AreEqual(expectedValue, actualValue);
         }
     }

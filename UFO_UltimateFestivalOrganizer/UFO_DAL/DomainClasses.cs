@@ -14,11 +14,9 @@ namespace swk5.ufo.dal
     [Serializable]
     public class User
     {
-        public string UserName { get; set; }
+        public string EMail { get; set; }
 
         public string PasswordHash { get; set; }
-
-        public string EMail { get; set; }
 
         public User()
         {
@@ -28,22 +26,18 @@ namespace swk5.ufo.dal
         /// Constructor of User
         /// </summary>
         /// unique primary key
-        /// <param name="username"></param>
         /// <param name="email"></param>
         /// username and passowrd hashed with salt
         /// <param name="passwordhash"></param>
-        public User(string username, string passwordhash, string email)
+        public User(string email, string passwordhash)
         {
-            this.UserName = username;
             this.PasswordHash = passwordhash;
             this.EMail = email;
         }
 
-
-
         public override string ToString()
         {
-            return $"User: {UserName,20} | Password: {PasswordHash,30} | E-Mail: {EMail,20}";
+            return $"User: E-Mail: {EMail,20} | Password: {PasswordHash,30} | ";
         }
     } // User
 
@@ -53,16 +47,16 @@ namespace swk5.ufo.dal
     /// </summary>
     [Serializable]
     public class Artist
-    { 
+    {
         public string Name { get; set; }
 
         public string PictureURL { get; set; }
 
         public string PromoVideoURL { get; set; }
 
-        public Category Category { get; set; }
+        public string CategoryName { get; set; }
 
-        public Country Country { get; set; }
+        public string CountryCode { get; set; }
 
         /// <summary>
         /// Constructor of Artist
@@ -75,17 +69,17 @@ namespace swk5.ufo.dal
         /// <param name="picurl"></param>
         /// promo video url to load video from
         /// <param name="vidurl"></param>
-        /// category of the artist
+        /// categoryname of the artist
         /// <param name="cat"></param>
-        /// country of the artist
+        /// country code of the artist
         /// <param name="country"></param>
-        public Artist(string name, string picurl, string vidurl, Category cat, Country country)
+        public Artist(string name, string picurl, string vidurl, string cat, string countrycd)
         {
             this.Name = name;
             this.PictureURL = picurl;
             this.PromoVideoURL = vidurl;
-            this.Category = cat;
-            this.Country = country;
+            this.CategoryName = cat;
+            this.CountryCode = countrycd;
         }
 
     } // Artist
@@ -175,11 +169,12 @@ namespace swk5.ufo.dal
     {
         public DateTime DateNTime { get; set; }
 
-        public Artist Artist { get; set; }
+        // changes needed? because you can delete artist, but performances in past should remain in the db
+        public string Artist { get; set; }
 
-        public Venue Venue { get; set;} 
+        public string Venue { get; set; }
 
-        public Performance(DateTime datentime, Artist artist, Venue venue)
+        public Performance(DateTime datentime, string artist, string venue)
         {
             this.DateNTime = datentime;
             this.Artist = artist;

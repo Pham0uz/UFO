@@ -11,19 +11,21 @@ namespace swk5.ufo.dal
 {
     public interface IUserDao
     {
-        User GetByName(string name);
+        User GetByEMail(string email);
         IList<User> GetAll();
-        bool Update(User user); // returns true if updated, false if not --> used instead of exception
-        bool Insert(User user);
-        bool Delete(string username);
+
+        // readonly domain class, managed of admin of db
+        //bool Update(User user); // returns true if updated, false if not --> used instead of exception
+        //bool Insert(User user);
+        //bool Delete(string username);
     } // IUserDao
 
     public interface IArtistDao
     {
         Artist GetByName(string name);
         IList<Artist> GetAll();
-        bool Update(Artist artist); // returns true if updated, false if not --> used instead of exception
-        bool Insert(Artist artist);
+        bool Update(Artist a); // returns true if updated, false if not --> used instead of exception
+        bool Insert(Artist a);
         bool Delete(string artistname);
     } // IArtistDao
 
@@ -33,18 +35,22 @@ namespace swk5.ufo.dal
         Country GetByCode(string code);
         Country GetByName(string name);
         IList<Country> GetAll();
-        bool Update(Country country); // returns true if updated, false if not --> used instead of exception
-        bool Insert(Country country);
-        bool Delete(string countrycode);
+
+        // not needed, managed by admin of db
+        //bool Update(Country country); // returns true if updated, false if not --> used instead of exception
+        //bool Insert(Country country);
+        //bool Delete(string countrycode);
     } // ICountryDao
 
     public interface ICategoryDao
     {
         Category GetByName(string name);
         IList<Category> GetAll();
-        bool Update(Category category); // returns true if updated, false if not --> used instead of exception
-        bool Insert(Category category);
-        bool Delete(string categoryname);
+
+        // not needed, managed by admin of db
+        //bool Update(Category category); // returns true if updated, false if not --> used instead of exception
+        //bool Insert(Category category);
+        //bool Delete(string categoryname);
     } // ICategoryDao
     public interface IVenueDao
     {
@@ -52,18 +58,18 @@ namespace swk5.ufo.dal
         Venue GetByName(string name);
         Venue GetByDescription(string descr);
         IList<Venue> GetAll();
-        bool Update(Venue venue); // returns true if updated, false if not --> used instead of exception
-        bool Insert(Venue venue);
+        bool Update(Venue v); // returns true if updated, false if not --> used instead of exception
+        bool Insert(Venue v);
         bool Delete(string shortname);
     } // IVenueDao
 
     public interface IPerformanceDao
     {
         // Get Performance by Artist and the Date + Time of it
-        Performance GetByArtistNameAndDateTime(string name, DateTime datetime);
+        Performance GetByDateNTimeAndVenue(DateTime datetime, string venue);
         IList<Performance> GetAll();
-        bool Update(Performance performance); // returns true if updated, false if not --> used instead of exception
-        bool Insert(Performance performance);
-        bool Delete(string performance);
+        bool Update(Performance p); // returns true if updated, false if not --> used instead of exception
+        bool Insert(Performance p);
+        bool Delete(DateTime datetime, string venue);
     } // IPerformanceDao
 }

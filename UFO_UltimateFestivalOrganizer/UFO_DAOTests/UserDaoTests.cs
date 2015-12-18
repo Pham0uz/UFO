@@ -17,36 +17,23 @@ namespace UFO_DAOTests
         }
 
         [TestMethod]
-        public void TestGetByName()
+        public void TestGetByEMail()
         {
             // arrange
-            User user = new User("Ada", "3g!m4Cyr", "sogga@soto.co.uk");
+            User user = new User("admin@gmx.at", "0ce16c9bcd892e45e837ac27ff9b5339c16a1b9e");
 
             // act
-            User loadedUser = uDao.GetByName("Ada");
+            User loadedUser = uDao.GetByEMail("admin@gmx.at");
 
             // assert
             Assert.AreEqual(user.PasswordHash, loadedUser.PasswordHash);
         }
 
         [TestMethod]
-        public void TestGetByName2()
-        {
-            // arrange
-            User user = new User("Ada", "3g!m4Cyr", "sogga@soto.co.uk");
-
-            // act
-            User loadedUser = uDao.GetByName("Albert");
-
-            // assert
-            Assert.AreNotEqual(user.EMail, loadedUser.EMail);
-        }
-
-        [TestMethod]
-        public void TestGetNameNotFound()
+        public void TestGetEMailNotFound()
         {
             // act
-            User loadedUser = uDao.GetByName("Albertosc");
+            User loadedUser = uDao.GetByEMail("noreply@gmx.at");
 
             // assert
             Assert.AreEqual(loadedUser, null);
@@ -56,7 +43,7 @@ namespace UFO_DAOTests
         public void TestGetAll()
         {
             // arrange
-            int expectedUserCount = 100;
+            int expectedUserCount = 1;
 
             //act
             IList<User> userList = uDao.GetAll();

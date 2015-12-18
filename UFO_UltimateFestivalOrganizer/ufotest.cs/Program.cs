@@ -1,4 +1,6 @@
 ﻿using swk5.ufo.dal;
+using System;
+using System.Diagnostics;
 
 namespace DAL_ConsoleClient
 {
@@ -6,6 +8,8 @@ namespace DAL_ConsoleClient
     {
         static void Main(string[] args)
         {
+            Stopwatch sw = Stopwatch.StartNew();
+
             IDatabase db = DALFactory.CreateDatabase();
             IUserDao uDao = DALFactory.CreateUserDao(db);
             ICountryDao countryDao = DALFactory.CreateCountryDao(db);
@@ -13,18 +17,12 @@ namespace DAL_ConsoleClient
             IArtistDao aDao = DALFactory.CreateArtistDao(db);
             IPerformanceDao pDao = DALFactory.CreatePerformanceDao(db);
 
+            // ********** USERDAO **********
             //Console.WriteLine("========== UserDao.GetAll() ==========");
             //foreach (User User in uDao.GetAll())
-            //    Console.WriteLine($"[{User.UserName,15}] ({User.PasswordHash,15}: {User.EMail,20})\n");
+            //    Console.WriteLine($"[{User.EMail,20}]: {User.PasswordHash,30}\n");
 
-            //Console.WriteLine("========== UserDao.GetByName() ==========");
-            //User User1 = uDao.GetByName("Ada");
-            //if (User1 != null)
-            //    Console.WriteLine($"[{User1.UserName,15}] ({User1.PasswordHash,15}: {User1.EMail,20})\n");
-            //else
-            //    Console.WriteLine("User Ada not found!");
-            //Console.WriteLine();
-
+            // ********** COUNTRYDAO **********
             //Console.WriteLine("========== CountryDao.GetAll() ==========");
             //foreach (Country Country in countryDao.GetAll())
             //    Console.WriteLine($"[{Country.Code,2}] ({Country.Name,30})\n");
@@ -37,6 +35,7 @@ namespace DAL_ConsoleClient
             //    Console.WriteLine("Country AT not found!");
             //Console.WriteLine();
 
+            // ********** CATEGORYDAO **********
             //Console.WriteLine("========== CategoryDao.GetAll() ==========");
             //foreach (Category Category in catDao.GetAll())
             //    Console.WriteLine($"[{Category.CategoryName,30})\n");
@@ -49,13 +48,24 @@ namespace DAL_ConsoleClient
             //    Console.WriteLine("Category Tanz & Musik not found!");
             //Console.WriteLine();
 
-            //Console.WriteLine("========== ArtistDao.GetByName() ==========");
-            //Artist a1 = aDao.GetByName("Derek Derek");
-            //if (a1 != null)
-            //    Console.WriteLine($"[{a1.Name,20}] ({a1.Category.CategoryName,20}, {a1.Country.Code,3}), \n");
+
+            // ********** ARTISTDAO **********
+            //Console.WriteLine("========== ArtistDao.Insert() ==========");
+            //Artist newArtist = new Artist("figurentheater(isipisi)", "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/286.jpg", "http://placekitten.com.s3.amazonaws.com/homepage-samples/408/287.jpg", "Straßentheater", "AT");
+
+            //if (aDao.Insert(newArtist))
+            //    Console.WriteLine($"Artist: {newArtist.Name} inserted successfully.");
             //else
-            //    Console.WriteLine("Artist Derek not found!");
+            //    Console.WriteLine($"ERROR: Could not insert {newArtist.Name}.");
+
+            //Console.WriteLine("========== ArtistDao.GetByName() ==========");
+            //Artist a1 = aDao.GetByName("figurentheater(isipisi)");
+            //if (a1 != null)
+            //    Console.WriteLine($"[{a1.Name,20}] ({a1.CategoryName,20}, {a1.CountryCode,3}), \n");
+            //else
+            //    Console.WriteLine($"Artist {a1.Name} not found!");
             //Console.WriteLine();
+
 
             //Console.WriteLine("========== PerformanceDao.GetAll() ==========");
             //foreach(Performance p in pDao.GetAll())
@@ -66,6 +76,11 @@ namespace DAL_ConsoleClient
             //    Console.WriteLine($"{p1.Artist.Name}, {p1.DateNTime.Date} {p1.DateNTime.TimeOfDay}, {p1.Venue.Description}");
             //else
             //    Console.WriteLine($"Performance with {p1.Artist.Name}, at {p1.DateNTime.Date} {p1.DateNTime.TimeOfDay} at Venue: not found {p1.Venue.Description}.");
+
+            // Diagnostics
+            sw.Stop();
+            Console.WriteLine($"DONE --- Time Elapsed:{sw.Elapsed}");
+            // Diagnostics END
         }
     }
 }
