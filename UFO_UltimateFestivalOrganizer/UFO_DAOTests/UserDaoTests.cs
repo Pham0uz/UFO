@@ -21,12 +21,16 @@ namespace UFO_DAOTests
         {
             // arrange
             User user = new User("admin@gmx.at", "0ce16c9bcd892e45e837ac27ff9b5339c16a1b9e");
+            string useremail = "admin@gmx.at";
+            string userpwd = "0ce16c9bcd892e45e837ac27ff9b5339c16a1b9e";
 
             // act
             User loadedUser = uDao.GetByEMail("admin@gmx.at");
 
             // assert
             Assert.AreEqual(user.PasswordHash, loadedUser.PasswordHash);
+            Assert.AreEqual(user.EMail, loadedUser.EMail);
+            Assert.AreEqual($"User: E-Mail: {useremail,20} | Password: {userpwd,30} | ", loadedUser.ToString());
         }
 
         [TestMethod]

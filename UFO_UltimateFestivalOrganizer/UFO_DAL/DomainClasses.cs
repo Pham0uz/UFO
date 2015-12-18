@@ -18,10 +18,6 @@ namespace swk5.ufo.dal
 
         public string PasswordHash { get; set; }
 
-        public User()
-        {
-        }
-
         /// <summary>
         /// Constructor of User
         /// </summary>
