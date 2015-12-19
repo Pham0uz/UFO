@@ -163,16 +163,18 @@ namespace swk5.ufo.dal
     [Serializable]
     public class Performance
     {
-        public DateTime DateNTime { get; set; }
+        public DateTime Date { get; set; }
 
-        // changes needed? because you can delete artist, but performances in past should remain in the db
+        public int Time { get; set; }
+
         public string Artist { get; set; }
 
         public string Venue { get; set; }
 
-        public Performance(DateTime datentime, string artist, string venue)
+        public Performance(DateTime date, int time, string artist, string venue)
         {
-            this.DateNTime = datentime;
+            this.Date = date;
+            this.Time = time;
             this.Artist = artist;
             this.Venue = venue;
         }

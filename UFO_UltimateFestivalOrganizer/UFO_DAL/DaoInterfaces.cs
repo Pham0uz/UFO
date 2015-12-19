@@ -65,11 +65,12 @@ namespace swk5.ufo.dal
 
     public interface IPerformanceDao
     {
-        // Get Performance by Artist and the Date + Time of it
-        Performance GetByDateNTimeAndVenue(DateTime datetime, string venue);
+        // Get Performance by DateNTime and Venue
+        Performance GetByDate_Time_Venue(DateTime date, int time, string venue);
         IList<Performance> GetAll();
+        IList<Performance> GetAllByDate(DateTime date);
         bool Update(Performance p); // returns true if updated, false if not --> used instead of exception
         bool Insert(Performance p);
-        bool Delete(DateTime datetime, string venue);
+        bool Delete(DateTime date, int time, string venue);
     } // IPerformanceDao
 }

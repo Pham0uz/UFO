@@ -18,13 +18,13 @@ namespace UFO_DAOTests
         }
 
         [TestMethod]
-        public void TestGetByDateNTime()
+        public void TestGetByDate_Time_Venue()
         {
             // arrange
             string expectedValue = "T1";
 
             // act
-            Performance loadedPerformance = pDao.GetByDateNTimeAndVenue(new DateTime(2015, 7, 23, 19, 0, 0), "T1");
+            Performance loadedPerformance = pDao.GetByDate_Time_Venue(new DateTime(2015, 7, 23), 19, "T1");
 
             // assert
             Assert.AreEqual(expectedValue, loadedPerformance.Venue);
@@ -37,7 +37,7 @@ namespace UFO_DAOTests
             string expectedValue = "figurentheater (isipisi)";
 
             // act
-            Performance loadedPerformance = pDao.GetByDateNTimeAndVenue(new DateTime(2015, 7, 23, 19, 0, 0), "T1");
+            Performance loadedPerformance = pDao.GetByDate_Time_Venue(new DateTime(2015, 7, 23), 19, "T1");
 
             // assert
             Assert.AreEqual(expectedValue, loadedPerformance.Artist);
@@ -58,12 +58,26 @@ namespace UFO_DAOTests
             Assert.AreEqual(expectedValue, actualValue);
         }
 
+        public void TestGetAllByDate()
+        {
+            // arrange
+            int expectedValue = 1;
+
+            //act
+            IList<Performance> PerformanceList = pDao.GetAllByDate(new DateTime(2015, 7, 23));
+
+            // assert
+            int actualValue = PerformanceList.Count;
+
+            Assert.AreEqual(expectedValue, actualValue);
+        }
+
         [TestMethod]
         public void TestInsert()
         {
             // arrange
             bool expectedValue = true;
-           Performance newPerformance = new Performance(new DateTime(2015, 7, 23, 19, 0, 0), "MadMatt", "T2");
+           Performance newPerformance = new Performance(new DateTime(2015, 7, 23), 19, "MadMatt", "T2");
             bool beforeInsert = pDao.GetAll().Count == 1;
 
             // act
@@ -79,7 +93,7 @@ namespace UFO_DAOTests
         public void TestUpdate()
         {
             // arrange
-            Performance p = pDao.GetByDateNTimeAndVenue(new DateTime(2015, 7, 23, 19, 0, 0), "T2");
+            Performance p = pDao.GetByDate_Time_Venue(new DateTime(2015, 7, 23), 19, "T2");
             string expectedArtist = "MadMatt2";
 
             // act
@@ -87,7 +101,7 @@ namespace UFO_DAOTests
             pDao.Update(p);
 
             // assert
-            p = pDao.GetByDateNTimeAndVenue(new DateTime(2015, 7, 23, 19, 0, 0), "T2");
+            p = pDao.GetByDate_Time_Venue(new DateTime(2015, 7, 23), 19, "T2");
             string actualArtist = p.Artist;
             Assert.AreEqual(expectedArtist, actualArtist);
         }
@@ -100,7 +114,7 @@ namespace UFO_DAOTests
             bool beforeDelete = pDao.GetAll().Count == 2;
 
             // act
-            pDao.Delete(new DateTime(2015, 7, 23, 19, 0, 0), "T2");
+            pDao.Delete(new DateTime(2015, 7, 23), 19, "T2");
             bool afterDelete = pDao.GetAll().Count == 1;
 
             // assert
