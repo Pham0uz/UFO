@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="ufo.commander.Views.ArtistsOverview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ufo.commander.Views"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
+             xmlns:UFO="clr-namespace:ufo.commander"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="480"
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
+
+    <UserControl.Resources>
+        <UFO:DatabindingDebugConverter x:Key="debugConverter" />
+        <ContextMenu x:Key="ArtistContextMenu">
+            <MenuItem Header="_Add New Artist" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.OpenCreateArtistCommand}" />
+            <MenuItem Header="_Edit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.OpenEditArtistCommand}" />
+            <!--<MenuItem Header="_Filter for Artist" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.Load}" CommandParameter="{Binding}" />-->
+            <MenuItem Header="_Delete" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentConference.DeleteArtistCommand}" CommandParameter="{Binding}" />
+        </ContextMenu>
+        <Style x:Key="ArtistRowStyle" TargetType="DataGridRow" BasedOn="{StaticResource MetroDataGridRow}">
+            <Setter Property="ContextMenu" Value="{StaticResource ArtistContextMenu}" />
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Name="ArtistOverviewGrid">
+        <DataGrid Name="ArtistGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
+                  ItemsSource="{Binding Artists}" RowStyle="{StaticResource ArtistRowStyle}">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Artist" Binding="{Binding Name}" SortDirection="Ascending"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding CountryCode}"/>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+    </Grid>
+</UserControl>

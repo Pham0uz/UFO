@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="ufo.commander.Views.VenuesOverview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ufo.commander.Views"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
+             xmlns:UFO="clr-namespace:ufo.commander"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="480"
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
+
+    <UniformGrid Rows="1">
+        <ListView Margin="5"
+                  Style="{StaticResource VirtualisedMetroListView}"
+                  BorderThickness="0"
+                  ItemsSource="{Binding Venues}"
+                  SelectionChanged="ListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding ShortName}"
+                                            Header="ShortName" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Description}"
+                                            Header="Description" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Latitude}"
+                                            Header="Latitude" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Longitude}"
+                                            Header="Longitude" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </UniformGrid>
+</UserControl>

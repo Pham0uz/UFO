@@ -69,6 +69,7 @@ namespace swk5.ufo.dal
         Performance GetByDate_Time_Venue(DateTime date, int time, string venue);
         IList<Performance> GetAll();
         IList<Performance> GetAllByDate(DateTime date);
+        IList<Performance> GetAllByDate_Time(DateTime date, int time);
         bool Update(Performance p); // returns true if updated, false if not --> used instead of exception
         bool Insert(Performance p);
         bool Delete(DateTime date, int time, string venue);

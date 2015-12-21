@@ -1,4 +1,5 @@
-﻿using swk5.ufo.dal;
+﻿using NLog;
+using swk5.ufo.dal;
 using System;
 using System.Diagnostics;
 
@@ -6,6 +7,7 @@ namespace DAL_ConsoleClient
 {
     class Program
     {
+        private static Logger Log = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();

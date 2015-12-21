@@ -72,6 +72,20 @@ namespace UFO_DAOTests
             Assert.AreEqual(expectedValue, actualValue);
         }
 
+        public void TestGetAllByDateTime()
+        {
+            // arrange
+            int expectedValue = 1;
+
+            //act
+            IList<Performance> PerformanceList = pDao.GetAllByDate_Time(new DateTime(2015, 7, 23), 19);
+
+            // assert
+            int actualValue = PerformanceList.Count;
+
+            Assert.AreEqual(expectedValue, actualValue);
+        }
+
         [TestMethod]
         public void TestInsert()
         {

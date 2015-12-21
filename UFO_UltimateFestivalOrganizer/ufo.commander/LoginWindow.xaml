@@ -1,0 +1,59 @@
+﻿<Controls:MetroWindow
+        x:Class="ufo.commander.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ufo.commander"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+
+        mc:Ignorable="d"
+        Title="Login"
+        Height="300"
+        Width="300"
+        ResizeMode="NoResize"
+        Icon="/Resources/img/ufo.ico"
+        WindowStartupLocation="CenterScreen"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        NonActiveGlowBrush="#CDFF0000"
+        >
+
+    <Grid Name="loginGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Name="BannerPanel" Grid.Row="0" >
+            <Label Name="BannerTxt" Foreground="BlueViolet" Content="UFO" Width="100"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+        
+        <StackPanel Name="EMailPanel" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBox x:Name="txtEMail" Width="150"
+                     Controls:TextBoxHelper.Watermark="email@provider.com"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Controls:TextBoxHelper.IsWaitingForData="True"/>
+            <Label x:Name="lblUserName" Content="EMail" Width="100"
+                   HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Name="PwdPanel" Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+            <PasswordBox Name="txtPwd" Width="150"/>
+            <Label Name="lblPwd" Content="Password" Width="100"
+                   HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+        <TextBlock Name="txtError" Grid.Row="3" Foreground="Red" Text="{Binding Path=txtError}"
+                   HorizontalAlignment="Center"/>
+
+        <StackPanel Name="btnPanel" Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal" Width="250" Margin="22,0">
+            <Button Content="Login" Margin="0 0 0 5" Width="100" Height="20" Click="btnLogin_Click"/>
+            <Button Content="Quit" Margin="50 0 0 5" Width="100" Height="20" Click="btnQuit_Click" />
+        </StackPanel>
+
+    </Grid>
+</Controls:MetroWindow>
