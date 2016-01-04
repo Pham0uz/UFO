@@ -17,7 +17,7 @@
         <UFO:DatabindingDebugConverter x:Key="debugConverter" />
         <ContextMenu x:Key="ArtistContextMenu">
             <MenuItem Header="_Add New Artist" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.OpenCreateArtistCommand}" />
-            <MenuItem Header="_Edit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.OpenEditArtistCommand}" />
+            <!--<MenuItem Header="_Edit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.OpenEditArtistCommand}" />-->
             <!--<MenuItem Header="_Filter for Artist" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.Load}" CommandParameter="{Binding}" />-->
             <MenuItem Header="_Delete" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentConference.DeleteArtistCommand}" CommandParameter="{Binding}" />
         </ContextMenu>
@@ -29,12 +29,19 @@
     <Grid Name="ArtistOverviewGrid">
         <DataGrid Name="ArtistGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
                   ItemsSource="{Binding Artists}" RowStyle="{StaticResource ArtistRowStyle}"
-                  SelectedItem="">
+                  SelectedItem=""
+                  SelectionMode="Single">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Artist" Binding="{Binding Name}" SortDirection="Ascending"/>
                 <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}"/>
-                <DataGridTextColumn Header="Country" Binding="{Binding CountryCode}"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding CountryCode}" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
 
         </DataGrid>

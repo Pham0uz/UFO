@@ -28,9 +28,17 @@ namespace ufo.commander.ViewModels
 
         #region Private Members
         private UFOCollectionVM currentSession;
+
         private ArtistVM newArtist;
         private ArtistVM selectedArtist;
 
+        private InsertArtistWindow createArtistWindow;
+
+        private VenueVM currentVenue;
+        private VenueVM newVenue;
+
+        private PerformanceVM currentPerformance;
+        public PerformanceVM newPerformance;
 
         #endregion
 
@@ -175,10 +183,18 @@ namespace ufo.commander.ViewModels
 
         public ArtistVM NewArtist
         {
-            get { return newArtist; }
+            get
+            {
+                if (newArtist == null)
+                {
+                    Artist artist = new Artist();
+                    newArtist = new ArtistVM(artist);
+                }
+                return newArtist;
+            }
             set
             {
-                if (value != null)
+                if ((newArtist != value) && (value != null))
                 {
                     newArtist = value;
                     RaisePropertyChangedEvent(nameof(NewArtist));
@@ -200,34 +216,6 @@ namespace ufo.commander.ViewModels
         }
 
         #endregion
-
-        //public ArtistVM NewArtist
-        //{
-        //    get
-        //    {
-        //        if (newArtist == null)
-        //        {
-        //            Artist artist = new Artist();
-        //            newArtist = new ArtistVM(artist);
-        //        }
-        //    }
-        //    set
-        //    {
-        //        if ((currentArtist != null) && (value != null))
-        //        {
-        //            currentArtist = value;
-        //            RaisePropertyChangedEvent("CurrentArtist");
-        //        }
-        //    }
-        //}
-
-        private VenueVM currentVenue;
-        private VenueVM newVenue;
-
-        private PerformanceVM currentPerformance;
-        public PerformanceVM newPerformance;
-
-        private InsertArtistWindow createArtistWindow;
 
         #region TransactionCommands
 
@@ -260,7 +248,6 @@ namespace ufo.commander.ViewModels
         {
             get
             {
-                Logger.Info("OpenCreateArtistCommand");
                 return openCreateArtistCommand ?? (openCreateArtistCommand = new RelayCommand(param => OpenCreateArtist()));
 
                 //var mainWindow = (MetroWindow)Application.Current.MainWindow;
@@ -274,7 +261,7 @@ namespace ufo.commander.ViewModels
 
         private void OpenCreateArtist()
         {
-            createArtistWindow = new InsertArtistWindow();
+            createArtistWindow = new InsertArtistWindow(this);
             createArtistWindow.ShowDialog();
         }
 
@@ -282,42 +269,20 @@ namespace ufo.commander.ViewModels
         {
             get
             {
-                Logger.Info("createArtistCommand");
                 if (createArtistCommand == null)
-                    createArtistCommand = new RelayCommand((param) =>
-                    {
-                        ArtistVM a = (ArtistVM)param;
-                        if (a != null)
-                        {
-                            Logger.Info(a.Name + a.PictureURL + a.PromoVideoURL);
-                            Logger.Info(a.CategoryName + a.CountryCode);
-                        }
-                        CreateArtist((ArtistVM)param);
-                    });
+                    createArtistCommand = new RelayCommand(param => CreateArtist((ArtistVM)param));
                 return createArtistCommand;
             }
         }
 
         private void CreateArtist(ArtistVM artist)
         {
-            Logger.Info("createArtist");
             commander.InsertArtist(artist.Artist);
+            // to update view
             LoadArtists();
             newArtist = null;
             createArtistWindow.Close();
         }
-
-        //private ICommand CancelInsertArtistCommand
-        //{
-        //    get
-        //    {
-        //        return cancelCreateArtistCommand ?? (cancelCreateArtistCommand = new SimpleCommand
-        //        {
-        //            CanExecuteDelegate = x => MainWindow.Instance.Flyouts.Items.Count > 0,
-        //            ExecuteDelegate = x => MainWindow.Instance.ToggleFlyout(0)
-        //        });
-        //    }
-        //}
 
         public ICommand UpdateArtistCommand
         {

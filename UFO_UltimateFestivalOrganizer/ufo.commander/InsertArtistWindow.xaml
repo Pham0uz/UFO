@@ -19,7 +19,8 @@
              NonActiveGlowBrush="#CDFF0000"
              Height="400" Width="550"
              d:DesignHeight="300" d:DesignWidth="450"
-             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
+             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}"
+             Closing="MetroWindow_Closing">
 
     <Controls:MetroWindow.Resources>
         <UFO:DatabindingDebugConverter x:Key="debugConverter" />
@@ -79,16 +80,16 @@
         <ComboBox Name="cmbCategory" Grid.Row="3" Grid.Column="1" Width="Auto" Margin="10" VerticalContentAlignment="Center"
                   ItemTemplate="{StaticResource categoryBoxDataTemplate}"
                   SelectionChanged="cmbCategory_SelectionChanged"
+                  SelectedValue="{Binding NewArtist.CategoryName, Mode=TwoWay}"
                   SelectedValuePath="CategoryName"
-                  IsTextSearchEnabled="True"
-                  SelectedItem="{Binding NewArtist.CategoryName, Mode=TwoWay}">
+                  IsTextSearchEnabled="True">
         </ComboBox>
         <ComboBox Name="cmbCountry" Grid.Row="4" Grid.Column="1" Width="Auto" Margin="10" VerticalAlignment="Center"
                   ItemTemplate="{StaticResource countryBoxDataTemplate}"
                   SelectionChanged="cmbCountry_SelectionChanged"
-                  SelectedValuePath="Name"
-                  IsTextSearchEnabled="True"
-                  SelectedItem="{Binding NewArtist.CountryCode, Mode=TwoWay}">
+                  SelectedValue="{Binding NewArtist.CountryCode, Mode=TwoWay}"
+                  SelectedValuePath="Code"
+                  IsTextSearchEnabled="True">
         </ComboBox>
 
         <Button Name="btnSubmitArtist" Grid.Row="5" Grid.Column="0" Content="Submit" Command="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" />

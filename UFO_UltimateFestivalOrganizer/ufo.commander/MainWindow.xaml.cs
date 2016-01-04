@@ -16,8 +16,6 @@ namespace ufo.commander
         ICommanderBL commander;
         private bool shutdown;
 
-        public static MainWindow Instance { get; private set; }
-
         public MainWindow()
         {
             Logger.Info("Application successfully started!");

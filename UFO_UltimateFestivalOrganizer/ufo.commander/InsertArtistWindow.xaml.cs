@@ -29,10 +29,10 @@ namespace ufo.commander
         private ICommanderBL commander = BLFactory.GetCommander();
 
 
-        public InsertArtistWindow()
+        public InsertArtistWindow(UFOCollectionVM ufoCollectionVM)
         {
             InitializeComponent();
-            DataContext = new UFOCollectionVM();
+            DataContext = ufoCollectionVM;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -53,6 +53,12 @@ namespace ufo.commander
         private void btnCancelSubmitArtist_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //e.Cancel = true;
+            //this.Visibility = Visibility.Hidden;
         }
     }
 }

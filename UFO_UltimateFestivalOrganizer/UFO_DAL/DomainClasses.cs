@@ -31,6 +31,8 @@ namespace swk5.ufo.dal
             this.EMail = email;
         }
 
+        public User() { }
+
         public override string ToString()
         {
             return $"User: E-Mail: {EMail,20} | Password: {PasswordHash,30} | ";
@@ -78,6 +80,8 @@ namespace swk5.ufo.dal
             this.CountryCode = countrycd;
         }
 
+        public Artist() { }
+
     } // Artist
 
     /// <summary>
@@ -104,6 +108,8 @@ namespace swk5.ufo.dal
             this.Name = name;
         }
 
+        public Country() { }
+
     } // Country
 
     /// <summary>
@@ -118,6 +124,8 @@ namespace swk5.ufo.dal
         {
             this.CategoryName = categoryname;
         }
+
+        public Category() { }
     } // Category
 
     /// <summary>
@@ -153,6 +161,8 @@ namespace swk5.ufo.dal
             this.Latitude = latitd;
             this.Longitude = longitd;
         }
+
+        public Venue () { }
     } // Venue
 
     /// <summary>
@@ -178,6 +188,8 @@ namespace swk5.ufo.dal
             this.Artist = artist;
             this.Venue = venue;
         }
+
+        public Performance() { }
 
     } // Performance
 }
