@@ -25,17 +25,18 @@
             <Setter Property="ContextMenu" Value="{StaticResource ArtistContextMenu}" />
         </Style>
     </UserControl.Resources>
-    
+
     <Grid Name="ArtistOverviewGrid">
         <DataGrid Name="ArtistGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
-                  ItemsSource="{Binding Artists}" RowStyle="{StaticResource ArtistRowStyle}">
+                  ItemsSource="{Binding Artists}" RowStyle="{StaticResource ArtistRowStyle}"
+                  SelectedItem="">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Artist" Binding="{Binding Name}" SortDirection="Ascending"/>
                 <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}"/>
                 <DataGridTextColumn Header="Country" Binding="{Binding CountryCode}"/>
             </DataGrid.Columns>
-            
+
         </DataGrid>
     </Grid>
 </UserControl>

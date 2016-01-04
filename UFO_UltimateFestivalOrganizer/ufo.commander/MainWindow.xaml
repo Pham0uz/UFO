@@ -65,14 +65,14 @@
         </Grid>
     </Controls:MetroContentControl>
 
-    <Controls:MetroWindow.Flyouts>
+    <!--<Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout x:Name="NewArtist" Header="NewArtist" Width="450"
-                             AnimateOpacity="True" IsOpen="True" Position="Right" Theme="Inverse">
+                             AnimateOpacity="True" IsOpen="False" Position="Right" Theme="Inverse">
                 <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center">
                     <Views:InsertArtistView/>
                 </Viewbox>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
-    </Controls:MetroWindow.Flyouts>
+    </Controls:MetroWindow.Flyouts>-->
 </Controls:MetroWindow>

@@ -17,8 +17,7 @@
         <ListView Margin="5"
                   Style="{StaticResource VirtualisedMetroListView}"
                   BorderThickness="0"
-                  ItemsSource="{Binding Venues}"
-                  SelectionChanged="ListView_SelectionChanged">
+                  ItemsSource="{Binding Venues}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding ShortName}"

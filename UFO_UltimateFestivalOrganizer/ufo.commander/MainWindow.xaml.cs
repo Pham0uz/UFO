@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using swk5.ufo.server;
@@ -30,7 +17,6 @@ namespace ufo.commander
         private bool shutdown;
 
         public static MainWindow Instance { get; private set; }
-
 
         public MainWindow()
         {
@@ -65,19 +51,16 @@ namespace ufo.commander
                 Application.Current.Shutdown();
         }
 
-        //private async void ShowLoginDialogPasswordPreview(object sender, RoutedEventArgs e)
+        //internal void ToggleFlyout(int index)
         //{
-        //    LoginDialogData result = await this.ShowLoginAsync("Authentication", "Enter your credentials", new LoginDialogSettings { ColorScheme = this.MetroDialogOptions.ColorScheme, InitialUsername = "MahApps", EnablePasswordPreview = true });
-        //    if (result == null)
+        //    Logger.Info("ToggleFlyout");
+        //    var flyout = Flyouts.Items[index] as Flyout;
+        //    if (flyout == null)
         //    {
-        //        //User pressed cancel
+        //        return;
         //    }
-        //    else
-        //    {
-        //        MessageDialogResult messageResult = await this.ShowMessageAsync("Authentication Information", String.Format($"Username: {result.Username}\nPassword: {result.Password}"));
-        //    }
+
+        //    flyout.IsOpen = !flyout.IsOpen;
         //}
     }
-
-
 }

@@ -10,6 +10,8 @@
              xmlns:UFO="clr-namespace:ufo.commander"
              
              mc:Ignorable="d"
+             Title="Insert Artist Window" SizeToContent="Height"
+             Loaded="MetroWindow_Loaded"
              ResizeMode="NoResize"
              Icon="/Resources/img/ufo.ico"
              WindowStartupLocation="CenterScreen"
@@ -21,17 +23,33 @@
 
     <Controls:MetroWindow.Resources>
         <UFO:DatabindingDebugConverter x:Key="debugConverter" />
+        
         <Style x:Key="txtNameStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="Width" Value="150"/>
             <Setter Property="FontSize" Value="15" />
             <Setter Property="Margin" Value="10, 10, 0, 10" />
             <Setter Property="Padding" Value="0" />
         </Style>
+        
         <Style TargetType="{x:Type Button}">
             <Setter Property="Width" Value="auto"/>
             <Setter Property="Margin" Value="10" />
             <Setter Property="Padding" Value="3" />
         </Style>
+
+        <DataTemplate x:Key="categoryBoxDataTemplate">
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="{Binding Path=CategoryName}"
+                           Margin="3, 0, 3, 0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="countryBoxDataTemplate">
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="{Binding Path=Name}"
+                           Margin="3, 0, 3, 0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
     </Controls:MetroWindow.Resources>
 
     <Grid>
@@ -55,25 +73,25 @@
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Category:" Style="{StaticResource txtNameStyle}"/>
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Country:" Style="{StaticResource txtNameStyle}"/>
 
-        <TextBox Name="txtEMail" Grid.Row="0" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.Email, Mode=TwoWay}"/>
-        <TextBox Name="txtPictureURL" Grid.Row="1" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PictureUrl, Mode=TwoWay}"/>
-        <TextBox Name="txtPromoVideoURL" Grid.Row="2" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PromoVideoUrl, Mode=TwoWay}"/>
-        <ComboBox Name="cmbCategory" Grid.Row="3" Grid.Column="1" Width="200" Margin="10" Text="{Binding Path=NewArtist.Category, Mode=TwoWay}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=Category}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
+        <TextBox Name="txtName" Grid.Row="0" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.Name, Mode=TwoWay}"/>
+        <TextBox Name="txtPictureURL" Grid.Row="1" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PictureURL, Mode=TwoWay}"/>
+        <TextBox Name="txtPromoVideoURL" Grid.Row="2" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PromoVideoURL, Mode=TwoWay}"/>
+        <ComboBox Name="cmbCategory" Grid.Row="3" Grid.Column="1" Width="Auto" Margin="10" VerticalContentAlignment="Center"
+                  ItemTemplate="{StaticResource categoryBoxDataTemplate}"
+                  SelectionChanged="cmbCategory_SelectionChanged"
+                  SelectedValuePath="CategoryName"
+                  IsTextSearchEnabled="True"
+                  SelectedItem="{Binding NewArtist.CategoryName, Mode=TwoWay}">
         </ComboBox>
-        <ComboBox Name="cmbCountry" Grid.Row="4" Grid.Column="1" Width="200" Margin="10" Text="{Binding Path=NewArtist.Country, Mode=TwoWay}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=Country}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
+        <ComboBox Name="cmbCountry" Grid.Row="4" Grid.Column="1" Width="Auto" Margin="10" VerticalAlignment="Center"
+                  ItemTemplate="{StaticResource countryBoxDataTemplate}"
+                  SelectionChanged="cmbCountry_SelectionChanged"
+                  SelectedValuePath="Name"
+                  IsTextSearchEnabled="True"
+                  SelectedItem="{Binding NewArtist.CountryCode, Mode=TwoWay}">
         </ComboBox>
 
-        <Button Name="btnSubmitArtist" Grid.Row="5" Grid.Column="0" Content="Submit" Command="{Binding InsertArtist}" CommandParameter="{Binding Path=NewArtist}" />
-        <Button Name="btnCancelSubmitArtist" Grid.Row="5" Grid.Column="1" Content="Cancel" Command="{Binding CancelInsertArtistCommand}"/>
+        <Button Name="btnSubmitArtist" Grid.Row="5" Grid.Column="0" Content="Submit" Command="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" />
+        <Button Name="btnCancelSubmitArtist" Grid.Row="5" Grid.Column="1" Content="Cancel" Click="btnCancelSubmitArtist_Click"/>
     </Grid>
 </Controls:MetroWindow>
