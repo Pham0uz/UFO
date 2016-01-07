@@ -14,6 +14,7 @@ using ufo.commander.Views;
 using NLog;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections;
+using System.Windows.Threading;
 
 namespace ufo.commander.ViewModels
 {
@@ -27,10 +28,14 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Private Members
-        private UFOCollectionVM currentSession;
+        // save reference to MainWindow
+        MetroWindow metroWindow = (Application.Current.MainWindow as MetroWindow);
+        IDialogCoordinator dialogCoordinator;
+        //private UFOCollectionVM currentSession;
 
         private ArtistVM newArtist;
         private ArtistVM selectedArtist;
+        private bool isArtistSelected;
 
         private InsertArtistWindow createArtistWindow;
 
@@ -56,11 +61,12 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Constructor
-        public UFOCollectionVM()
+        public UFOCollectionVM(DialogCoordinator dialogCoordinator)
         {
-            Logger.Info("Loading UFOCollectionVM");
             InitViewModelCollections();
             LoadCollections();
+            this.dialogCoordinator = dialogCoordinator;
+            isArtistSelected = false;
         }
 
         #endregion
@@ -162,24 +168,24 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Properties
-        public UFOCollectionVM CurrentSession
-        {
-            get { return currentSession; }
-            set
-            {
-                if (currentSession != value)
-                {
-                    currentSession = value;
-                    currentSession.LoadArtists();
-                    currentSession.LoadCategories();
-                    currentSession.LoadCountries();
-                    currentSession.LoadVenues();
-                    currentSession.LoadPerformances();
-                    RaisePropertyChangedEvent(nameof(CurrentSession));
-                    Logger.Info("CurrentSession loaded.");
-                }
-            }
-        }
+        //public UFOCollectionVM CurrentSession
+        //{
+        //    get { return currentSession; }
+        //    set
+        //    {
+        //        if (currentSession != value)
+        //        {
+        //            currentSession = value;
+        //            currentSession.LoadArtists();
+        //            currentSession.LoadCategories();
+        //            currentSession.LoadCountries();
+        //            currentSession.LoadVenues();
+        //            currentSession.LoadPerformances();
+        //            RaisePropertyChangedEvent(nameof(CurrentSession));
+        //            Logger.Info("CurrentSession loaded.");
+        //        }
+        //    }
+        //}
 
         public ArtistVM NewArtist
         {
@@ -204,14 +210,70 @@ namespace ufo.commander.ViewModels
 
         public ArtistVM SelectedArtist
         {
-            get { return selectedArtist; }
+            get
+            {
+                return selectedArtist;
+            }
+            // because I couldn't use the Dialog from MahApps I had to use the standard MessageBox
             set
             {
-                if ((selectedArtist != null) && (value != null))
+                // store current value so that we can
+                // rollback
+                var origValue = selectedArtist;
+
+                //Logger.Info($"orig: {origValue.Name}| selected: {selectedArtist.Name}");
+                Logger.Info("SET selectedArtist");
+
+                if (selectedArtist == value)
+                    return;
+
+                // Note that we actually change the value for now.
+                // This is necessary because WPF seems to query the
+                // value after the change. The combo box likes to know
+                // that the value did change
+                selectedArtist = value;
+
+                if (isArtistSelected)
                 {
-                    selectedArtist = value;
-                    RaisePropertyChangedEvent(nameof(SelectedArtist));
+
+                    if (MessageBox.Show(
+                            $"Save changes of selected artist: {origValue.Name}?",
+                            "Continue", MessageBoxButton.YesNo
+                        ) != MessageBoxResult.Yes)
+                    {
+                        // ROLLBACK the change, but after the
+                        // UI has finished it's current context operation.
+                        // for successful unit-tests check if Application.Current is not null
+                        if (Application.Current != null)
+                        {
+                            Logger.Info("Application.Current exists");
+                            Application.Current.Dispatcher.BeginInvoke(
+                                new Action(() =>
+                                {
+                                    // Do this against the underlying value so
+                                    // that we don't invoke the cancellation question again.
+                                    Logger.Info("rollback selectedArtist");
+                                    Logger.Info($"orig: {origValue.Name}| selected: {selectedArtist.Name}");
+                                    selectedArtist = origValue;
+                                    RaisePropertyChangedEvent(nameof(SelectedArtist));
+                                }),
+                                DispatcherPriority.ContextIdle,
+                                null
+                                );
+                            // exit early
+                            return;
+                        }
+                    }
+
+
                 }
+                else
+                    // after first run
+                    isArtistSelected = true;
+
+                // Normal path. Selection applied.
+                // Raise PropertyChange on the field.
+                RaisePropertyChangedEvent(nameof(SelectedArtist));
             }
         }
 
@@ -221,7 +283,6 @@ namespace ufo.commander.ViewModels
 
         // Artist commands
         private ICommand openCreateArtistCommand;
-        private ICommand openEditArtistCommand;
         private ICommand createArtistCommand;
         private ICommand updateArtistCommand;
         private ICommand deleteArtistCommand;
@@ -243,6 +304,8 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Artist Commands / Methods
+
+        #region Insert Artist
 
         public ICommand OpenCreateArtistCommand
         {
@@ -284,6 +347,8 @@ namespace ufo.commander.ViewModels
             createArtistWindow.Close();
         }
 
+        #endregion
+
         public ICommand UpdateArtistCommand
         {
             get
@@ -298,7 +363,6 @@ namespace ufo.commander.ViewModels
         {
             commander.UpdateArtist(artist.Artist);
             LoadArtists();
-            newArtist = null;
         }
 
         public ICommand DeleteArtistCommand

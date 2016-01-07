@@ -8,12 +8,14 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:Views="clr-namespace:ufo.commander.Views"
     xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
     
     mc:Ignorable="d"
     Title="UltimateFestivalOrganizer"
     Height="768"
     Width="1024"
-    MinHeight="480"
+    MinHeight="600"
     MinWidth="800"
     ResizeMode="CanResizeWithGrip"
     Icon="/Resources/img/ufo.ico"
@@ -30,10 +32,6 @@
 
     <Controls:MetroContentControl>
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -46,7 +44,7 @@
                   HorizontalAlignment="Left">
             </Menu>
 
-            <Controls:MetroAnimatedSingleRowTabControl Grid.Row="1" x:Name="MainTabControl" Grid.ColumnSpan="1">
+            <Controls:MetroAnimatedSingleRowTabControl Grid.Row="1" x:Name="MainTabControl" Grid.ColumnSpan="2">
                 <TabItem Header="Artists">
                     <Views:ArtistsOverview DataContext="{Binding}"/>
                 </TabItem>

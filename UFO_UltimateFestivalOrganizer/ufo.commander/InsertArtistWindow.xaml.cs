@@ -37,17 +37,9 @@ namespace ufo.commander
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // can be done in XAML aswell
             cmbCategory.ItemsSource = commander.GetCategories().OrderBy(c => c.CategoryName);
             cmbCountry.ItemsSource = commander.GetCountries().OrderBy(c => c.Name);
-        }
-        private void cmbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //cmbCategory.SelectedItem;
-        }
-
-        private void cmbCountry_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private void btnCancelSubmitArtist_Click(object sender, RoutedEventArgs e)

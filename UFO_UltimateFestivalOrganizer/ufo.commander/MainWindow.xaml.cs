@@ -22,7 +22,7 @@ namespace ufo.commander
             InitializeComponent();
             Application.Current.MainWindow = this;
             commander = BLFactory.GetCommander();
-            DataContext = new UFOCollectionVM();
+            DataContext = new UFOCollectionVM(DialogCoordinator.Instance);
         }
 
         private async void UFOMain_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -79,14 +79,12 @@
         <TextBox Name="txtPromoVideoURL" Grid.Row="2" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PromoVideoURL, Mode=TwoWay}"/>
         <ComboBox Name="cmbCategory" Grid.Row="3" Grid.Column="1" Width="Auto" Margin="10" VerticalContentAlignment="Center"
                   ItemTemplate="{StaticResource categoryBoxDataTemplate}"
-                  SelectionChanged="cmbCategory_SelectionChanged"
                   SelectedValue="{Binding NewArtist.CategoryName, Mode=TwoWay}"
                   SelectedValuePath="CategoryName"
                   IsTextSearchEnabled="True">
         </ComboBox>
         <ComboBox Name="cmbCountry" Grid.Row="4" Grid.Column="1" Width="Auto" Margin="10" VerticalAlignment="Center"
                   ItemTemplate="{StaticResource countryBoxDataTemplate}"
-                  SelectionChanged="cmbCountry_SelectionChanged"
                   SelectedValue="{Binding NewArtist.CountryCode, Mode=TwoWay}"
                   SelectedValuePath="Code"
                   IsTextSearchEnabled="True">
