@@ -28,14 +28,10 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Private Members
-        // save reference to MainWindow
-        MetroWindow metroWindow = (Application.Current.MainWindow as MetroWindow);
-        IDialogCoordinator dialogCoordinator;
         //private UFOCollectionVM currentSession;
 
         private ArtistVM newArtist;
         private ArtistVM selectedArtist;
-        private bool isArtistSelected;
 
         private InsertArtistWindow createArtistWindow;
 
@@ -61,12 +57,10 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Constructor
-        public UFOCollectionVM(DialogCoordinator dialogCoordinator)
+        public UFOCollectionVM()
         {
             InitViewModelCollections();
             LoadCollections();
-            this.dialogCoordinator = dialogCoordinator;
-            isArtistSelected = false;
         }
 
         #endregion
@@ -217,63 +211,11 @@ namespace ufo.commander.ViewModels
             // because I couldn't use the Dialog from MahApps I had to use the standard MessageBox
             set
             {
-                // store current value so that we can
-                // rollback
-                var origValue = selectedArtist;
-
-                //Logger.Info($"orig: {origValue.Name}| selected: {selectedArtist.Name}");
-                Logger.Info("SET selectedArtist");
-
-                if (selectedArtist == value)
-                    return;
-
-                // Note that we actually change the value for now.
-                // This is necessary because WPF seems to query the
-                // value after the change. The combo box likes to know
-                // that the value did change
-                selectedArtist = value;
-
-                if (isArtistSelected)
+                if (selectedArtist != value)
                 {
-
-                    if (MessageBox.Show(
-                            $"Save changes of selected artist: {origValue.Name}?",
-                            "Continue", MessageBoxButton.YesNo
-                        ) != MessageBoxResult.Yes)
-                    {
-                        // ROLLBACK the change, but after the
-                        // UI has finished it's current context operation.
-                        // for successful unit-tests check if Application.Current is not null
-                        if (Application.Current != null)
-                        {
-                            Logger.Info("Application.Current exists");
-                            Application.Current.Dispatcher.BeginInvoke(
-                                new Action(() =>
-                                {
-                                    // Do this against the underlying value so
-                                    // that we don't invoke the cancellation question again.
-                                    Logger.Info("rollback selectedArtist");
-                                    Logger.Info($"orig: {origValue.Name}| selected: {selectedArtist.Name}");
-                                    selectedArtist = origValue;
-                                    RaisePropertyChangedEvent(nameof(SelectedArtist));
-                                }),
-                                DispatcherPriority.ContextIdle,
-                                null
-                                );
-                            // exit early
-                            return;
-                        }
-                    }
-
-
+                    selectedArtist = value;
+                    RaisePropertyChangedEvent(nameof(SelectedArtist));
                 }
-                else
-                    // after first run
-                    isArtistSelected = true;
-
-                // Normal path. Selection applied.
-                // Raise PropertyChange on the field.
-                RaisePropertyChangedEvent(nameof(SelectedArtist));
             }
         }
 

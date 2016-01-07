@@ -127,7 +127,7 @@
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Category:" Style="{StaticResource txtNameStyle}"/>
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Country:" Style="{StaticResource txtNameStyle}"/>
 
-                <TextBox Name="txtName" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedArtist.Name, Mode=TwoWay}"/>
+                <TextBlock Name="txtName" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtNameStyle}" Text="{Binding Path=SelectedArtist.Name, Mode=OneWay}"/>
                 <TextBox Name="txtPictureURL" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedArtist.PictureURL, Mode=TwoWay}"/>
                 <TextBox Name="txtPromoVideoURL" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedArtist.PromoVideoURL, Mode=TwoWay}"/>
                 
@@ -145,7 +145,7 @@
                   IsTextSearchEnabled="True">
                 </ComboBox>
 
-                <Button Name="btnSaveArtist" Grid.Row="5" Grid.Column="0" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Save" Command="{Binding Path=UpdateArtistCommand}" CommandParameter="{Binding Path=SelectedArtist}"/>
+                <Button Name="btnSaveArtist" Grid.Row="5" Grid.Column="0" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Save" Tag="{Binding Path=UpdateArtistCommand}" CommandParameter="{Binding Path=SelectedArtist}" Click="btnSaveArtist_Click"/>
                 <Button Name="btnDeleteArtist" Grid.Row="5" Grid.Column="1" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Delete" Command="{Binding Path=DeleteArtistCommand}" CommandParameter="{Binding Path=SelectedArtist}"/>
                 <Button Name="btnCancelEditArtist" Grid.Row="5" Grid.Column="2" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Cancel" Click="btnCancelEditArtist_Click"/>
                 
