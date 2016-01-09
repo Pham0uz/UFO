@@ -18,7 +18,7 @@
     MinHeight="600"
     MinWidth="800"
     ResizeMode="CanResizeWithGrip"
-    Icon="/Resources/img/ufo.ico"
+    Icon="/Resource/images/ufo.ico"
     WindowStartupLocation="CenterScreen"
     GlowBrush="{DynamicResource AccentColorBrush}"
     NonActiveGlowBrush="#CDFF0000"
@@ -42,6 +42,16 @@
                   Margin="5,5,0,5"
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Left">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New Artist..." Command="{Binding Path=OpenCreateArtistCommand}">
+                        <MenuItem.Icon>
+                            <Image Height="15" Source="/Resource/images/userplacehold.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    
+                </MenuItem>
             </Menu>
 
             <Controls:MetroAnimatedSingleRowTabControl Grid.Row="1" x:Name="MainTabControl" Grid.ColumnSpan="2">
@@ -67,14 +77,17 @@
         </Grid>
     </Controls:MetroContentControl>
 
-    <!--<Controls:MetroWindow.Flyouts>
+    <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="NewArtist" Header="NewArtist" Width="450"
-                             AnimateOpacity="True" IsOpen="False" Position="Right" Theme="Inverse">
-                <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <Views:InsertArtistView/>
-                </Viewbox>
+            <Controls:Flyout x:Name="EditArtist"
+                             AnimateOpacity="True"
+                             Header="Edit Artist"
+                             Position="Right"
+                             IsModal="True"
+                             CloseCommand="{Binding CloseEditFlyoutCommand}">
+                <Views:EditArtistView DataContext="{Binding}"/>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
-    </Controls:MetroWindow.Flyouts>-->
+    </Controls:MetroWindow.Flyouts>
+
 </Controls:MetroWindow>

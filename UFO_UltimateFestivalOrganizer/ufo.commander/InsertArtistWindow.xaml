@@ -13,27 +13,25 @@
              Title="Insert Artist Window" SizeToContent="Height"
              Loaded="MetroWindow_Loaded"
              ResizeMode="NoResize"
-             Icon="/Resources/img/ufo.ico"
-             WindowStartupLocation="CenterScreen"
+             Icon="/Resource/images/ufo.ico"
+             WindowStartupLocation="CenterOwner"
              GlowBrush="{DynamicResource AccentColorBrush}"
              NonActiveGlowBrush="#CDFF0000"
              Height="400" Width="550"
              d:DesignHeight="300" d:DesignWidth="450"
-             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}"
-             Closing="MetroWindow_Closing">
+             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
 
     <Controls:MetroWindow.Resources>
-        <UFO:DatabindingDebugConverter x:Key="debugConverter" />
-        
         <Style x:Key="txtNameStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="Width" Value="150"/>
             <Setter Property="FontSize" Value="15" />
             <Setter Property="Margin" Value="10, 10, 0, 10" />
             <Setter Property="Padding" Value="0" />
         </Style>
-        
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Width" Value="auto"/>
+
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource AccentedSquareButtonStyle}">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="auto"/>
             <Setter Property="Margin" Value="10" />
             <Setter Property="Padding" Value="3" />
         </Style>
@@ -65,7 +63,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Artistname:" Style="{StaticResource txtNameStyle}"/>
@@ -90,7 +88,7 @@
                   IsTextSearchEnabled="True">
         </ComboBox>
 
-        <Button Name="btnSubmitArtist" Grid.Row="5" Grid.Column="0" Content="Submit" Command="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" />
-        <Button Name="btnCancelSubmitArtist" Grid.Row="5" Grid.Column="1" Content="Cancel" Click="btnCancelSubmitArtist_Click"/>
+        <Button Name="btnSubmitArtist" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Command="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" />
+        <Button Name="btnCancelSubmitArtist" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Click="btnCancelSubmitArtist_Click"/>
     </Grid>
 </Controls:MetroWindow>

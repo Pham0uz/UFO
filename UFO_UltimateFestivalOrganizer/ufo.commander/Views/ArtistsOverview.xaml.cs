@@ -19,64 +19,49 @@ namespace ufo.commander.Views
     {
         private static Logger Logger = LogManager.GetCurrentClassLogger();
         private ICommanderBL commander = BLFactory.GetCommander();
+        private MetroWindow mainWindow;
 
         public ArtistsOverview()
         {
             InitializeComponent();
-            EditArtistGrid.Visibility = Visibility.Hidden;
-        }
-
-        private void btnCancelEditArtist_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            EditArtistGrid.Visibility = Visibility.Hidden;
-        }
-
-        private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            cmbCategory.ItemsSource = commander.GetCategories().OrderBy(c => c.CategoryName);
-            cmbCountry.ItemsSource = commander.GetCountries().OrderBy(c => c.Name);
+            // get MainWindow
+            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="UltimateFestivalOrganizer");
         }
 
         private void ArtistGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            EditArtistGrid.Visibility = Visibility.Visible;
+            ToggleFlyout(0);
             // TODO check if anything changed, if then alert user!
         }
 
-        private async void btnSaveArtist_Click(object sender, RoutedEventArgs e)
-        {
-            var mySettings = new MetroDialogSettings()
+        //private ICommand openFirstFlyoutCommand;
+        //public ICommand OpenFirstFlyoutCommand
+        //{
+        //    get
+        //    {
+
+        //        if (mainWindow != null)
+        //        {
+        //            return this.openFirstFlyoutCommand ?? (this.openFirstFlyoutCommand = new SimpleCommand
+        //            {
+        //                CanExecuteDelegate = x => mainWindow.Flyouts.Items.Count > 0,
+        //                ExecuteDelegate = x => ToggleFlyout(0)
+        //            }); 
+        //        }
+        //        return null;
+        //    }
+        //}
+
+        internal void ToggleFlyout(int index)
+        {            
+            if (mainWindow != null)
             {
-                AffirmativeButtonText = "Save",
-                NegativeButtonText = "Cancel",
-                AnimateShow = true,
-                AnimateHide = false
-            };
-
-            Logger.Info("after mysettings");
-
-            var mainwindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            if (mainwindow != null)
-            {
-                var result = await mainwindow.ShowMessageAsync("Save changes?",
-                "Sure you want to save changes?",
-                MessageDialogStyle.AffirmativeAndNegative, mySettings);
-
-                Logger.Info("after var result");
-
-                if (result == MessageDialogResult.Affirmative)
+                var flyout = mainWindow.Flyouts.Items[index] as Flyout;
+                if (flyout == null)
                 {
-                    Logger.Info("in result == message..");
-                    // Execute command in tag
-                    var button = sender as Button;
-                    if (button != null)
-                    {
-                        var command = button.Tag as ICommand;
-                        if (command != null)
-                            command.Execute(button.CommandParameter);
-                    }
+                    return;
                 }
-                EditArtistGrid.Visibility = Visibility.Hidden;
+                flyout.IsOpen = !flyout.IsOpen;
             }
         }
     }

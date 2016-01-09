@@ -33,6 +33,8 @@ namespace ufo.commander
         {
             InitializeComponent();
             DataContext = ufoCollectionVM;
+            Owner = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -45,12 +47,6 @@ namespace ufo.commander
         private void btnCancelSubmitArtist_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //e.Cancel = true;
-            //this.Visibility = Visibility.Hidden;
         }
     }
 }

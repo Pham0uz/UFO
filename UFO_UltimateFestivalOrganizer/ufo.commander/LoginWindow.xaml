@@ -9,10 +9,10 @@
 
         mc:Ignorable="d"
         Title="Login"
-        Height="300"
-        Width="300"
+        Height="400"
+        Width="350"
         ResizeMode="NoResize"
-        Icon="/Resources/img/ufo.ico"
+        Icon="/Resource/images/ufo.ico"
         WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}"
         NonActiveGlowBrush="#CDFF0000"
@@ -20,39 +20,34 @@
 
     <Grid Name="loginGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Name="BannerPanel" Grid.Row="0" >
-            <Label Name="BannerTxt" Foreground="BlueViolet" Content="UFO" Width="100"
-                   VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+        <StackPanel Name="BannerPanel" Grid.Row="0">
+            <Image Source="/Resource/images/ufo-login.jpg" Width="300" Margin="0 55 0 0"/>
+            <Label Name="BannerTxt" Foreground="BlueViolet" Content="Ulitmate Festival Organizer" Width="Auto"
+                   FontSize="24" FontWeight="DemiBold"
+                   HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"/>
         </StackPanel>
         
-        <StackPanel Name="EMailPanel" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBox x:Name="txtEMail" Width="150"
-                     Controls:TextBoxHelper.Watermark="email@provider.com"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+        <TextBox Grid.Row="1" x:Name="txtEMail" Width="300" Height="30"
+                     Controls:TextBoxHelper.Watermark="EMail"
                      Controls:TextBoxHelper.IsWaitingForData="True"/>
-            <Label x:Name="lblUserName" Content="EMail" Width="100"
-                   HorizontalContentAlignment="Center"/>
-        </StackPanel>
 
-        <StackPanel Name="PwdPanel" Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
-            <PasswordBox Name="txtPwd" Width="150"/>
-            <Label Name="lblPwd" Content="Password" Width="100"
-                   HorizontalContentAlignment="Center"/>
-        </StackPanel>
+        <PasswordBox Grid.Row="2" Name="txtPwd" Width="300" Height="30"
+                     Controls:PasswordBoxHelper.CapsLockWarningToolTip="ATTENTION! Capslock is activated"
+                     Controls:TextBoxHelper.Watermark="Password"
+                     Controls:TextBoxHelper.IsWaitingForData="True"/>
 
-        <TextBlock Name="txtError" Grid.Row="3" Foreground="Red" Text="{Binding Path=txtError}"
-                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Name="txtError" Width="300" Foreground="Red" Text="{Binding Path=txtError}"/>
 
-        <StackPanel Name="btnPanel" Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal" Width="250" Margin="22,0">
-            <Button Content="Login" Margin="0 0 0 5" Width="100" Height="20" Click="btnLogin_Click"/>
-            <Button Content="Quit" Margin="50 0 0 5" Width="100" Height="20" Click="btnQuit_Click" />
+        <StackPanel Name="btnPanel" Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal" Width="300" Margin="0 0 0 20">
+            <Button Content="Login" HorizontalAlignment="Left" Margin="80 0 20 0"  Width="100" Height="20" Click="btnLogin_Click"/>
+            <Button Content="Quit" HorizontalAlignment="Right" Width="100" Height="20" Click="btnQuit_Click" />
         </StackPanel>
 
     </Grid>

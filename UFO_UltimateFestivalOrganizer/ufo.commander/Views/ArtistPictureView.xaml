@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="ufo.commander.Views.ArtistPictureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ufo.commander.Views"
+             xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
+             xmlns:Helper="clr-namespace:ufo.commander.Helper"
+    
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
+    <UserControl.Resources>
+        <Helper:BitmapImageConverter x:Key="bitmapImageConverter"/>
+    </UserControl.Resources>
+    <Image x:Name="ArtistPicture" Source="{Binding Path=SelectedArtist.PictureURL, Converter={StaticResource bitmapImageConverter}, IsAsync=True}" ImageFailed="ArtistPicture_ImageFailed"/>
+</UserControl>

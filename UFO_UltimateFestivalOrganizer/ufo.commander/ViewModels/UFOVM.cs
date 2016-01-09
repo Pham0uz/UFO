@@ -28,7 +28,8 @@ namespace ufo.commander.ViewModels
         #endregion
 
         #region Private Members
-        //private UFOCollectionVM currentSession;
+        // get MainWindow
+        private MetroWindow mainWindow;
 
         private ArtistVM newArtist;
         private ArtistVM selectedArtist;
@@ -61,6 +62,7 @@ namespace ufo.commander.ViewModels
         {
             InitViewModelCollections();
             LoadCollections();
+            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="UltimateFestivalOrganizer");
         }
 
         #endregion
@@ -76,6 +78,19 @@ namespace ufo.commander.ViewModels
             Performances1 = new ObservableCollection<PerformanceVM>();
             Performances2 = new ObservableCollection<PerformanceVM>();
             Performances3 = new ObservableCollection<PerformanceVM>();
+        }
+
+        internal void ToggleFlyout(int index)
+        {
+            if (mainWindow != null)
+            {
+                var flyout = mainWindow.Flyouts.Items[index] as Flyout;
+                if (flyout == null)
+                {
+                    return;
+                }
+                flyout.IsOpen = !flyout.IsOpen;
+            }
         }
 
         #endregion
@@ -228,6 +243,8 @@ namespace ufo.commander.ViewModels
         private ICommand createArtistCommand;
         private ICommand updateArtistCommand;
         private ICommand deleteArtistCommand;
+        private ICommand cancelEditArtistCommand;
+        private ICommand closeEditFlyoutCommand;
 
         // Venue commands
         private ICommand openCreateVenueCommand;
@@ -291,6 +308,7 @@ namespace ufo.commander.ViewModels
 
         #endregion
 
+        #region Update Artist
         public ICommand UpdateArtistCommand
         {
             get
@@ -307,6 +325,9 @@ namespace ufo.commander.ViewModels
             LoadArtists();
         }
 
+        #endregion
+
+        #region Delete Artist
         public ICommand DeleteArtistCommand
         {
             get
@@ -319,8 +340,36 @@ namespace ufo.commander.ViewModels
 
         public void DeleteArtist(ArtistVM artist)
         {
-            Artists.Remove(artist);
+            //Artists.Remove(artist);
             commander.DeleteArtist(artist.Artist);
+            LoadArtists();
+        }
+
+        #endregion
+
+        public ICommand CancelEditArtistCommand
+        {
+            get
+            {
+                if (cancelEditArtistCommand == null)
+                    cancelEditArtistCommand = new RelayCommand(param => LoadArtists());
+                return cancelEditArtistCommand;
+            }
+        }
+
+        // bad work-around
+        public ICommand CloseEditFlyoutCommand
+        {
+            get
+            {
+                if (closeEditFlyoutCommand == null)
+                    closeEditFlyoutCommand = new RelayCommand(param =>
+                    {
+                        ToggleFlyout(0);
+                        LoadArtists();
+                    });
+                return closeEditFlyoutCommand;
+            }
         }
 
         #endregion

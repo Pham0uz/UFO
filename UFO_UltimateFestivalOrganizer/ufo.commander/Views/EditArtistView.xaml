@@ -1,0 +1,111 @@
+﻿<UserControl 
+    x:Class="ufo.commander.Views.EditArtistView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:ufo.commander.Views"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
+    xmlns:UFO="clr-namespace:ufo.commander"
+    
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}"
+    Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <Style x:Key="txtNameStyle" TargetType="{x:Type TextBlock}">
+            <!--<Setter Property="Width" Value="150"/>
+            <Setter Property="FontSize" Value="15" />-->
+            <Setter Property="Margin" Value="25 0 0 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
+
+        <Style x:Key="txtBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MetroTextBox}">
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Width" Value="Auto"/>
+            <!--<Setter Property="Margin" Value="{StaticResource ControlMargin}"/>-->
+        </Style>
+
+        <Style x:Key="cmbBoxStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Width" Value="Auto"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="100"/>
+            <!--<Setter Property="Margin" Value="{StaticResource ControlMargin}"/>-->
+        </Style>
+
+        <DataTemplate x:Key="categoryBoxDataTemplate">
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="{Binding Path=CategoryName}"
+                           Margin="3, 0, 3, 0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="countryBoxDataTemplate">
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="{Binding Path=Name}"
+                           Margin="3, 0, 3, 0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid Name="EditArtistGrid">
+        <!--<Border BorderThickness="3 0 0 0" BorderBrush="{DynamicResource AccentColorBrush}"/>-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+                <local:ArtistPictureView DataContext="{Binding}"/>
+            </Viewbox>
+            
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Artistname:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="PictureURL:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="PromoVideoURL:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Category:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Country:" Style="{StaticResource txtNameStyle}"/>
+
+            <TextBlock Name="txtName" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtNameStyle}" Text="{Binding Path=SelectedArtist.Name, Mode=OneWay}"/>
+            <TextBox Name="txtPictureURL" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedArtist.PictureURL, Mode=TwoWay}"/>
+            <TextBox Name="txtPromoVideoURL" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedArtist.PromoVideoURL, Mode=TwoWay}"/>
+
+            <ComboBox Name="cmbCategory" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Width="Auto" Style="{StaticResource cmbBoxStyle}" Margin="10" VerticalContentAlignment="Center"
+                  ItemTemplate="{StaticResource categoryBoxDataTemplate}"
+                  SelectedValue="{Binding SelectedArtist.CategoryName, Mode=TwoWay}"
+                  SelectedValuePath="CategoryName"
+                  IsTextSearchEnabled="True">
+            </ComboBox>
+
+            <ComboBox Name="cmbCountry" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Width="Auto" Style="{StaticResource cmbBoxStyle}" Margin="10" VerticalAlignment="Center"
+                  ItemTemplate="{StaticResource countryBoxDataTemplate}"
+                  SelectedValue="{Binding SelectedArtist.CountryCode, Mode=TwoWay}"
+                  SelectedValuePath="Code"
+                  IsTextSearchEnabled="True">
+            </ComboBox>
+
+            <Button Name="btnSaveArtist" Grid.Row="6" Grid.Column="0" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Save" Tag="{Binding Path=UpdateArtistCommand}" CommandParameter="{Binding Path=SelectedArtist}" Click="btnSaveArtist_Click"/>
+            <Button Name="btnDeleteArtist" Grid.Row="6" Grid.Column="1" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Delete" Tag="{Binding Path=DeleteArtistCommand}" CommandParameter="{Binding Path=SelectedArtist}" Click="btnDeleteArtist_Click"/>
+            <Button Name="btnCancelEditArtist" Grid.Row="6" Grid.Column="2" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Revert" Tag="{Binding Path=CancelEditArtistCommand}" CommandParameter="{Binding Path=SelectedArtist}" Click="btnCancelEditArtist_Click"/>
+        </Grid>
+    </Grid>
+</UserControl>

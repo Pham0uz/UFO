@@ -88,6 +88,7 @@
     <Compile Include="DatabindingDebugConverter.cs" />
     <Compile Include="Helper\DialogCoordinator.cs" />
     <Compile Include="Helper\DialogParticipation.cs" />
+    <Compile Include="Helper\BitmapImageConverter.cs" />
     <Compile Include="InsertArtistWindow.xaml.cs">
       <DependentUpon>InsertArtistWindow.xaml</DependentUpon>
     </Compile>
@@ -106,11 +107,17 @@
     <Compile Include="ViewModels\UserVM.cs" />
     <Compile Include="ViewModels\VenueVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ArtistPictureView.xaml.cs">
+      <DependentUpon>ArtistPictureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ArtistsOverview.xaml.cs">
       <DependentUpon>ArtistsOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InsertArtistView.xaml.cs">
       <DependentUpon>InsertArtistView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditArtistView.xaml.cs">
+      <DependentUpon>EditArtistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PerformanceOverview.xaml.cs">
       <DependentUpon>PerformanceOverview.xaml</DependentUpon>
@@ -138,11 +145,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ArtistPictureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ArtistsOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InsertArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditArtistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,6 +184,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resource\images\ufo-login.jpg" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -216,10 +232,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\img\ufo.ico" />
+    <Resource Include="Resource\images\ufo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\img\userplacehold.png" />
+    <Resource Include="Resource\images\userplacehold.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,7 +22,7 @@ namespace ufo.commander
             InitializeComponent();
             Application.Current.MainWindow = this;
             commander = BLFactory.GetCommander();
-            DataContext = new UFOCollectionVM(DialogCoordinator.Instance);
+            DataContext = new UFOCollectionVM();
         }
 
         private async void UFOMain_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -48,17 +48,5 @@ namespace ufo.commander
             if (shutdown)
                 Application.Current.Shutdown();
         }
-
-        //internal void ToggleFlyout(int index)
-        //{
-        //    Logger.Info("ToggleFlyout");
-        //    var flyout = Flyouts.Items[index] as Flyout;
-        //    if (flyout == null)
-        //    {
-        //        return;
-        //    }
-
-        //    flyout.IsOpen = !flyout.IsOpen;
-        //}
     }
 }
