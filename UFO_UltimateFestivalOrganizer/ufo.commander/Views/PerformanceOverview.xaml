@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:ufo.commander.Views"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
-             xmlns:UFO="clr-namespace:ufo.commander"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:Helper="clr-namespace:ufo.commander.Helper"
 
              mc:Ignorable="d" 
              d:DesignHeight="480"
@@ -14,10 +15,57 @@
              d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
 
     <UserControl.Resources>
+        <Helper:NameToBrushConverter x:Key="NameToBrushConverter"/>
+
+        <Style x:Key="txtHeaderCell" TargetType="{x:Type TextBlock}">
+            <Setter Property="Background" Value="Silver"/>
+        </Style>
+
+        <!--<Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>-->
         
+        <Style x:Key="colHeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
+            <Setter Property="SeparatorVisibility" Value="Hidden"/>
+        </Style>
+        
+        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="SeparatorVisibility" Value="Visible"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="dataGridTextColumn">
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+            <Setter Property="TextBlock.Margin" Value="0" />
+            <!--<Setter Property="TextBlock.Focusable" Value="False" />-->
+            <!--<Setter Property="Grid.Focusable" Value="False" />-->
+        </Style>
+
+        <Style x:Key="dataGridTextColumnNotFocusAble">
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.TextAlignment" Value="Left" />
+            <Setter Property="TextBlock.Margin" Value="0" />
+            <Setter Property="TextBlock.Focusable" Value="False" />
+            <Setter Property="Grid.Focusable" Value="False" />
+        </Style>
+        
+        <!--currently using this foreach instead of proper binding -> workaround-->
+        <!--<Style x:Key="dataGridArtistElementStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MetroTextBlock}">
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource NameToBrushConverter}}" />
+        </Style>-->
+        <!--<Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Black"/>
+        </Style.Resources>-->
+
+        <Style x:Key="dataGridTextColumnElementStyle">
+            <Setter Property="TextBlock.Background" Value="DarkOrange"/>
+        </Style>
+
     </UserControl.Resources>
-    
-    <UniformGrid>
+
+    <Grid>
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -25,23 +73,128 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <TextBlock Text="PerformanceDay" Padding="5"/>
-                <ComboBox Name="PerformanceDay" HorizontalAlignment="Left" Margin="5,0,0,0"
+                <TextBlock Text="Performance Day" Padding="5"/>
+                <ComboBox x:Name="PerformanceDay" HorizontalAlignment="Left" Margin="5,0,0,0"
                           SelectedIndex="0"
-                          ItemsSource="{Binding Performances}">
+                          ItemsSource="{Binding PerformanceDates}"
+                          SelectedItem="{Binding SelectedDate, Mode=TwoWay}"
+                          SelectionChanged="PerformanceDay_SelectionChanged">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectedDateChangedCommand}" CommandParameter="{Binding ElementName=PerformanceDay, Path=SelectedItem}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Date, StringFormat={}{0:yyyy/MM/dd}}" />
+                            <TextBlock Text="{Binding StringFormat={}{0:yyyy/MM/dd}}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
 
-            <StackPanel>
-                
-            </StackPanel>
+            <Grid Grid.Row="1" Margin="5">
+                <DataGrid Grid.Row="1" Name="PerformancesGrid" GridLinesVisibility="All" 
+                      IsReadOnly="True" AutoGenerateColumns="False"
+                      CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False"
+                      ItemsSource="{Binding TodaysProgram}"
+                      CurrentCell="{Binding SelectedPerformance, Mode=OneWayToSource}"
+                      CurrentCellChanged="PerformancesGrid_CurrentCellChanged"
+                      SelectionMode="Single"
+                      SelectionUnit="Cell">
+                    <DataGrid.Columns>
+                        <!--<DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Hallo" Margin="0" Padding="0" BorderThickness="0" Background="Aqua" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>-->
+                        <DataGridTextColumn Header="" HeaderStyle="{StaticResource colHeaderStyle}" CellStyle="{StaticResource dataGridTextColumnNotFocusAble}" ElementStyle="{StaticResource dataGridTextColumnElementStyle}"
+                                            MinWidth="50" Binding="{Binding Path=Venue.ShortName}" SortDirection="Ascending"/>
+                        <DataGridTextColumn Header="" HeaderStyle="{StaticResource colHeaderStyle}" CellStyle="{StaticResource dataGridTextColumnNotFocusAble}" ElementStyle="{StaticResource dataGridTextColumnElementStyle}"
+                                            MinWidth="150" Binding="{Binding Path=Venue.Description}" />
+                        <DataGridTextColumn Header="14-15Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100" Binding="{Binding Performances[0].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[0].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="15-16Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[1].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[1].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="16-17Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[2].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[2].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="17-18Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[3].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[3].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="18-19Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[4].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[4].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="19-20Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[5].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[5].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="20-21Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[6].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[6].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="21-22Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[7].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[7].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="22-23Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[8].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[8].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="23-24Uhr" CellStyle="{StaticResource dataGridTextColumn}" MinWidth="100"  Binding="{Binding Performances[9].Artist}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Background" Value="{Binding Performances[9].Artist, Converter={StaticResource NameToBrushConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                    <!--<DataGrid.Resources>
+                        
+                    </DataGrid.Resources>-->
+                    <DataGrid.Style>
+                        <Style BasedOn="{StaticResource MetroDataGrid}"
+                           TargetType="{x:Type DataGrid}">
+                            
+                        </Style>
+                        </DataGrid.Style>
+                </DataGrid>
+            </Grid>
         </Grid>
-
-
-    </UniformGrid>
+    </Grid>
 </UserControl>

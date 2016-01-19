@@ -20,6 +20,71 @@ namespace ufo.commander.ViewModels
 {
     public class UFOCollectionVM : ViewModelBase
     {
+        #region TodaysProgram
+
+        public class TodaysProgramVM : ViewModelBase
+        {
+            #region private members
+
+            private VenueVM venue;
+            private ObservableCollection<PerformanceVM> performances;
+
+            #region Properties
+            public VenueVM Venue
+            {
+                get { return venue; }
+            }
+
+            public ObservableCollection<PerformanceVM> Performances
+            {
+                get { return performances; }
+            }
+
+            #endregion
+
+            //private string venueShortName;
+            //private string venueDescription;
+
+            //private string artist1;
+            //private string artist2;
+            //private string artist3;
+            //private string artist4;
+            //private string artist5;
+            //private string artist6;
+            //private string artist7;
+            //private string artist8;
+            //private string artist9;
+            //private string artist10;
+
+            #endregion
+
+            #region ctor
+            public TodaysProgramVM(VenueVM v)
+            {
+                venue = v;
+                performances = new ObservableCollection<PerformanceVM>();
+            }
+
+            //public TodaysProgramVM()
+            //{
+            //    artist1 = "";
+            //    artist2 = "";
+            //    artist3 = "";
+            //    artist4 = "";
+            //    artist5 = "";
+            //    artist6 = "";
+            //    artist7 = "";
+            //    artist8 = "";
+            //    artist9 = "";
+            //    artist10 = "";
+            //}
+
+            #endregion
+
+        }
+
+        #endregion
+
         #region Helper Classes
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -27,20 +92,23 @@ namespace ufo.commander.ViewModels
 
         #endregion
 
-        #region Private Members
+        #region Private/Public Members
         // get MainWindow
         private MetroWindow mainWindow;
 
         private ArtistVM newArtist;
         private ArtistVM selectedArtist;
-
         private InsertArtistWindow createArtistWindow;
 
-        private VenueVM currentVenue;
         private VenueVM newVenue;
+        private VenueVM selectedVenue;
+        private InsertVenueWindow createVenueWindow;
 
-        private PerformanceVM currentPerformance;
-        public PerformanceVM newPerformance;
+        private DateTime selectedDate;
+        private int[] performanceTimes = { 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+
+        private PerformanceVM newPerformance;
+        public PerformanceVM selectedPerformance;
 
         #endregion
 
@@ -50,10 +118,11 @@ namespace ufo.commander.ViewModels
         public ObservableCollection<CategoryVM> Categories { get; set; }
         public ObservableCollection<CountryVM> Countries { get; set; }
         public ObservableCollection<VenueVM> Venues { get; set; }
+        public ObservableCollection<DateTime> PerformanceDates { get; set; }
         public ObservableCollection<PerformanceVM> Performances { get; set; }
-        public ObservableCollection<PerformanceVM> Performances1 { get; set; }
-        public ObservableCollection<PerformanceVM> Performances2 { get; set; }
-        public ObservableCollection<PerformanceVM> Performances3 { get; set; }
+        public SortedDictionary<DateTime, ObservableCollection<PerformanceVM>> PerformancesMap { get; set; }
+        public ObservableCollection<PerformanceVM> PerformancesOfDay { get; set; }
+        public ObservableCollection<TodaysProgramVM> TodaysProgram { get; set; }
 
         #endregion
 
@@ -62,7 +131,7 @@ namespace ufo.commander.ViewModels
         {
             InitViewModelCollections();
             LoadCollections();
-            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="UltimateFestivalOrganizer");
+            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
         }
 
         #endregion
@@ -74,10 +143,11 @@ namespace ufo.commander.ViewModels
             Categories = new ObservableCollection<CategoryVM>();
             Countries = new ObservableCollection<CountryVM>();
             Venues = new ObservableCollection<VenueVM>();
+            PerformanceDates = new ObservableCollection<DateTime>();
             Performances = new ObservableCollection<PerformanceVM>();
-            Performances1 = new ObservableCollection<PerformanceVM>();
-            Performances2 = new ObservableCollection<PerformanceVM>();
-            Performances3 = new ObservableCollection<PerformanceVM>();
+            PerformancesOfDay = new ObservableCollection<PerformanceVM>();
+            PerformancesMap = new SortedDictionary<DateTime, ObservableCollection<PerformanceVM>>();
+            TodaysProgram = new ObservableCollection<TodaysProgramVM>();
         }
 
         internal void ToggleFlyout(int index)
@@ -104,6 +174,9 @@ namespace ufo.commander.ViewModels
             LoadCountries();
             LoadVenues();
             LoadPerformances();
+            LoadPerformanceDates();
+            LoadPerformancesMap();
+            LoadPerformancesOfDay(PerformanceDates.FirstOrDefault());
         }
 
         private void LoadArtists()
@@ -116,7 +189,7 @@ namespace ufo.commander.ViewModels
             }
         }
 
-        private void LoadCategories()
+        public void LoadCategories()
         {
             Categories.Clear();
             ICollection<Category> categoriesList = commander.GetCategories();
@@ -126,7 +199,7 @@ namespace ufo.commander.ViewModels
             }
         }
 
-        private void LoadCountries()
+        public void LoadCountries()
         {
             Countries.Clear();
             ICollection<Country> countriesList = commander.GetCountries();
@@ -149,53 +222,84 @@ namespace ufo.commander.ViewModels
         private void LoadPerformances()
         {
             Performances.Clear();
-            Performances1.Clear();
-            Performances2.Clear();
-            Performances3.Clear();
             ICollection<Performance> peformanceList = commander.GetPerformances();
-            ICollection<Performance> performanceList1 = commander.GetPerformancesByDate(new DateTime(2015, 07, 23));
-            ICollection<Performance> performanceList2 = commander.GetPerformancesByDate(new DateTime(2015, 07, 24));
-            ICollection<Performance> performanceList3 = commander.GetPerformancesByDate(new DateTime(2015, 07, 25));
             foreach (Performance performance in peformanceList)
             {
                 Performances.Add(new PerformanceVM(performance));
             }
-            foreach (Performance performance in performanceList1)
+        }
+
+        private void LoadPerformanceDates()
+        {
+            PerformanceDates.Clear();
+            // get all possible dates
+            var query = from performance in Performances
+                        select new { date = performance.Date };
+            ICollection<DateTime> dateList = Performances.Select(p => p.Date).Distinct().ToList();
+            foreach (DateTime date in dateList)
             {
-                Performances1.Add(new PerformanceVM(performance));
+                PerformanceDates.Add(date);
             }
-            foreach (Performance performance in performanceList2)
+
+        }
+
+        public void LoadPerformancesOfDay(DateTime selectedDate)
+        {
+            PerformancesOfDay.Clear();
+            ICollection<Performance> performanceList = commander.GetPerformancesByDate(selectedDate);
+            foreach (Performance performance in performanceList)
             {
-                Performances2.Add(new PerformanceVM(performance));
+                PerformancesOfDay.Add(new PerformanceVM(performance));
             }
-            foreach (Performance performance in performanceList3)
+
+            // create TodaysProgram + fill it with performances of today an empty strings
+            TodaysProgram.Clear();
+            bool performanceAdded = false;
+            foreach (VenueVM v in Venues)
             {
-                Performances2.Add(new PerformanceVM(performance));
+                TodaysProgramVM tmp = new TodaysProgramVM(v);
+                foreach (int time in PerformancesTimes)
+                {
+                    foreach (var p in PerformancesOfDay)
+                    {
+                        // if performance with current time and venue already exist, add it to todaysprogram
+                        // else add a new performance with date, time, venue and empty artist
+                        if (p.Venue == v.Venue.ShortName && p.Time == time)
+                        {
+                            tmp.Performances.Add(p);
+                            performanceAdded = true;
+                        }
+                    }
+                    if (!performanceAdded)
+                        tmp.Performances.Add(new PerformanceVM(new Performance(SelectedDate, time, "", v.Venue.ShortName)));
+                    else
+                        performanceAdded = false;
+
+                }
+                TodaysProgram.Add(tmp);
+            }
+        }
+
+        public void LoadPerformancesMap()
+        {
+            PerformancesMap.Clear();
+            ICollection<Performance> performanceList = commander.GetPerformances();
+            foreach (Performance performance in performanceList)
+            {
+                if (!PerformancesMap.ContainsKey(performance.Date))
+                {
+                    var newColl = new ObservableCollection<PerformanceVM>();
+                    newColl.Add(new PerformanceVM(performance));
+                    PerformancesMap.Add(performance.Date, newColl);
+                }
+                else
+                    PerformancesMap[performance.Date].Add(new PerformanceVM(performance));
             }
         }
 
         #endregion
 
         #region Properties
-        //public UFOCollectionVM CurrentSession
-        //{
-        //    get { return currentSession; }
-        //    set
-        //    {
-        //        if (currentSession != value)
-        //        {
-        //            currentSession = value;
-        //            currentSession.LoadArtists();
-        //            currentSession.LoadCategories();
-        //            currentSession.LoadCountries();
-        //            currentSession.LoadVenues();
-        //            currentSession.LoadPerformances();
-        //            RaisePropertyChangedEvent(nameof(CurrentSession));
-        //            Logger.Info("CurrentSession loaded.");
-        //        }
-        //    }
-        //}
-
         public ArtistVM NewArtist
         {
             get
@@ -223,7 +327,6 @@ namespace ufo.commander.ViewModels
             {
                 return selectedArtist;
             }
-            // because I couldn't use the Dialog from MahApps I had to use the standard MessageBox
             set
             {
                 if (selectedArtist != value)
@@ -231,6 +334,104 @@ namespace ufo.commander.ViewModels
                     selectedArtist = value;
                     RaisePropertyChangedEvent(nameof(SelectedArtist));
                 }
+            }
+        }
+
+        public VenueVM NewVenue
+        {
+            get
+            {
+                if (newVenue == null)
+                {
+                    Venue venue = new Venue();
+                    newVenue = new VenueVM(venue);
+                }
+                return newVenue;
+            }
+            set
+            {
+                if ((newVenue != value) && (value != null))
+                {
+                    newVenue = value;
+                    RaisePropertyChangedEvent(nameof(NewVenue));
+                }
+            }
+        }
+
+        public VenueVM SelectedVenue
+        {
+            get
+            {
+                return selectedVenue;
+            }
+            set
+            {
+                if (selectedVenue != value)
+                {
+                    selectedVenue = value;
+                    RaisePropertyChangedEvent(nameof(SelectedVenue));
+                }
+            }
+        }
+
+        public DateTime SelectedDate
+        {
+            get
+            {
+                return selectedDate;
+            }
+            set
+            {
+                if (selectedDate != value)
+                {
+                    selectedDate = value;
+                    RaisePropertyChangedEvent(nameof(SelectedDate));
+                }
+            }
+        }
+
+        public PerformanceVM NewPerformance
+        {
+            get
+            {
+                if (newPerformance == null)
+                {
+                    Performance p = new Performance();
+                    newPerformance = new PerformanceVM(p);
+                }
+                return newPerformance;
+            }
+            set
+            {
+                if ((newPerformance != value) && (value != null))
+                {
+                    newPerformance = value;
+                    RaisePropertyChangedEvent(nameof(NewPerformance));
+                }
+            }
+        }
+
+        public PerformanceVM SelectedPerformance
+        {
+            get
+            {
+                return selectedPerformance;
+            }
+            set
+            {
+                if (selectedPerformance != value)
+                {
+                    selectedPerformance = value;
+                    RaisePropertyChangedEvent(nameof(SelectedPerformance));
+                }
+            }
+        }
+
+        public int[] PerformancesTimes
+        {
+            get
+            {
+                return performanceTimes;
             }
         }
 
@@ -248,17 +449,19 @@ namespace ufo.commander.ViewModels
 
         // Venue commands
         private ICommand openCreateVenueCommand;
-        private ICommand openEditVenueCommand;
         private ICommand createVenueCommand;
         private ICommand updateVenueCommand;
         private ICommand deleteVenueCommand;
+        private ICommand cancelEditVenueCommand;
+        private ICommand closeEditFlyoutCommand2;
 
         // Performance commands
-        private ICommand openCreatePerformanceCommand;
-        private ICommand openEditPerformanceCommand;
-        private ICommand createPerformanceCommand;
-        private ICommand updatePerformanceCommand;
-        private ICommand deletePerformanceCommand;
+        private ICommand selectedDateChangeCommand;
+        //private ICommand openCreatePerformanceCommand;
+        //private ICommand openEditPerformanceCommand;
+        //private ICommand createPerformanceCommand;
+        //private ICommand updatePerformanceCommand;
+        //private ICommand deletePerformanceCommand;
 
         #endregion
 
@@ -271,19 +474,13 @@ namespace ufo.commander.ViewModels
             get
             {
                 return openCreateArtistCommand ?? (openCreateArtistCommand = new RelayCommand(param => OpenCreateArtist()));
-
-                //var mainWindow = (MetroWindow)Application.Current.MainWindow;
-                //return openCreateArtistCommand ?? (openCreateArtistCommand = new SimpleCommand
-                //{
-                //    CanExecuteDelegate = x => mainWindow.Flyouts.Items.Count > 0,
-                //    ExecuteDelegate = x => MainWindow.Instance.ToggleFlyout(0)
-                //});
             }
         }
 
         private void OpenCreateArtist()
         {
             createArtistWindow = new InsertArtistWindow(this);
+            createArtistWindow.Owner = mainWindow;
             createArtistWindow.ShowDialog();
         }
 
@@ -340,7 +537,6 @@ namespace ufo.commander.ViewModels
 
         public void DeleteArtist(ArtistVM artist)
         {
-            //Artists.Remove(artist);
             commander.DeleteArtist(artist.Artist);
             LoadArtists();
         }
@@ -373,5 +569,120 @@ namespace ufo.commander.ViewModels
         }
 
         #endregion
+
+        #region Venue Commands / Methods
+
+        #region Insert Venue
+
+        public ICommand OpenCreatevenueCommand
+        {
+            get
+            {
+                return openCreateVenueCommand ?? (openCreateVenueCommand = new RelayCommand(param => OpenCreateVenue()));
+            }
+        }
+
+        private void OpenCreateVenue()
+        {
+            createVenueWindow = new InsertVenueWindow(this);
+            createVenueWindow.Owner = mainWindow;
+            createVenueWindow.ShowDialog();
+        }
+
+        public ICommand CreateVenueCommand
+        {
+            get
+            {
+                if (createVenueCommand == null)
+                    createVenueCommand = new RelayCommand(param => CreateVenue((VenueVM)param));
+                return createVenueCommand;
+            }
+        }
+
+        private void CreateVenue(VenueVM venue)
+        {
+            commander.InsertVenue(venue.Venue);
+            // to update view
+            LoadVenues();
+            newVenue = null;
+            createVenueWindow.Close();
+        }
+
+        #endregion
+
+        #region Update Venue
+
+        public ICommand UpdateVenueCommand
+        {
+            get
+            {
+                if (updateVenueCommand == null)
+                    updateVenueCommand = new RelayCommand(param => UpdateVenue((VenueVM)param));
+                return updateVenueCommand;
+            }
+        }
+
+        private void UpdateVenue(VenueVM venue)
+        {
+            commander.UpdateVenue(venue.Venue);
+            LoadVenues();
+        }
+
+        #endregion
+
+        #region Delete Venue
+
+        public ICommand DeleteVenueCommand
+        {
+            get
+            {
+                if (deleteVenueCommand == null)
+                    deleteVenueCommand = new RelayCommand(param => DeleteVenue((VenueVM)param));
+                return deleteVenueCommand;
+            }
+        }
+
+        public void DeleteVenue(VenueVM venue)
+        {
+            commander.DeleteVenue(venue.Venue);
+            LoadVenues();
+        }
+
+        #endregion
+
+        public ICommand CancelEditVenueCommand
+        {
+            get
+            {
+                if (cancelEditVenueCommand == null)
+                    cancelEditVenueCommand = new RelayCommand(param => LoadVenues());
+                return cancelEditVenueCommand;
+            }
+        }
+
+        // bad work-around
+        public ICommand CloseEditFlyoutCommand2
+        {
+            get
+            {
+                if (closeEditFlyoutCommand2 == null)
+                    closeEditFlyoutCommand2 = new RelayCommand(param =>
+                    {
+                        ToggleFlyout(1);
+                        LoadVenues();
+                    });
+                return closeEditFlyoutCommand2;
+            }
+        }
+
+        #endregion
+
+        public ICommand SelectedDateChangedCommand
+        {
+            get
+            {
+                return selectedDateChangeCommand ?? (selectedDateChangeCommand = new RelayCommand(param => LoadPerformancesOfDay((DateTime)param)));
+            }
+        }
     }
 }

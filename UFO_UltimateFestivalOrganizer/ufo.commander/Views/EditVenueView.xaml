@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="ufo.commander.Views.EditVenueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ufo.commander.Views"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
+    
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
+
+    <UserControl.Resources>
+        <Style x:Key="txtNameStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="25 0 0 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
+
+        <Style x:Key="txtBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MetroTextBox}">
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Width" Value="Auto"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="MinWidth" Value="200" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Name="EditVenueGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="100" Width="2*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <!--<Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+                <local:ArtistPictureView DataContext="{Binding}"/>
+            </Viewbox>-->
+
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Shortname:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Description:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Latitude:" Style="{StaticResource txtNameStyle}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Longitude:" Style="{StaticResource txtNameStyle}"/>
+
+            <TextBlock Name="txtShortName" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtNameStyle}" Text="{Binding Path=SelectedVenue.ShortName, Mode=OneWay}"/>
+            <TextBox Name="txtDescription" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedVenue.Description, Mode=TwoWay}"/>
+            <TextBox Name="txtLatitude" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedVenue.Latitude, Mode=TwoWay}"/>
+            <TextBox Name="txtLongitude" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource txtBoxStyle}" Text="{Binding Path=SelectedVenue.Longitude, Mode=TwoWay}"/>
+
+            <Button Name="btnSaveVenue" Grid.Row="5" Grid.Column="0" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Save" Tag="{Binding Path=UpdateVenueCommand}" CommandParameter="{Binding Path=SelectedVenue}" Click="btnSaveVenue_Click"/>
+            <Button Name="btnDeleteVenue" Grid.Row="5" Grid.Column="1" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Delete" Tag="{Binding Path=DeleteVenueCommand}" CommandParameter="{Binding Path=SelectedVenue}" Click="btnDeleteVenue_Click"/>
+            <Button Name="btnCancelEditVenue" Grid.Row="5" Grid.Column="2" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Revert" Tag="{Binding Path=CancelEditVenueCommand}" CommandParameter="{Binding Path=SelectedVenue}" Click="btnCancelEditVenue_Click"/>
+        </Grid>
+    </Grid>
+</UserControl>

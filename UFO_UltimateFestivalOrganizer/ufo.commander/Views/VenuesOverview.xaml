@@ -13,23 +13,28 @@
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
 
-    <UniformGrid Rows="1">
-        <ListView Margin="5"
-                  Style="{StaticResource VirtualisedMetroListView}"
-                  BorderThickness="0"
-                  ItemsSource="{Binding Venues}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding ShortName}"
-                                            Header="ShortName" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Description}"
-                                            Header="Description" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Latitude}"
-                                            Header="Latitude" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Longitude}"
-                                            Header="Longitude" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </UniformGrid>
+    <Grid Name="VenuesOverviewGrid">
+
+        <DataGrid Name="VenueGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
+                  ItemsSource="{Binding Venues}"
+                  SelectedItem="{Binding SelectedVenue, Mode=TwoWay}"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  SelectionChanged="VenueGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Shortname" MinWidth="50" Width="1*" Binding="{Binding ShortName}" SortDirection="Ascending"/>
+                <DataGridTextColumn Header="Description" MinWidth="150" Width="3*" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Latitude" MinWidth="100" Width="1*" Binding="{Binding Latitude}" />
+                <DataGridTextColumn Header="Longitude" MinWidth="100" Width="1*" Binding="{Binding Longitude}" />
+            </DataGrid.Columns>
+            <DataGrid.Style>
+                <Style BasedOn="{StaticResource MetroDataGrid}"
+                       TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground"
+                            Value="{DynamicResource GrayBrush10}" />
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
+
+    </Grid>
 </UserControl>

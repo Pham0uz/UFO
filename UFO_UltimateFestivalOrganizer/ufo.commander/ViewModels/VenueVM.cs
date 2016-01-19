@@ -46,7 +46,7 @@ namespace ufo.commander.ViewModels
             set
             {
                 venue.Latitude = value;
-                RaisePropertyChangedEvent("Latitude");
+                RaisePropertyChangedEvent(nameof(Latitude));
             }
         }
 
@@ -56,7 +56,7 @@ namespace ufo.commander.ViewModels
             set
             {
                 venue.Longitude = value;
-                RaisePropertyChangedEvent("Longitude");
+                RaisePropertyChangedEvent(nameof(Longitude));
             }
         }
 

@@ -16,8 +16,6 @@
     <UserControl.Resources>
         <UFO:DatabindingDebugConverter x:Key="debugConverter" />
 
-        <Thickness x:Key="ControlMargin">0 5 0 0</Thickness>
-
         <!--<ContextMenu x:Key="ArtistContextMenu">
             <MenuItem Header="_Add New Artist" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.OpenCreateArtistCommand}" />
             --><!--<MenuItem Header="_Edit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.OpenEditArtistCommand}" />-->
@@ -30,23 +28,18 @@
         </Style>-->
     </UserControl.Resources>
 
-    <Grid Grid.Row="0" Name="ArtistOverviewGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
-
-        <DataGrid Name="ArtistGrid" Grid.RowSpan="3" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
+    <Grid Name="ArtistOverviewGrid">
+        <DataGrid Name="ArtistGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
                   ItemsSource="{Binding Artists}"
                   SelectedItem="{Binding SelectedArtist, Mode=TwoWay}"
                   SelectionMode="Single"
                   SelectionUnit="FullRow"
-                  SelectionChanged="ArtistGrid_SelectionChanged">
+                  SelectionChanged="ArtistGrid_SelectionChanged"
+                  >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Artist" Width="2*" Binding="{Binding Name}" SortDirection="Ascending"/>
-                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding CategoryName}"/>
-                <DataGridTextColumn Header="Country" Width="1*" Binding="{Binding CountryCode}" />
+                <DataGridTextColumn Header="Artist" MinWidth="200" Width="3*" Binding="{Binding Name}" SortDirection="Ascending"/>
+                <DataGridTextColumn Header="Category" MinWidth="150" Width="2*" Binding="{Binding CategoryName}"/>
+                <DataGridTextColumn Header="Country" MinWidth="100" Width="1*" Binding="{Binding CountryCode}" />
             </DataGrid.Columns>
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"

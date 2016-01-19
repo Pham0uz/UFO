@@ -1,7 +1,9 @@
 ﻿using NLog;
 using swk5.ufo.dal;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace DAL_ConsoleClient
 {
@@ -69,7 +71,16 @@ namespace DAL_ConsoleClient
             //Console.WriteLine();
 
 
-            //Console.WriteLine("========== PerformanceDao.GetAll() ==========");
+            Console.WriteLine("========== PerformanceDao.GetAll() ==========");
+            ICollection<Performance> p = pDao.GetAll();
+            // get all possible dates
+            var query = from performance in p
+                        select new { date = performance.Date };
+            ICollection<DateTime> dateList = p.Select(x => x.Date).ToList();
+            foreach (DateTime date in dateList)
+            {
+                Console.WriteLine(date.ToString());
+            }
             //foreach(Performance p in pDao.GetAll())
             //    Console.WriteLine($"{p.Artist.Name}, {p.DateNTime.Date} {p.DateNTime.TimeOfDay}, {p.Venue.Description}");
             //Console.WriteLine("========== PerformancDao.GetByArtistNameAndDateTime ==========");

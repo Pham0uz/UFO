@@ -7,7 +7,6 @@
     xmlns:local="clr-namespace:ufo.commander.Views"
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:ViewModels="clr-namespace:ufo.commander.ViewModels"
-    xmlns:UFO="clr-namespace:ufo.commander"
     
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}"
@@ -35,7 +34,7 @@
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Width" Value="100"/>
-            <!--<Setter Property="Margin" Value="{StaticResource ControlMargin}"/>-->
+            <Setter Property="MinWidth" Value="200" />
         </Style>
 
         <DataTemplate x:Key="categoryBoxDataTemplate">
@@ -55,7 +54,6 @@
     </UserControl.Resources>
 
     <Grid Name="EditArtistGrid">
-        <!--<Border BorderThickness="3 0 0 0" BorderBrush="{DynamicResource AccentColorBrush}"/>-->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*" />
@@ -77,7 +75,7 @@
             <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
                 <local:ArtistPictureView DataContext="{Binding}"/>
             </Viewbox>
-            
+
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Artistname:" Style="{StaticResource txtNameStyle}"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="PictureURL:" Style="{StaticResource txtNameStyle}"/>

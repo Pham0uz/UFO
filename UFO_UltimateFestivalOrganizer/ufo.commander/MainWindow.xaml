@@ -12,7 +12,7 @@
     Dialog:DialogParticipation.Register="{Binding}"
     
     mc:Ignorable="d"
-    Title="UltimateFestivalOrganizer"
+    Title="Ultimate Festival Organizer"
     Height="768"
     Width="1024"
     MinHeight="600"
@@ -47,6 +47,9 @@
                         <MenuItem.Icon>
                             <Image Height="15" Source="/Resource/images/userplacehold.png"/>
                         </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_New Venue..." Command="{Binding Path=OpenCreatevenueCommand}">
+                        
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Help">
@@ -86,6 +89,14 @@
                              IsModal="True"
                              CloseCommand="{Binding CloseEditFlyoutCommand}">
                 <Views:EditArtistView DataContext="{Binding}"/>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="EditVenue"
+                             AnimateOpacity="True"
+                             Header="Edit Venue"
+                             Position="Right"
+                             IsModal="True"
+                             CloseCommand="{Binding CloseEditFlyoutCommand2}">
+                <Views:EditVenueView DataContext="{Binding}"/>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>

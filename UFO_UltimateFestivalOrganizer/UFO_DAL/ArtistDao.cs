@@ -73,10 +73,22 @@ namespace swk5.ufo.dal
             {
                 while (reader.Read())
                 {
+                    string picUrl = "";
+                    if (!Convert.IsDBNull(reader["PictureURL"]))
+                    {
+                        picUrl = (string)reader["PictureURL"];
+                    }
+
+                    string promoVidUrl = "";
+                    if (!Convert.IsDBNull(reader["PromoVideoURL"]))
+                    {
+                        promoVidUrl = (string)reader["PromoVideoURL"];
+                    }
+
                     // add to artistList
                     artistList.Add(new Artist((string)reader["Name"],
-                                              (string)reader["PictureURL"],
-                                              (string)reader["PromoVideoURL"],
+                                              picUrl,
+                                              promoVidUrl,
                                               (string)reader["Category"],
                                               (string)reader["Country"]
                     ));
@@ -93,9 +105,22 @@ namespace swk5.ufo.dal
                 if (!reader.Read())
                     return null;
 
+                string picUrl = "";
+                if (!Convert.IsDBNull(reader["PictureURL"]))
+                {
+                    picUrl = (string)reader["PictureURL"];
+                }
+
+                string promoVidUrl = "";
+                if (!Convert.IsDBNull(reader["PromoVideoURL"]))
+                {
+                    promoVidUrl = (string)reader["PromoVideoURL"];
+                }
+
+
                 return new Artist((string)reader["Name"],
-                                  (string)reader["PictureURL"],
-                                  (string)reader["PromoVideoURL"],
+                                  picUrl,
+                                  promoVidUrl,
                                   (string)reader["Category"],
                                   (string)reader["Country"]);
             }

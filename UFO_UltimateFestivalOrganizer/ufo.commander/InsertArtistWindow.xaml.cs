@@ -26,27 +26,35 @@ namespace ufo.commander
     public partial class InsertArtistWindow
     {
         private static Logger Logger = LogManager.GetCurrentClassLogger();
-        private ICommanderBL commander = BLFactory.GetCommander();
+        // workaround
+        //private ICommanderBL commander = BLFactory.GetCommander();
+        private UFOCollectionVM ufoCollVM;
 
 
         public InsertArtistWindow(UFOCollectionVM ufoCollectionVM)
         {
             InitializeComponent();
             DataContext = ufoCollectionVM;
+            ufoCollVM = ufoCollectionVM;
             Owner = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // can be done in XAML aswell
-            cmbCategory.ItemsSource = commander.GetCategories().OrderBy(c => c.CategoryName);
-            cmbCountry.ItemsSource = commander.GetCountries().OrderBy(c => c.Name);
+            // can be done in XAML aswell and at the loading of the collections
+            cmbCategory.ItemsSource = ufoCollVM.Categories.OrderBy(c => c.Name);
+            cmbCountry.ItemsSource = ufoCollVM.Countries.OrderBy(c => c.Name);
+
+            ufoCollVM.NewArtist.Artist.Name = null;
+            ufoCollVM.NewArtist.Artist.PictureURL = null;
+            ufoCollVM.NewArtist.Artist.PromoVideoURL = null;
+            ufoCollVM.NewArtist.Artist.CategoryName = null;
+            ufoCollVM.NewArtist.Artist.CountryCode = null;
         }
 
         private void btnCancelSubmitArtist_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

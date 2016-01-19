@@ -1,7 +1,5 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using NLog;
-using swk5.ufo.server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +18,10 @@ using System.Windows.Shapes;
 namespace ufo.commander.Views
 {
     /// <summary>
-    /// Interaction logic for EditArtistView.xaml
+    /// Interaction logic for EditVenueView.xaml
     /// </summary>
-    public partial class EditArtistView : UserControl
+    public partial class EditVenueView : UserControl
     {
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-        private ICommanderBL commander = BLFactory.GetCommander();
-        private MetroWindow mainWindow;
-
         private async void ShowMessage(object sender, string affirmativeButtonText, string negativeButtonText, string title, string message, bool animateShow = true, bool animateHide = false)
         {
             var mySettings = new MetroDialogSettings()
@@ -38,7 +32,7 @@ namespace ufo.commander.Views
                 AnimateHide = animateHide
             };
 
-            var mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="Ultimate Festival Organizer");
+            var mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
             if (mainWindow != null)
             {
                 var result = await mainWindow.ShowMessageAsync(title,
@@ -59,46 +53,24 @@ namespace ufo.commander.Views
             }
         }
 
-        internal void ToggleFlyout(int index)
-        {
-            if (mainWindow != null)
-            {
-                var flyout = mainWindow.Flyouts.Items[index] as Flyout;
-                if (flyout == null)
-                {
-                    return;
-                }
-                flyout.IsOpen = !flyout.IsOpen;
-            }
-        }
-
-        public EditArtistView()
+        public EditVenueView()
         {
             InitializeComponent();
-            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="Ultimate Festival Organizer");
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            cmbCategory.ItemsSource = commander.GetCategories().OrderBy(c => c.CategoryName);
-            cmbCountry.ItemsSource = commander.GetCountries().OrderBy(c => c.Name);
-        }
-
-        private void btnSaveArtist_Click(object sender, RoutedEventArgs e)
+        private void btnSaveVenue_Click(object sender, RoutedEventArgs e)
         {
             ShowMessage(sender, "Save", "Cancel", "Save changes?", "Sure you want to save changes?");
         }
 
-        private void btnDeleteArtist_Click(object sender, RoutedEventArgs e)
+        private void btnDeleteVenue_Click(object sender, RoutedEventArgs e)
         {
-            ShowMessage(sender, "Delete", "Cancel", "Delete selected artist?", "Sure you want to delete selected artist?");
+            ShowMessage(sender, "Delete", "Cancel", "Delete selected venue?", "Sure you want to delete selected venue?");
         }
 
-        private void btnCancelEditArtist_Click(object sender, RoutedEventArgs e)
+        private void btnCancelEditVenue_Click(object sender, RoutedEventArgs e)
         {
             ShowMessage(sender, "Continue", "Cancel", "Revert changes?", "Sure you want to revert all changes?");
         }
-
-
     }
 }

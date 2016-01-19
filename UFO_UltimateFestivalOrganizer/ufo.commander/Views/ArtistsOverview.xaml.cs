@@ -25,13 +25,13 @@ namespace ufo.commander.Views
         {
             InitializeComponent();
             // get MainWindow
-            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="UltimateFestivalOrganizer");
+            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
         }
 
         private void ArtistGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ToggleFlyout(0);
-            // TODO check if anything changed, if then alert user!
+            if (mainWindow != null)
+                ToggleFlyout(0);
         }
 
         //private ICommand openFirstFlyoutCommand;
@@ -53,7 +53,7 @@ namespace ufo.commander.Views
         //}
 
         internal void ToggleFlyout(int index)
-        {            
+        {
             if (mainWindow != null)
             {
                 var flyout = mainWindow.Flyouts.Items[index] as Flyout;
