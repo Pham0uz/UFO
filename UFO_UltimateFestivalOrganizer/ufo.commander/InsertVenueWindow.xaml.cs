@@ -43,5 +43,52 @@ namespace ufo.commander
             ufoCollVM.NewVenue.Latitude = 0;
             ufoCollVM.NewVenue.Longitude = 0;
         }
+
+        private void btnSubmitVenue_Click(object sender, RoutedEventArgs e)
+        {
+            // check if artist already exists and if any required fields are empty
+            ufoCollVM.LoadVenues();
+            if (ufoCollVM.Venues.Where(x => x.ShortName == txtShortName.Text).Count() > 0)
+            {
+                txtError.Text = $"Venue with name: {txtShortName.Text} already exists!";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtShortName.Text) && string.IsNullOrEmpty(txtDescription.Text)
+                  && string.IsNullOrEmpty(txtLatitude.Text) && string.IsNullOrEmpty(txtLongitude.Text))
+            {
+                txtError.Text = "Fields with * musn't be empty!";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtShortName.Text))
+            {
+                txtError.Text = "Please enter a Shortname";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtDescription.Text))
+            {
+                txtError.Text = "Please enter a Description";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtLatitude.Text))
+            {
+                txtError.Text = "Please enter a Latitude";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtLongitude.Text))
+            {
+                txtError.Text = "Please enter a Longitude";
+            }
+            txtError.Text = "";
+
+            // Execute command in tag
+            var button = sender as Button;
+            if (button != null)
+            {
+                var command = button.Tag as ICommand;
+                if (command != null)
+                    command.Execute(button.CommandParameter);
+            }
+        }
     }
 }
+

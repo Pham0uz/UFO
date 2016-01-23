@@ -278,7 +278,7 @@
           </association>
         </targetEnds>
         <ownedAttributesInternal>
-          <property Id="8a1f6568-81a7-4903-8e76-10555a803887" name="DateNTime" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="8a1f6568-81a7-4903-8e76-10555a803887" name="Date" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="9f0f2412-0844-4b3d-b206-7b617f393545" />
           </property>
           <property Id="17d07149-d6c4-4315-9976-d5978cced8cc" name="Venue" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
@@ -292,6 +292,9 @@
             <type_NamedElement>
               <referencedTypeMoniker Id="4463450b-7ac1-48fe-b9ff-001f4ec0f35e" LastKnownName="Artist" />
             </type_NamedElement>
+          </property>
+          <property Id="f6da1eec-f8ee-4635-a51e-b9a19a6e65db" name="Time" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="07a58d66-1bc0-4192-b88a-9fe3e0aa8aff" />
           </property>
         </ownedAttributesInternal>
       </class>

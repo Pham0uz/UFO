@@ -40,6 +40,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="0.5*" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -57,7 +58,9 @@
         <TextBox Name="txtLatitude" Grid.Row="2" Grid.Column="1" Margin="10" Text="{Binding Path=NewVenue.Latitude, Mode=TwoWay}"/>
         <TextBox Name="txtLongitude" Grid.Row="3" Grid.Column="1" Margin="10" Text="{Binding Path=NewVenue.Longitude, Mode=TwoWay}" />
 
-        <Button Name="btnSubmitVenue" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Command="{Binding Path=CreateVenueCommand}" CommandParameter="{Binding Path=NewVenue}" />
-        <Button Name="btnCancelSubmitVenue" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Click="btnCancelSubmitVenue_Click"/>
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Name="txtError" Foreground="Red" Margin="20.5,5,5,5" HorizontalAlignment="Left" Text="{Binding Path=txtError}"/>
+        
+        <Button Name="btnSubmitVenue" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Tag="{Binding Path=CreateVenueCommand}" CommandParameter="{Binding Path=NewVenue}" Click="btnSubmitVenue_Click"/>
+        <Button Name="btnCancelSubmitVenue" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Click="btnCancelSubmitVenue_Click"/>
     </Grid>
 </Controls:MetroWindow>

@@ -51,6 +51,7 @@
                     <MenuItem Header="_New Venue..." Command="{Binding Path=OpenCreatevenueCommand}">
                         
                     </MenuItem>
+                    <MenuItem Header="_Exit" Command="{Binding Path=CloseApplicationCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Help">
                     

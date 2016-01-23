@@ -31,7 +31,7 @@ namespace UFO_DAOTests
         }
 
         [TestMethod]
-        public void TestGetByArtistNameAndDateTime2()
+        public void TestGetByDate_Time_Venue2()
         {
             // arrange
             string expectedValue = "figurentheater (isipisi)";
@@ -47,7 +47,7 @@ namespace UFO_DAOTests
         public void TestGetAll()
         {
             // arrange
-            int expectedValue = 1;
+            int expectedValue = 5;
 
             //act
             IList<Performance> PerformanceList = pDao.GetAll();
@@ -58,10 +58,11 @@ namespace UFO_DAOTests
             Assert.AreEqual(expectedValue, actualValue);
         }
 
+        [TestMethod]
         public void TestGetAllByDate()
         {
             // arrange
-            int expectedValue = 1;
+            int expectedValue = 3;
 
             //act
             IList<Performance> PerformanceList = pDao.GetAllByDate(new DateTime(2015, 7, 23));
@@ -72,6 +73,7 @@ namespace UFO_DAOTests
             Assert.AreEqual(expectedValue, actualValue);
         }
 
+        [TestMethod]
         public void TestGetAllByDateTime()
         {
             // arrange
@@ -92,11 +94,11 @@ namespace UFO_DAOTests
             // arrange
             bool expectedValue = true;
            Performance newPerformance = new Performance(new DateTime(2015, 7, 23), 19, "MadMatt", "T2");
-            bool beforeInsert = pDao.GetAll().Count == 1;
+            bool beforeInsert = pDao.GetAll().Count == 5;
 
             // act
             pDao.Insert(newPerformance);
-            bool afterInsert = pDao.GetAll().Count == 2;
+            bool afterInsert = pDao.GetAll().Count == 6;
 
             // assert
             bool actualValue = (beforeInsert && afterInsert);
@@ -125,11 +127,11 @@ namespace UFO_DAOTests
         {
             // arrange
             bool expectedValue = true;
-            bool beforeDelete = pDao.GetAll().Count == 2;
+            bool beforeDelete = pDao.GetAll().Count == 6;
 
             // act
             pDao.Delete(new DateTime(2015, 7, 23), 19, "T2");
-            bool afterDelete = pDao.GetAll().Count == 1;
+            bool afterDelete = pDao.GetAll().Count == 5;
 
             // assert
             bool actualValue = (beforeDelete && afterDelete);

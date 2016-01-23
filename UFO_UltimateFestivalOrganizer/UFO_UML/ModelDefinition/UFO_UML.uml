@@ -556,7 +556,7 @@
         <ownedAttributesInternal>
           <property
             Id="9f0f2412-0844-4b3d-b206-7b617f393545"
-            name="DateNTime"
+            name="Date"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
@@ -601,6 +601,17 @@
                 LastKnownLocation="UFO_UML.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="07a58d66-1bc0-4192-b88a-9fe3e0aa8aff"
+            name="Time"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
         </ownedAttributesInternal>
       </class>
     </packageHasNamedElement>

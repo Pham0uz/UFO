@@ -17,6 +17,7 @@ namespace swk5.ufo.server
         ICollection<Country> GetCountries();
         ICollection<Performance> GetPerformances();
         ICollection<Performance> GetPerformancesByDate(DateTime date);
+        ICollection<Performance> GetPerformancesByDate_Time(DateTime date, int time);
         ICollection<User> GetUsers();
         ICollection<Venue> GetVenues();
         #endregion
@@ -29,7 +30,7 @@ namespace swk5.ufo.server
         Country GetCountryByName(string name);
         Performance GetPerformanceByDate_Time_Venue(DateTime date, int time, string venue);
         User GetUserByEMail(string email);
-        Venue GetVenueByName(string name);
+        Venue GetVenueByShortName(string name);
         Venue GetVenueByDescription(string descr);
         
         #endregion

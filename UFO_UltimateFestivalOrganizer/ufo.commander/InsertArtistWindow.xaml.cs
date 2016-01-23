@@ -25,11 +25,7 @@ namespace ufo.commander
     /// </summary>
     public partial class InsertArtistWindow
     {
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-        // workaround
-        //private ICommanderBL commander = BLFactory.GetCommander();
         private UFOCollectionVM ufoCollVM;
-
 
         public InsertArtistWindow(UFOCollectionVM ufoCollectionVM)
         {
@@ -55,6 +51,47 @@ namespace ufo.commander
         private void btnCancelSubmitArtist_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void btnSubmitArtist_Click(object sender, RoutedEventArgs e)
+        {
+            // check if artist already exists and if any required fields are empty
+            ufoCollVM.LoadArtists();
+            if (ufoCollVM.Artists.Where(x => x.Name == txtName.Text).Count() > 0)
+            {
+                txtError.Text = $"Artist with name: {txtName.Text} already exists!";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtName.Text) && cmbCountry.SelectedIndex < 0 && cmbCategory.SelectedIndex < 0)
+            {
+                txtError.Text = "Fields with * musn't be empty!";
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtName.Text))
+            {
+                txtError.Text = "Please enter a Name";
+                return;
+            }
+            else if (cmbCategory.SelectedIndex < 0)
+            {
+                txtError.Text = "Please select a Category";
+                return;
+            }
+            else if (cmbCountry.SelectedIndex < 0)
+            {
+                txtError.Text = "Please select a Country";
+                return;
+            }
+            txtError.Text = "";
+
+            // Execute command in tag
+            var button = sender as Button;
+            if (button != null)
+            {
+                var command = button.Tag as ICommand;
+                if (command != null)
+                    command.Execute(button.CommandParameter);
+            }
         }
     }
 }

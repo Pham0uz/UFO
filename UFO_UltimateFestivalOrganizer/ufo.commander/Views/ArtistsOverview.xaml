@@ -29,7 +29,7 @@
     </UserControl.Resources>
 
     <Grid Name="ArtistOverviewGrid">
-        <DataGrid Name="ArtistGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
+        <DataGrid Name="ArtistGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False" CanUserReorderColumns="False"
                   ItemsSource="{Binding Artists}"
                   SelectedItem="{Binding SelectedArtist, Mode=TwoWay}"
                   SelectionMode="Single"

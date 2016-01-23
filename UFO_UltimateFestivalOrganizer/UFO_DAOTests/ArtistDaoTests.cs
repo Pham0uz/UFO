@@ -23,7 +23,7 @@ namespace UFO_DAOTests
             string expectedValue = "Straßentheater";
 
             // act
-            Artist loadedArtist = aDao.GetByName("figurentheater(isipisi)");
+            Artist loadedArtist = aDao.GetByName("figurentheater (isipisi)");
 
             // assert
             Assert.AreEqual(expectedValue, loadedArtist.CategoryName);
@@ -36,7 +36,7 @@ namespace UFO_DAOTests
             string expectedValue = "AT";
 
             // act
-            Artist loadedArtist = aDao.GetByName("figurentheater(isipisi)");
+            Artist loadedArtist = aDao.GetByName("figurentheater (isipisi)");
 
             // assert
             Assert.AreEqual(expectedValue, loadedArtist.CountryCode);
@@ -46,7 +46,7 @@ namespace UFO_DAOTests
         public void TestGetAll()
         {
             // arrange
-            int expectedValue = 1;
+            int expectedValue = 91;
 
             //act
             IList<Artist> ArtistList = aDao.GetAll();
@@ -63,11 +63,11 @@ namespace UFO_DAOTests
             // arrange
             bool expectedValue = true;
             Artist newArtist = new Artist("Anne & Mitja", "test.jpg", "test2.jpg", "Akrobatik&Tanz", "DE");
-            bool beforeInsert = aDao.GetAll().Count == 1;
+            bool beforeInsert = aDao.GetAll().Count == 91;
 
             // act
             aDao.Insert(newArtist);
-            bool afterInsert = aDao.GetAll().Count == 2;
+            bool afterInsert = aDao.GetAll().Count == 92;
 
             // assert
             bool actualValue = (beforeInsert && afterInsert);
@@ -96,11 +96,11 @@ namespace UFO_DAOTests
         {
             // arrange
             bool expectedValue = true;
-            bool beforeDelete = aDao.GetAll().Count == 2;
+            bool beforeDelete = aDao.GetAll().Count == 92;
 
             // act
             aDao.Delete("Anne & Mitja");
-            bool afterDelete = aDao.GetAll().Count == 1;
+            bool afterDelete = aDao.GetAll().Count == 91;
 
             // assert
             bool actualValue = (beforeDelete && afterDelete);

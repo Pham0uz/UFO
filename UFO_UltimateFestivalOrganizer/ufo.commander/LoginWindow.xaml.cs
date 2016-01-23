@@ -1,9 +1,11 @@
-﻿using swk5.ufo.server;
+﻿using MahApps.Metro.Controls.Dialogs;
+using swk5.ufo.server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +23,9 @@ namespace ufo.commander
     /// </summary>
     public partial class LoginWindow
     {
+        private ProgressDialogController _controller;
+        private ICommanderBL commander = BLFactory.GetCommander();
+
         public string generateRealPwd(string email, string pwd)
         {
             using (SHA1Managed sha1 = new SHA1Managed())
@@ -29,7 +34,7 @@ namespace ufo.commander
                 var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
                 var sb = new StringBuilder(hash.Length * 2);
 
-                foreach(byte b in hash)
+                foreach (byte b in hash)
                 {
                     sb.Append(b.ToString("x2"));
                 }
@@ -42,37 +47,60 @@ namespace ufo.commander
         {
             InitializeComponent();
         }
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            ICommanderBL commander = BLFactory.GetCommander();
+            var email = txtEMail.Text;
+            var pwd = txtPwd.Password;
 
-            string actualPwd = generateRealPwd(txtEMail.Text, txtPwd.Password);
-
-            if (commander.AuthenticateUser(txtEMail.Text, actualPwd) == false)
+            if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(pwd))
             {
-                txtError.Text = "Combination of EMail and password is incorrect!";
+                txtError.Text = "Please enter a EMail and a Password!";
+                return;
+            }
+            else if (string.IsNullOrEmpty(pwd))
+            {
+                txtError.Text = "Please enter a Password";
+                return;
+            }
+            else if (string.IsNullOrEmpty(email))
+            {
+                txtError.Text = "Please enter a EMail";
+                return;
+            }
+            txtError.Text = "";
+
+            IsEnabled = false;
+            _controller = await this.ShowProgressAsync("Logging in...", "Authenticating...");
+            _controller.SetIndeterminate();
+
+            var result = await Task.Factory.StartNew(() =>
+            {
+                string actualPwd = generateRealPwd(email, pwd);
+                return commander.AuthenticateUser(email, actualPwd);
+            });
+
+            txtPwd.Password = "";
+
+            await _controller.CloseAsync();
+
+            IsEnabled = true;
+            if (result == true)
+            {
+                await this.ShowMessageAsync("Authenticated", "Login success!");
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                Close();
             }
             else
             {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
+                txtError.Text = "Combination of EMail and Password is incorrect!";
             }
-            //else if (txtUserName.Text == "")
-            //{
-            //    txtUserNameError.Text = "User Name required!.";
-            //    txtPwdError.Text = "";
-            //}
-            //else
-            //{
-            //    txtUserNameError.Text = "";
-            //    txtPwdError.Text = "Wrong password";
-            //}
+            _controller.SetProgress(1);
         }
 
         private void btnQuit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

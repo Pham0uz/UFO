@@ -15,7 +15,7 @@
 
     <Grid Name="VenuesOverviewGrid">
 
-        <DataGrid Name="VenueGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False"
+        <DataGrid Name="VenueGrid" Margin="5" IsReadOnly="True" AutoGenerateColumns="False" CanUserReorderColumns="False"
                   ItemsSource="{Binding Venues}"
                   SelectedItem="{Binding SelectedVenue, Mode=TwoWay}"
                   SelectionMode="Single"

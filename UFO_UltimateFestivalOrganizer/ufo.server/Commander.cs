@@ -25,7 +25,6 @@ namespace swk5.ufo.server
             this.venueDao = DALFactory.CreateVenueDao(database);
         }
 
-
         #region Get Tables
 
         public ICollection<Artist> GetArtists()
@@ -105,11 +104,6 @@ namespace swk5.ufo.server
         public Venue GetVenueByShortName(string shortname)
         {
             return venueDao.GetByName(shortname);
-        }
-
-        public Venue GetVenueByName(string name)
-        {
-            return venueDao.GetByName(name);
         }
 
         public Venue GetVenueByDescription(string descr)

@@ -15,6 +15,7 @@ using NLog;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections;
 using System.Windows.Threading;
+using System.Net.Mail;
 
 namespace ufo.commander.ViewModels
 {
@@ -179,7 +180,7 @@ namespace ufo.commander.ViewModels
             LoadPerformancesOfDay(PerformanceDates.FirstOrDefault());
         }
 
-        private void LoadArtists()
+        public void LoadArtists()
         {
             Artists.Clear();
             ICollection<Artist> artistList = commander.GetArtists();
@@ -209,7 +210,7 @@ namespace ufo.commander.ViewModels
             }
         }
 
-        private void LoadVenues()
+        public void LoadVenues()
         {
             Venues.Clear();
             ICollection<Venue> venueList = commander.GetVenues();
@@ -271,7 +272,7 @@ namespace ufo.commander.ViewModels
                         }
                     }
                     if (!performanceAdded)
-                        tmp.Performances.Add(new PerformanceVM(new Performance(SelectedDate, time, "", v.Venue.ShortName)));
+                        tmp.Performances.Add(new PerformanceVM(new Performance(selectedDate, time, "", v.Venue.ShortName)));
                     else
                         performanceAdded = false;
 
@@ -463,6 +464,9 @@ namespace ufo.commander.ViewModels
         //private ICommand updatePerformanceCommand;
         //private ICommand deletePerformanceCommand;
 
+        private ICommand sendEmailWithProgramCommand;
+        private ICommand closeApplicationCommand;
+
         #endregion
 
         #region Artist Commands / Methods
@@ -537,6 +541,14 @@ namespace ufo.commander.ViewModels
 
         public void DeleteArtist(ArtistVM artist)
         {
+            LoadPerformances();
+            // delete future performances
+            foreach(var p in Performances)
+            {
+                // if same artist, future performances (Date & Time)
+                if (p.Artist == artist.Name && p.Date < DateTime.Now && p.Time > DateTime.Now.TimeOfDay.TotalHours)
+                    commander.DeletePerformance(p.Performance);
+            }
             commander.DeleteArtist(artist.Artist);
             LoadArtists();
         }
@@ -683,6 +695,107 @@ namespace ufo.commander.ViewModels
             {
                 return selectedDateChangeCommand ?? (selectedDateChangeCommand = new RelayCommand(param => LoadPerformancesOfDay((DateTime)param)));
             }
+        }
+
+        public ICommand CloseApplicationCommand
+        {
+            get
+            {
+                if (closeApplicationCommand == null)
+                    closeApplicationCommand = new RelayCommand(param => CloseApplication());
+                return closeApplicationCommand;
+            }
+        }
+
+        public ICommand SendEmailWithProgramCommand
+        {
+            get
+            {
+                if (sendEmailWithProgramCommand == null)
+                    sendEmailWithProgramCommand = new RelayCommand(param =>
+                    {
+                        try
+                        {
+                            System.Net.NetworkCredential auth = new System.Net.NetworkCredential("donoutreply@gmail.com", "noreply#123");
+                            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+
+                            client.EnableSsl = true;
+                            client.UseDefaultCredentials = false;
+                            client.Credentials = auth;
+
+                            MailMessage mail = new MailMessage();
+                            mail.IsBodyHtml = false;
+
+                            //Put the email address
+                            mail.From = new MailAddress("donoutreply@gmail.com");
+                            mail.Subject = "Ultimate Festival Organizer - Your incoming performances";
+
+                            StringBuilder sbBody = new StringBuilder();
+
+                            //sbBody.AppendLine($"Hi {artist.Name},");
+                            sbBody.AppendLine("Hi phamouz,");
+
+                            sbBody.AppendLine("here are your incoming performances:");
+                            sbBody.AppendLine();
+
+                            // get all artists
+
+                            // get all performances, iterate through each of them, check if performance.date is < today (current date)
+                            // if they are append them to body with Date, Venue, Time
+
+                            //foreach(var p in ufoVM.Performances)
+                            //{
+                            //    if (p.Artist == a.Name && p.Date < DateTime.Now)
+                            //        sbBody.AppendLine($"# {p.Date}: {p.Venue} - {p.Time}");
+                            //}
+
+                            // get list of email adresses of artists,
+                            // iterate through it an send each of them a personal EMail, but I didnt implement artists with EMail
+                            mail.To.Add("neoclon007@yahoo.de");
+
+
+                            sbBody.AppendLine("# 2016-26-01: Hauptplatz 17:00");
+
+                            sbBody.AppendLine();
+                            sbBody.AppendLine("Goodluck and have fun!");
+                            sbBody.AppendLine("Regards, UFO-Team!");
+                            sbBody.AppendLine();
+                            sbBody.AppendLine(DateTime.Now.ToString());
+
+                            mail.Body = sbBody.ToString();
+
+                            ////Your log file path
+                            //System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(@"yourpath");
+
+                            //mail.Attachments.Add(attachment);
+
+                            client.Send(mail);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
+                    });
+                return sendEmailWithProgramCommand;
+            }
+        }
+
+        private async void CloseApplication()
+        {
+            var mySettings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Quit",
+                NegativeButtonText = "Cancel",
+                AnimateShow = true,
+                AnimateHide = false
+            };
+
+            var result = await mainWindow.ShowMessageAsync("Quit application?",
+                "Sure you want to quit application?",
+                MessageDialogStyle.AffirmativeAndNegative, mySettings);
+
+            if (result == MessageDialogResult.Affirmative)
+                Application.Current.Shutdown();
         }
     }
 }

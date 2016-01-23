@@ -60,6 +60,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="0.5*" />
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -89,7 +90,9 @@
                   IsTextSearchEnabled="True">
         </ComboBox>
 
-        <Button Name="btnSubmitArtist" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Command="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" />
-        <Button Name="btnCancelSubmitArtist" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Click="btnCancelSubmitArtist_Click"/>
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Name="txtError" Foreground="Red" Margin="20.5,5,5,5" HorizontalAlignment="Left" Text="{Binding Path=txtError}"/>
+
+            <Button Name="btnSubmitArtist" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Tag="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" Click="btnSubmitArtist_Click"/>
+        <Button Name="btnCancelSubmitArtist" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Click="btnCancelSubmitArtist_Click"/>
     </Grid>
 </Controls:MetroWindow>

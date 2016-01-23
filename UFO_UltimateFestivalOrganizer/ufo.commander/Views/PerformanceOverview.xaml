@@ -24,15 +24,20 @@
         <!--<Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>-->
-        
+
         <Style x:Key="colHeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
             <Setter Property="SeparatorVisibility" Value="Hidden"/>
         </Style>
-        
+
         <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="SeparatorVisibility" Value="Visible"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type DataGridRowHeader}" BasedOn="{StaticResource MetroDataGridRowHeader}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
         </Style>
 
         <Style x:Key="dataGridTextColumn">
@@ -50,7 +55,7 @@
             <Setter Property="TextBlock.Focusable" Value="False" />
             <Setter Property="Grid.Focusable" Value="False" />
         </Style>
-        
+
         <!--currently using this foreach instead of proper binding -> workaround-->
         <!--<Style x:Key="dataGridArtistElementStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MetroTextBlock}">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource NameToBrushConverter}}" />
@@ -72,9 +77,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <TextBlock Text="Performance Day" Padding="5"/>
-                <ComboBox x:Name="PerformanceDay" HorizontalAlignment="Left" Margin="5,0,0,0"
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="Performance Day" FontSize="18" Margin="5" HorizontalAlignment="Center"/>
+                <ComboBox Grid.Column="1" x:Name="PerformanceDay" HorizontalAlignment="Center" Margin="5"
                           SelectedIndex="0"
                           ItemsSource="{Binding PerformanceDates}"
                           SelectedItem="{Binding SelectedDate, Mode=TwoWay}"
@@ -90,10 +103,11 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-            </StackPanel>
+                <Button Grid.Column="3"  Grid.ColumnSpan="2" Margin="5" Content="Publish + Send out EMails" Tag="{Binding SendEmailWithProgramCommand}" Click="Button_Click" />
+            </Grid>
 
             <Grid Grid.Row="1" Margin="5">
-                <DataGrid Grid.Row="1" Name="PerformancesGrid" GridLinesVisibility="All" 
+                <DataGrid Grid.Row="1" Name="PerformancesGrid" GridLinesVisibility="All"  HeadersVisibility="All"
                       IsReadOnly="True" AutoGenerateColumns="False"
                       CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False"
                       ItemsSource="{Binding TodaysProgram}"
@@ -101,6 +115,15 @@
                       CurrentCellChanged="PerformancesGrid_CurrentCellChanged"
                       SelectionMode="Single"
                       SelectionUnit="Cell">
+                    <!--<DataGrid.RowHeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Background="DarkOrange" TextWrapping="Wrap" TextAlignment="Left">
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Venue.ShortName}"/>
+                                 | 
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Venue.Description}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGrid.RowHeaderTemplate>-->
                     <DataGrid.Columns>
                         <!--<DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
@@ -192,7 +215,7 @@
                            TargetType="{x:Type DataGrid}">
                             
                         </Style>
-                        </DataGrid.Style>
+                    </DataGrid.Style>
                 </DataGrid>
             </Grid>
         </Grid>
