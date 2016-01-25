@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using swk5.ufo.dal;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace swk5.ufo.server
 {
@@ -113,18 +115,36 @@ namespace swk5.ufo.server
 
         #endregion
 
+        public string generateRealPwd(string email, string pwd)
+        {
+            using (SHA1Managed sha1 = new SHA1Managed())
+            {
+                string input = email + "|" + pwd;
+                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+                var sb = new StringBuilder(hash.Length * 2);
+
+                foreach (byte b in hash)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
         public bool AuthenticateUser(string email, string password)
         {
+            string realpwd = generateRealPwd(email, password);
             IList<User> userList = userDao.GetAll();
             foreach (User u in userList)
             {
-                if ((email == u.EMail) && (password == u.PasswordHash))
+                if ((email == u.EMail) && (realpwd == u.PasswordHash))
                     return true;
             }
             return false;
         }
 
-        private bool PerformanceIsPossible(Performance performance)
+        public bool PerformanceIsPossible(Performance performance)
         {
             foreach (Performance p in GetPerformancesByDate(performance.Date))
             {

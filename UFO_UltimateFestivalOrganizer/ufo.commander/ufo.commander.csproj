@@ -85,7 +85,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DatabindingDebugConverter.cs" />
     <Compile Include="Helper\DialogCoordinator.cs" />
     <Compile Include="Helper\DialogParticipation.cs" />
     <Compile Include="Helper\BitmapImageConverter.cs" />
@@ -93,6 +92,9 @@
     <Compile Include="Helper\NameToBrushConverter.cs" />
     <Compile Include="InsertArtistWindow.xaml.cs">
       <DependentUpon>InsertArtistWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InsertPerformanceWindow.xaml.cs">
+      <DependentUpon>InsertPerformanceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="InsertVenueWindow.xaml.cs">
       <DependentUpon>InsertVenueWindow.xaml</DependentUpon>
@@ -118,11 +120,11 @@
     <Compile Include="Views\ArtistsOverview.xaml.cs">
       <DependentUpon>ArtistsOverview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditPerformanceView.xaml.cs">
+      <DependentUpon>EditPerformanceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditVenueView.xaml.cs">
       <DependentUpon>EditVenueView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InsertArtistView.xaml.cs">
-      <DependentUpon>InsertArtistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditArtistView.xaml.cs">
       <DependentUpon>EditArtistView.xaml</DependentUpon>
@@ -136,6 +138,10 @@
     <Page Include="InsertArtistWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InsertPerformanceWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="InsertVenueWindow.xaml">
       <SubType>Designer</SubType>
@@ -165,11 +171,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditVenueView.xaml">
+    <Page Include="Views\EditPerformanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InsertArtistView.xaml">
+    <Page Include="Views\EditVenueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

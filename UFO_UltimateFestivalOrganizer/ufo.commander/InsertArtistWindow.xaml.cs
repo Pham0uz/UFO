@@ -32,7 +32,6 @@ namespace ufo.commander
             InitializeComponent();
             DataContext = ufoCollectionVM;
             ufoCollVM = ufoCollectionVM;
-            Owner = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)

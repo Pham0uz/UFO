@@ -115,23 +115,7 @@
                       CurrentCellChanged="PerformancesGrid_CurrentCellChanged"
                       SelectionMode="Single"
                       SelectionUnit="Cell">
-                    <!--<DataGrid.RowHeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock Background="DarkOrange" TextWrapping="Wrap" TextAlignment="Left">
-                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Venue.ShortName}"/>
-                                 | 
-                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Venue.Description}"/>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGrid.RowHeaderTemplate>-->
                     <DataGrid.Columns>
-                        <!--<DataGridTemplateColumn>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Hallo" Margin="0" Padding="0" BorderThickness="0" Background="Aqua" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>-->
                         <DataGridTextColumn Header="" HeaderStyle="{StaticResource colHeaderStyle}" CellStyle="{StaticResource dataGridTextColumnNotFocusAble}" ElementStyle="{StaticResource dataGridTextColumnElementStyle}"
                                             MinWidth="50" Binding="{Binding Path=Venue.ShortName}" SortDirection="Ascending"/>
                         <DataGridTextColumn Header="" HeaderStyle="{StaticResource colHeaderStyle}" CellStyle="{StaticResource dataGridTextColumnNotFocusAble}" ElementStyle="{StaticResource dataGridTextColumnElementStyle}"
@@ -207,15 +191,6 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                     </DataGrid.Columns>
-                    <!--<DataGrid.Resources>
-                        
-                    </DataGrid.Resources>-->
-                    <DataGrid.Style>
-                        <Style BasedOn="{StaticResource MetroDataGrid}"
-                           TargetType="{x:Type DataGrid}">
-                            
-                        </Style>
-                    </DataGrid.Style>
                 </DataGrid>
             </Grid>
         </Grid>

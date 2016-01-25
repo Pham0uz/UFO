@@ -19,10 +19,10 @@ namespace ufo.commander
         public MainWindow()
         {
             Logger.Info("Application successfully started!");
-            InitializeComponent();
             Application.Current.MainWindow = this;
             commander = BLFactory.GetCommander();
             DataContext = new UFOCollectionVM();
+            InitializeComponent();
         }
 
         private async void UFOMain_Closing(object sender, System.ComponentModel.CancelEventArgs e)

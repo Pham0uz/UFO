@@ -26,10 +26,6 @@
     Closing="UFOMain_Closing"
     >
 
-    <Controls:MetroWindow.Resources>
-        <local:DatabindingDebugConverter x:Key="debugConverter" />
-    </Controls:MetroWindow.Resources>
-
     <Controls:MetroContentControl>
         <Grid>
             <Grid.RowDefinitions>
@@ -48,9 +44,12 @@
                             <Image Height="15" Source="/Resource/images/userplacehold.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_New Venue..." Command="{Binding Path=OpenCreatevenueCommand}">
+                    <MenuItem Header="_New Venue..." Command="{Binding Path=OpenCreateVenueCommand}">
                         
                     </MenuItem>
+
+                    <MenuItem Header="_New Performance..." Command="{Binding Path=OpenCreatePerformanceCommand}"/>
+
                     <MenuItem Header="_Exit" Command="{Binding Path=CloseApplicationCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Help">
@@ -98,6 +97,14 @@
                              IsModal="True"
                              CloseCommand="{Binding CloseEditFlyoutCommand2}">
                 <Views:EditVenueView DataContext="{Binding}"/>
+            </Controls:Flyout>
+            <Controls:Flyout x:Name="EditPerformance"
+                             AnimateOpacity="True"
+                             Header="Edit Performance"
+                             Position="Right"
+                             IsModal="True"
+                             CloseCommand="{Binding CloseEditFlyoutCommand3}">
+                <Views:EditPerformanceView DataContext="{Binding}" />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>

@@ -11,6 +11,8 @@ namespace swk5.ufo.server
     {
         bool AuthenticateUser(string email, string password);
 
+        bool PerformanceIsPossible(Performance performance);
+
         #region Get Tables
         ICollection<Artist> GetArtists();
         ICollection<Category> GetCategories();

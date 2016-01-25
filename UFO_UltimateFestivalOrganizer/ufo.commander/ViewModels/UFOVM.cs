@@ -109,7 +109,9 @@ namespace ufo.commander.ViewModels
         private int[] performanceTimes = { 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 
         private PerformanceVM newPerformance;
-        public PerformanceVM selectedPerformance;
+        private PerformanceVM selectedPerformance;
+        private PerformanceVM toDeletePerformance;
+        private InsertPerformanceWindow createPerformanceWindow;
 
         #endregion
 
@@ -254,31 +256,34 @@ namespace ufo.commander.ViewModels
             }
 
             // create TodaysProgram + fill it with performances of today an empty strings
-            TodaysProgram.Clear();
-            bool performanceAdded = false;
-            foreach (VenueVM v in Venues)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                TodaysProgramVM tmp = new TodaysProgramVM(v);
-                foreach (int time in PerformancesTimes)
+                TodaysProgram.Clear();
+                bool performanceAdded = false;
+                foreach (VenueVM v in Venues)
                 {
-                    foreach (var p in PerformancesOfDay)
+                    TodaysProgramVM tmp = new TodaysProgramVM(v);
+                    foreach (int time in PerformancesTimes)
                     {
-                        // if performance with current time and venue already exist, add it to todaysprogram
-                        // else add a new performance with date, time, venue and empty artist
-                        if (p.Venue == v.Venue.ShortName && p.Time == time)
+                        foreach (var p in PerformancesOfDay)
                         {
-                            tmp.Performances.Add(p);
-                            performanceAdded = true;
+                            // if performance with current time and venue already exist, add it to todaysprogram
+                            // else add a new performance with date, time, venue and empty artist
+                            if (p.Venue == v.Venue.ShortName && p.Time == time)
+                            {
+                                tmp.Performances.Add(p);
+                                performanceAdded = true;
+                            }
                         }
-                    }
-                    if (!performanceAdded)
-                        tmp.Performances.Add(new PerformanceVM(new Performance(selectedDate, time, "", v.Venue.ShortName)));
-                    else
-                        performanceAdded = false;
+                        if (!performanceAdded)
+                            tmp.Performances.Add(new PerformanceVM(new Performance(selectedDate, time, "", v.Venue.ShortName)));
+                        else
+                            performanceAdded = false;
 
+                    }
+                    TodaysProgram.Add(tmp);
                 }
-                TodaysProgram.Add(tmp);
-            }
+            });
         }
 
         public void LoadPerformancesMap()
@@ -398,6 +403,7 @@ namespace ufo.commander.ViewModels
                 if (newPerformance == null)
                 {
                     Performance p = new Performance();
+                    p.Date = DateTime.Today.Date;
                     newPerformance = new PerformanceVM(p);
                 }
                 return newPerformance;
@@ -458,11 +464,12 @@ namespace ufo.commander.ViewModels
 
         // Performance commands
         private ICommand selectedDateChangeCommand;
-        //private ICommand openCreatePerformanceCommand;
-        //private ICommand openEditPerformanceCommand;
-        //private ICommand createPerformanceCommand;
-        //private ICommand updatePerformanceCommand;
-        //private ICommand deletePerformanceCommand;
+        private ICommand openCreatePerformanceCommand;
+        private ICommand createPerformanceCommand;
+        private ICommand updatePerformanceCommand;
+        private ICommand deletePerformanceCommand;
+        private ICommand cancelEditPerformanceCommand;
+        private ICommand closeEditFlyoutCommand3;
 
         private ICommand sendEmailWithProgramCommand;
         private ICommand closeApplicationCommand;
@@ -543,7 +550,7 @@ namespace ufo.commander.ViewModels
         {
             LoadPerformances();
             // delete future performances
-            foreach(var p in Performances)
+            foreach (var p in Performances)
             {
                 // if same artist, future performances (Date & Time)
                 if (p.Artist == artist.Name && p.Date < DateTime.Now && p.Time > DateTime.Now.TimeOfDay.TotalHours)
@@ -565,17 +572,12 @@ namespace ufo.commander.ViewModels
             }
         }
 
-        // bad work-around
         public ICommand CloseEditFlyoutCommand
         {
             get
             {
                 if (closeEditFlyoutCommand == null)
-                    closeEditFlyoutCommand = new RelayCommand(param =>
-                    {
-                        ToggleFlyout(0);
-                        LoadArtists();
-                    });
+                    closeEditFlyoutCommand = new RelayCommand(param => ToggleFlyout(0));
                 return closeEditFlyoutCommand;
             }
         }
@@ -586,7 +588,7 @@ namespace ufo.commander.ViewModels
 
         #region Insert Venue
 
-        public ICommand OpenCreatevenueCommand
+        public ICommand OpenCreateVenueCommand
         {
             get
             {
@@ -672,19 +674,50 @@ namespace ufo.commander.ViewModels
             }
         }
 
-        // bad work-around
         public ICommand CloseEditFlyoutCommand2
         {
             get
             {
-                if (closeEditFlyoutCommand2 == null)
-                    closeEditFlyoutCommand2 = new RelayCommand(param =>
-                    {
-                        ToggleFlyout(1);
-                        LoadVenues();
-                    });
-                return closeEditFlyoutCommand2;
+                return closeEditFlyoutCommand2 ?? (closeEditFlyoutCommand2 = new RelayCommand(param => ToggleFlyout(1)));
             }
+        }
+
+        #endregion
+
+        #region Performance Commands / Method
+
+        #region Insert Performance
+
+        public ICommand OpenCreatePerformanceCommand
+        {
+            get
+            {
+                return openCreatePerformanceCommand ?? (openCreatePerformanceCommand = new RelayCommand((param) => OpenCreatePerformance()));
+            }
+        }
+
+        private void OpenCreatePerformance()
+        {
+            createPerformanceWindow = new InsertPerformanceWindow(this);
+            createPerformanceWindow.Owner = mainWindow;
+            createPerformanceWindow.ShowDialog();
+        }
+
+        public ICommand CreatePerformanceCommand
+        {
+            get
+            {
+                return createPerformanceCommand ?? (createPerformanceCommand = new RelayCommand(param => CreatePerformance((PerformanceVM)param)));
+            }
+        }
+
+        private void CreatePerformance(PerformanceVM performance)
+        {
+            commander.InsertPerformance(performance.Performance);
+            // to update view
+            LoadPerformancesOfDay(SelectedDate);
+            newPerformance = null;
+            createPerformanceWindow.Close();
         }
 
         #endregion
@@ -697,13 +730,69 @@ namespace ufo.commander.ViewModels
             }
         }
 
-        public ICommand CloseApplicationCommand
+        #region Update Performance
+
+        public ICommand UpdatePerformanceCommand
         {
             get
             {
-                if (closeApplicationCommand == null)
-                    closeApplicationCommand = new RelayCommand(param => CloseApplication());
-                return closeApplicationCommand;
+                if (updatePerformanceCommand == null)
+                    updatePerformanceCommand = new RelayCommand(param => UpdatePerformance((PerformanceVM)param));
+                return updatePerformanceCommand;
+            }
+        }
+
+        private void UpdatePerformance(PerformanceVM performance)
+        {
+            // if performance doesn't exist in db insert it else update it
+            if (PerformancesOfDay.Where(x => x.Date == performance.Date
+                                          && x.Time == performance.Time
+                                          && x.Venue == performance.Venue).Count() == 0)
+            {
+                commander.InsertPerformance(performance.Performance);
+            }
+            else {
+                commander.DeletePerformance(selectedPerformance.Performance);
+                commander.UpdatePerformance(performance.Performance);
+            }
+            LoadPerformancesOfDay(performance.Date);
+        }
+
+        #endregion
+
+        #region DeletePerformance
+
+        public ICommand DeletePerformanceCommand
+        {
+            get
+            {
+                if (deletePerformanceCommand == null)
+                    deletePerformanceCommand = new RelayCommand(param => DeletePerformance((PerformanceVM)param));
+                return deletePerformanceCommand;
+            }
+        }
+
+        public void DeletePerformance(PerformanceVM performance)
+        {
+            commander.DeletePerformance(performance.Performance);
+            LoadPerformancesOfDay(performance.Date);
+        }
+
+        #endregion
+
+        public ICommand CancelEditPerformanceCommand
+        {
+            get
+            {
+                return cancelEditPerformanceCommand ?? (cancelEditPerformanceCommand = new RelayCommand(param => LoadPerformances()));
+            }
+        }
+
+        public ICommand CloseEditFlyoutCommand3
+        {
+            get
+            {
+                return closeEditFlyoutCommand3 ?? (closeEditFlyoutCommand3 = new RelayCommand(param => ToggleFlyout(2)));
             }
         }
 
@@ -777,6 +866,18 @@ namespace ufo.commander.ViewModels
                         }
                     });
                 return sendEmailWithProgramCommand;
+            }
+        }
+
+        #endregion
+
+        public ICommand CloseApplicationCommand
+        {
+            get
+            {
+                if (closeApplicationCommand == null)
+                    closeApplicationCommand = new RelayCommand(param => CloseApplication());
+                return closeApplicationCommand;
             }
         }
 

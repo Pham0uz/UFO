@@ -1,0 +1,144 @@
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using swk5.ufo.dal;
+using swk5.ufo.server;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using ufo.commander.ViewModels;
+
+namespace ufo.commander.Views
+{
+    /// <summary>
+    /// Interaction logic for EditPerformanceView.xaml
+    /// </summary>
+    public partial class EditPerformanceView : UserControl
+    {
+        private ICommanderBL commander = BLFactory.GetCommander();
+        private MetroWindow mainWindow;
+        private UFOCollectionVM ufoVM;
+
+        private async void ShowMessage(object sender, string affirmativeButtonText, string negativeButtonText, string title, string message, bool animateShow = true, bool animateHide = false)
+        {
+            var mySettings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = affirmativeButtonText,
+                NegativeButtonText = negativeButtonText,
+                AnimateShow = animateShow,
+                AnimateHide = animateHide
+            };
+
+            var mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
+            if (mainWindow != null)
+            {
+                var result = await mainWindow.ShowMessageAsync(title,
+                message,
+                MessageDialogStyle.AffirmativeAndNegative, mySettings);
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    // Execute command in tag
+                    var button = sender as Button;
+                    if (button != null)
+                    {
+                        var command = button.Tag as ICommand;
+                        if (command != null)
+                            command.Execute(button.CommandParameter);
+                    }
+                }
+            }
+        }
+
+        internal void ToggleFlyout(int index)
+        {
+            if (mainWindow != null)
+            {
+                var flyout = mainWindow.Flyouts.Items[index] as Flyout;
+                if (flyout == null)
+                {
+                    return;
+                }
+                flyout.IsOpen = !flyout.IsOpen;
+            }
+        }
+
+        public EditPerformanceView()
+        {
+            InitializeComponent();
+            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ufoVM = (UFOCollectionVM)mainWindow.DataContext;
+
+            // quick and dirty workaround
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, new DateTime(2015, 07, 23).AddDays(-1));/*DateTime.Today.AddDays(-1);*/
+            datePicker.BlackoutDates.Add(cdr);
+
+            cmbPerformanceTime.ItemsSource = ufoVM.PerformancesTimes;
+            cmbPerformanceVenue.ItemsSource = ufoVM.Venues.OrderBy(x => x.Description);
+            cmbPerformanceArtist.ItemsSource = ufoVM.Artists.OrderBy(x => x.Name);
+        }
+
+        private void btnSavePerformance_Click(object sender, RoutedEventArgs e)
+        {
+            var performance = ufoVM.SelectedPerformance;
+            var selectedDate = performance.Date;
+            var selectedTime = performance.Time;
+            var selectedVenue = performance.Venue;
+            var selectedArtist = performance.Artist;
+
+            ufoVM.LoadPerformancesOfDay(selectedDate);
+            // if there's already a performance
+            if (ufoVM.PerformancesOfDay.Where(x => x.Date == selectedDate
+                                                && x.Time == selectedTime
+                                                && x.Venue == selectedVenue).Count() > 0)
+            {
+                txtError.Text = txtError.Text = $"Performance on date, time and venue: {selectedDate:yyyy/MM/dd}, {selectedTime}Uhr at {selectedVenue} already exists!";
+                return;
+            }
+            else
+            {
+                if (ufoVM.PerformancesOfDay.Where(x => x.Artist == selectedArtist).Count() > 0)
+                {
+                    // Execute command in tag
+                    var button = sender as Button;
+                    if (button != null)
+                    {
+                        var selectedPerformance = (PerformanceVM)button.CommandParameter;
+                    }
+                    if (!commander.PerformanceIsPossible(ufoVM.SelectedPerformance.Performance))
+                    {
+                        txtError.Text = "Artist needs at least 1 hour break between performances!";
+                        return;
+                    }
+                }
+            }
+            txtError.Text = "";
+
+            ShowMessage(sender, "Save", "Cancel", "Save changes?", "Sure you want to save changes?");
+        }
+
+        private void btnDeletePerformance_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMessage(sender, "Delete", "Cancel", "Delete selected artist?", "Sure you want to delete selected performance?");
+        }
+
+        private void btnCancelEditPerformance_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMessage(sender, "Continue", "Cancel", "Revert changes?", "Sure you want to revert all changes?");
+        }
+    }
+}

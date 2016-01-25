@@ -77,22 +77,23 @@
         <TextBox Name="txtName" Grid.Row="0" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.Name, Mode=TwoWay}"/>
         <TextBox Name="txtPictureURL" Grid.Row="1" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PictureURL, Mode=TwoWay}"/>
         <TextBox Name="txtPromoVideoURL" Grid.Row="2" Grid.Column="1" Margin="10" Text="{Binding Path=NewArtist.PromoVideoURL, Mode=TwoWay}"/>
+        
         <ComboBox Name="cmbCategory" Grid.Row="3" Grid.Column="1" Width="Auto" Margin="10" VerticalAlignment="Center"
                   ItemTemplate="{StaticResource categoryBoxDataTemplate}"
                   SelectedValue="{Binding NewArtist.CategoryName, Mode=TwoWay}"
                   SelectedValuePath="Name"
-                  IsTextSearchEnabled="True">
-        </ComboBox>
+                  IsTextSearchEnabled="True"/>
+
         <ComboBox Name="cmbCountry" Grid.Row="4" Grid.Column="1" Width="Auto" Margin="10" VerticalAlignment="Center"
                   ItemTemplate="{StaticResource countryBoxDataTemplate}"
                   SelectedValue="{Binding NewArtist.CountryCode, Mode=TwoWay}"
                   SelectedValuePath="Code"
-                  IsTextSearchEnabled="True">
-        </ComboBox>
+                  IsTextSearchEnabled="True"/>
+
 
         <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Name="txtError" Foreground="Red" Margin="20.5,5,5,5" HorizontalAlignment="Left" Text="{Binding Path=txtError}"/>
 
-            <Button Name="btnSubmitArtist" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Tag="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" Click="btnSubmitArtist_Click"/>
+        <Button Name="btnSubmitArtist" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Content="Submit" Tag="{Binding Path=CreateArtistCommand}" CommandParameter="{Binding Path=NewArtist}" Click="btnSubmitArtist_Click"/>
         <Button Name="btnCancelSubmitArtist" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Click="btnCancelSubmitArtist_Click"/>
     </Grid>
 </Controls:MetroWindow>

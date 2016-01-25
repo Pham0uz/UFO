@@ -24,7 +24,6 @@ namespace ufo.commander.Views
     /// </summary>
     public partial class EditArtistView : UserControl
     {
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
         private ICommanderBL commander = BLFactory.GetCommander();
         private MetroWindow mainWindow;
 
@@ -38,7 +37,6 @@ namespace ufo.commander.Views
                 AnimateHide = animateHide
             };
 
-            var mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title=="Ultimate Festival Organizer");
             if (mainWindow != null)
             {
                 var result = await mainWindow.ShowMessageAsync(title,
@@ -98,7 +96,6 @@ namespace ufo.commander.Views
         {
             ShowMessage(sender, "Continue", "Cancel", "Revert changes?", "Sure you want to revert all changes?");
         }
-
 
     }
 }

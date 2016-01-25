@@ -14,8 +14,6 @@
              d:DataContext="{d:DesignInstance ViewModels:UFOCollectionVM}">
 
     <UserControl.Resources>
-        <UFO:DatabindingDebugConverter x:Key="debugConverter" />
-
         <!--<ContextMenu x:Key="ArtistContextMenu">
             <MenuItem Header="_Add New Artist" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.OpenCreateArtistCommand}" />
             --><!--<MenuItem Header="_Edit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.CurrentArtist.OpenEditArtistCommand}" />-->

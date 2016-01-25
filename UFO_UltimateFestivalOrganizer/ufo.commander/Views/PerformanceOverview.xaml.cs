@@ -29,6 +29,9 @@ namespace ufo.commander.Views
         private MetroWindow mainWindow;
         private UFOCollectionVM ufoVM;
         private ProgressDialogController _controller;
+        // workaround
+        private bool initialized = false;
+        private bool firstTime = true;
 
         internal void ToggleFlyout(int index)
         {
@@ -45,41 +48,61 @@ namespace ufo.commander.Views
 
         public PerformanceOverview()
         {
-            InitializeComponent();
-            ufoVM = new UFOCollectionVM();
-            DataContext = ufoVM;
             mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
+            ufoVM = (UFOCollectionVM)mainWindow.DataContext;
+            DataContext = ufoVM;
+            InitializeComponent();
+            initialized = true;
         }
 
         private async void PerformanceDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = (DateTime)PerformanceDay.SelectedItem;
-            IsEnabled = false;
-            _controller = await mainWindow.ShowProgressAsync("Performances", "Loading...");
-            _controller.SetIndeterminate();
+            if (!initialized)
+                return;
+            else {
+                var selectedItem = (DateTime)PerformanceDay.SelectedItem;
+                IsEnabled = false;
+                _controller = await mainWindow.ShowProgressAsync("Performances", "Loading...");
+                _controller.SetIndeterminate();
 
-            await Task.Factory.StartNew(() =>
-            {
-                ufoVM.LoadPerformancesOfDay(selectedItem);
-            });
+                await Task.Factory.StartNew(() =>
+                {
+                    ufoVM.LoadPerformancesOfDay(selectedItem);
+                });
 
-            await _controller.CloseAsync();
+                await _controller.CloseAsync();
 
-            IsEnabled = true;
-            _controller.SetProgress(1);
+                IsEnabled = true;
+                _controller.SetProgress(1);
+            }
         }
 
         private void PerformancesGrid_CurrentCellChanged(object sender, EventArgs e)
         {
             DataGrid dg = (DataGrid)sender;
-            UFOCollectionVM.TodaysProgramVM tdypgm = (UFOCollectionVM.TodaysProgramVM)dg.Items.CurrentItem;
-            int i = dg.Items.CurrentPosition;
 
-            if (mainWindow != null)
-                //mainWindow.ShowMessageAsync("Debug", $"SelectionChanged, {ufoVM.SelectedPerformance.Artist}");
-                //mainWindow.ShowMessageAsync("Debug", $"SelectionChanged, {dg.CurrentCell.Item.ToString()}");
-                //mainWindow.ShowMessageAsync("Debug", $"SelectionChanged, {dg.CurrentColumn.DisplayIndex}");
-                mainWindow.ShowMessageAsync("Debug", $"SelectionChanged, { tdypgm.Performances[5].Artist}");
+            // workaround because editcell is disabled, so currentcellchanged is triggered twice
+            if (firstTime)
+            {
+                firstTime = false;
+                int idx;
+
+                if (dg.CurrentCell.Column != null)
+                    idx = dg.CurrentCell.Column.DisplayIndex;
+                else
+                    idx = dg.SelectedCells[0].Column.DisplayIndex;
+
+                var tdypgm = (UFOCollectionVM.TodaysProgramVM)dg.CurrentCell.Item;
+
+                ufoVM.SelectedPerformance = tdypgm.Performances[idx - 2];
+
+                ToggleFlyout(2);
+                //Debug
+                //if (mainWindow != null)
+                //    mainWindow.ShowMessageAsync("Debug", $"SelectionChanged, { tdypgm.Performances[idx - 2].Artist}");
+            }
+            else
+                firstTime = true;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
