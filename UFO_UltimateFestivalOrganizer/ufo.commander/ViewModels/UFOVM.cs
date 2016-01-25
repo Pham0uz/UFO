@@ -756,6 +756,7 @@ namespace ufo.commander.ViewModels
 
         private void UpdatePerformance(PerformanceVM performance)
         {
+            // STIL BUGGY! datamodel
             // if performance doesn't exist in db insert it else update it
             if (PerformancesOfDay.Where(x => x.Date == performance.Date
                                           && x.Time == performance.Time
@@ -767,7 +768,6 @@ namespace ufo.commander.ViewModels
             else {
                 commander.UpdatePerformance(performance.Performance);
             }
-            commander.DeletePerformance(ToDeletePerformance.Performance);
             LoadPerformancesOfDay(performance.Date);
             ToggleFlyout(2);
         }
