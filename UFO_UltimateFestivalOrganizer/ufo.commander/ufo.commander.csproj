@@ -88,7 +88,6 @@
     <Compile Include="Helper\DialogCoordinator.cs" />
     <Compile Include="Helper\DialogParticipation.cs" />
     <Compile Include="Helper\BitmapImageConverter.cs" />
-    <Compile Include="Helper\ItemsPerRow.cs" />
     <Compile Include="Helper\NameToBrushConverter.cs" />
     <Compile Include="InsertArtistWindow.xaml.cs">
       <DependentUpon>InsertArtistWindow.xaml</DependentUpon>

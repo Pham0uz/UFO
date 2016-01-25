@@ -12,16 +12,13 @@ namespace ufo.commander
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-        ICommanderBL commander;
+        ICommanderBL commander = BLFactory.GetCommander();
         private bool shutdown;
 
         public MainWindow()
         {
-            Logger.Info("Application successfully started!");
             Application.Current.MainWindow = this;
-            commander = BLFactory.GetCommander();
-            DataContext = new UFOCollectionVM();
+            DataContext = new UFOCollectionVM(this);
             InitializeComponent();
         }
 
@@ -44,7 +41,6 @@ namespace ufo.commander
 
             shutdown = result == MessageDialogResult.Affirmative;
 
-            Logger.Info("Application says BYE!");
             if (shutdown)
                 Application.Current.Shutdown();
         }

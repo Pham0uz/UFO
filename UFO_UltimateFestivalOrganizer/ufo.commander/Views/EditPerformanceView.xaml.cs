@@ -39,7 +39,6 @@ namespace ufo.commander.Views
                 AnimateHide = animateHide
             };
 
-            var mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
             if (mainWindow != null)
             {
                 var result = await mainWindow.ShowMessageAsync(title,
@@ -100,32 +99,41 @@ namespace ufo.commander.Views
             var selectedVenue = performance.Venue;
             var selectedArtist = performance.Artist;
 
-            ufoVM.LoadPerformancesOfDay(selectedDate);
-            // if there's already a performance
-            if (ufoVM.PerformancesOfDay.Where(x => x.Date == selectedDate
-                                                && x.Time == selectedTime
-                                                && x.Venue == selectedVenue).Count() > 0)
+            if (string.IsNullOrEmpty(performance.Artist))
             {
-                txtError.Text = txtError.Text = $"Performance on date, time and venue: {selectedDate:yyyy/MM/dd}, {selectedTime}Uhr at {selectedVenue} already exists!";
+                txtError.Text = "Please select an artist.";
                 return;
             }
-            else
+
+            ufoVM.LoadPerformancesOfDay(selectedDate);
+            // if there's already a performance, which is not from selectedArtist
+            if (ufoVM.PerformancesOfDay.Where(x => x.Date == selectedDate
+                                                && x.Time == selectedTime
+                                                && x.Venue == selectedVenue
+                                                && x.Artist != selectedArtist).Count() > 0)
             {
-                if (ufoVM.PerformancesOfDay.Where(x => x.Artist == selectedArtist).Count() > 0)
+                txtError.Text = txtError.Text = $"Performance on {selectedDate:yyyy/MM/dd} - {selectedTime}:00 at {ufoVM.Venues.FirstOrDefault(v => v.ShortName == selectedVenue).Description} already exists!";
+                return;
+            }
+            // if it's the artist's performance return
+            else if (ufoVM.PerformancesOfDay.Where(x => x.Date == selectedDate
+                                                && x.Time == selectedTime
+                                                && x.Venue == selectedVenue
+                                                && x.Artist == selectedArtist).Count() > 0)
+            {
+                // do nothing
+                txtError.Text = txtError.Text = "No changes were made!";
+                return;
+            }
+            else // check if performance is possible
+            {
+                if (!commander.PerformanceIsPossible(ufoVM.SelectedPerformance.Performance))
                 {
-                    // Execute command in tag
-                    var button = sender as Button;
-                    if (button != null)
-                    {
-                        var selectedPerformance = (PerformanceVM)button.CommandParameter;
-                    }
-                    if (!commander.PerformanceIsPossible(ufoVM.SelectedPerformance.Performance))
-                    {
-                        txtError.Text = "Artist needs at least 1 hour break between performances!";
-                        return;
-                    }
+                    txtError.Text = "Artist needs at least 1 hour break between performances!";
+                    return;
                 }
             }
+
             txtError.Text = "";
 
             ShowMessage(sender, "Save", "Cancel", "Save changes?", "Sure you want to save changes?");
@@ -133,11 +141,13 @@ namespace ufo.commander.Views
 
         private void btnDeletePerformance_Click(object sender, RoutedEventArgs e)
         {
+            txtError.Text = "";
             ShowMessage(sender, "Delete", "Cancel", "Delete selected artist?", "Sure you want to delete selected performance?");
         }
 
         private void btnCancelEditPerformance_Click(object sender, RoutedEventArgs e)
         {
+            txtError.Text = "";
             ShowMessage(sender, "Continue", "Cancel", "Revert changes?", "Sure you want to revert all changes?");
         }
     }

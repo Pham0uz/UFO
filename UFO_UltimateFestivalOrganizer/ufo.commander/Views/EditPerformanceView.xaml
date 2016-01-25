@@ -58,7 +58,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
@@ -95,7 +95,7 @@
                   SelectedValuePath="Name"
                   IsTextSearchEnabled="True"/>
 
-        <TextBlock Name="txtError" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Foreground="Red"/>
+        <TextBlock Name="txtError" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Foreground="Red" Margin="25,5,5,5"/>
 
         <Button Name="btnSavePerformance" Grid.Row="6" Grid.Column="0" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Save" Tag="{Binding Path=UpdatePerformanceCommand}" CommandParameter="{Binding SelectedPerformance}" Click="btnSavePerformance_Click"/>
         <Button Name="btnDeletePerformance" Grid.Row="6" Grid.Column="1" Style="{DynamicResource AccentedSquareButtonStyle}" Content="Delete" Tag="{Binding Path=DeletePerformanceCommand}" CommandParameter="{Binding SelectedPerformance}" Click="btnDeletePerformance_Click"/>

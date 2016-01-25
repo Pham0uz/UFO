@@ -16,6 +16,7 @@ using MahApps.Metro.Controls.Dialogs;
 using System.Collections;
 using System.Windows.Threading;
 using System.Net.Mail;
+using System.Threading;
 
 namespace ufo.commander.ViewModels
 {
@@ -110,7 +111,7 @@ namespace ufo.commander.ViewModels
 
         private PerformanceVM newPerformance;
         private PerformanceVM selectedPerformance;
-        private PerformanceVM toDeletePerformance;
+        public PerformanceVM toDeletePerformance;
         private InsertPerformanceWindow createPerformanceWindow;
 
         #endregion
@@ -123,18 +124,18 @@ namespace ufo.commander.ViewModels
         public ObservableCollection<VenueVM> Venues { get; set; }
         public ObservableCollection<DateTime> PerformanceDates { get; set; }
         public ObservableCollection<PerformanceVM> Performances { get; set; }
-        public SortedDictionary<DateTime, ObservableCollection<PerformanceVM>> PerformancesMap { get; set; }
         public ObservableCollection<PerformanceVM> PerformancesOfDay { get; set; }
         public ObservableCollection<TodaysProgramVM> TodaysProgram { get; set; }
 
         #endregion
 
         #region Constructor
-        public UFOCollectionVM()
+        public UFOCollectionVM(MetroWindow mainWindow)
         {
+            this.mainWindow = mainWindow;
             InitViewModelCollections();
             LoadCollections();
-            mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
+            //mainWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault(x => x.Title == "Ultimate Festival Organizer");
         }
 
         #endregion
@@ -149,7 +150,6 @@ namespace ufo.commander.ViewModels
             PerformanceDates = new ObservableCollection<DateTime>();
             Performances = new ObservableCollection<PerformanceVM>();
             PerformancesOfDay = new ObservableCollection<PerformanceVM>();
-            PerformancesMap = new SortedDictionary<DateTime, ObservableCollection<PerformanceVM>>();
             TodaysProgram = new ObservableCollection<TodaysProgramVM>();
         }
 
@@ -178,7 +178,6 @@ namespace ufo.commander.ViewModels
             LoadVenues();
             LoadPerformances();
             LoadPerformanceDates();
-            LoadPerformancesMap();
             LoadPerformancesOfDay(PerformanceDates.FirstOrDefault());
         }
 
@@ -256,50 +255,40 @@ namespace ufo.commander.ViewModels
             }
 
             // create TodaysProgram + fill it with performances of today an empty strings
+            //Dispatcher dispatcher = Dispatcher.FromThread(Thread.CurrentThread);
+            //if (dispatcher != null)
+
             Application.Current.Dispatcher.Invoke(() =>
             {
-                TodaysProgram.Clear();
-                bool performanceAdded = false;
-                foreach (VenueVM v in Venues)
-                {
-                    TodaysProgramVM tmp = new TodaysProgramVM(v);
-                    foreach (int time in PerformancesTimes)
-                    {
-                        foreach (var p in PerformancesOfDay)
-                        {
-                            // if performance with current time and venue already exist, add it to todaysprogram
-                            // else add a new performance with date, time, venue and empty artist
-                            if (p.Venue == v.Venue.ShortName && p.Time == time)
-                            {
-                                tmp.Performances.Add(p);
-                                performanceAdded = true;
-                            }
-                        }
-                        if (!performanceAdded)
-                            tmp.Performances.Add(new PerformanceVM(new Performance(selectedDate, time, "", v.Venue.ShortName)));
-                        else
-                            performanceAdded = false;
-
-                    }
-                    TodaysProgram.Add(tmp);
-                }
+                LoadTodaysProgram(selectedDate);
             });
         }
 
-        public void LoadPerformancesMap()
+        private void LoadTodaysProgram(DateTime selectedDate)
         {
-            PerformancesMap.Clear();
-            ICollection<Performance> performanceList = commander.GetPerformances();
-            foreach (Performance performance in performanceList)
+            TodaysProgram.Clear();
+            bool performanceAdded = false;
+            foreach (VenueVM v in Venues)
             {
-                if (!PerformancesMap.ContainsKey(performance.Date))
+                TodaysProgramVM tmp = new TodaysProgramVM(v);
+                foreach (int time in PerformancesTimes)
                 {
-                    var newColl = new ObservableCollection<PerformanceVM>();
-                    newColl.Add(new PerformanceVM(performance));
-                    PerformancesMap.Add(performance.Date, newColl);
+                    foreach (var p in PerformancesOfDay)
+                    {
+                        // if performance with current time and venue already exist, add it to todaysprogram
+                        // else add a new performance with date, time, venue and empty artist
+                        if (p.Venue == v.Venue.ShortName && p.Time == time)
+                        {
+                            tmp.Performances.Add(p);
+                            performanceAdded = true;
+                        }
+                    }
+                    if (!performanceAdded)
+                        tmp.Performances.Add(new PerformanceVM(new Performance(selectedDate, time, "", v.Venue.ShortName)));
+                    else
+                        performanceAdded = false;
                 }
-                else
-                    PerformancesMap[performance.Date].Add(new PerformanceVM(performance));
+                TodaysProgram.Add(tmp);
             }
         }
 
@@ -572,12 +561,17 @@ namespace ufo.commander.ViewModels
             }
         }
 
+        //work-around
         public ICommand CloseEditFlyoutCommand
         {
             get
             {
                 if (closeEditFlyoutCommand == null)
-                    closeEditFlyoutCommand = new RelayCommand(param => ToggleFlyout(0));
+                    closeEditFlyoutCommand = new RelayCommand(param =>
+                    {
+                        LoadArtists();
+                        ToggleFlyout(0);
+                    });
                 return closeEditFlyoutCommand;
             }
         }
@@ -678,7 +672,11 @@ namespace ufo.commander.ViewModels
         {
             get
             {
-                return closeEditFlyoutCommand2 ?? (closeEditFlyoutCommand2 = new RelayCommand(param => ToggleFlyout(1)));
+                return closeEditFlyoutCommand2 ?? (closeEditFlyoutCommand2 = new RelayCommand(param =>
+                {
+                    LoadVenues();
+                    ToggleFlyout(1);
+                }));
             }
         }
 
@@ -747,15 +745,17 @@ namespace ufo.commander.ViewModels
             // if performance doesn't exist in db insert it else update it
             if (PerformancesOfDay.Where(x => x.Date == performance.Date
                                           && x.Time == performance.Time
-                                          && x.Venue == performance.Venue).Count() == 0)
+                                          && x.Venue == performance.Venue
+                                          && x.Artist == "").Count() == 0)
             {
                 commander.InsertPerformance(performance.Performance);
             }
             else {
-                commander.DeletePerformance(selectedPerformance.Performance);
                 commander.UpdatePerformance(performance.Performance);
             }
+            commander.DeletePerformance(toDeletePerformance.Performance);
             LoadPerformancesOfDay(performance.Date);
+            ToggleFlyout(2);
         }
 
         #endregion
@@ -776,6 +776,7 @@ namespace ufo.commander.ViewModels
         {
             commander.DeletePerformance(performance.Performance);
             LoadPerformancesOfDay(performance.Date);
+            ToggleFlyout(2);
         }
 
         #endregion
@@ -784,7 +785,7 @@ namespace ufo.commander.ViewModels
         {
             get
             {
-                return cancelEditPerformanceCommand ?? (cancelEditPerformanceCommand = new RelayCommand(param => LoadPerformances()));
+                return cancelEditPerformanceCommand ?? (cancelEditPerformanceCommand = new RelayCommand(param => { LoadPerformancesOfDay(SelectedDate); ToggleFlyout(2); }));
             }
         }
 
@@ -792,7 +793,7 @@ namespace ufo.commander.ViewModels
         {
             get
             {
-                return closeEditFlyoutCommand3 ?? (closeEditFlyoutCommand3 = new RelayCommand(param => ToggleFlyout(2)));
+                return closeEditFlyoutCommand3 ?? (closeEditFlyoutCommand3 = new RelayCommand(param => LoadPerformancesOfDay(SelectedDate)));
             }
         }
 

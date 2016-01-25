@@ -32,6 +32,7 @@ namespace ufo.commander.Views
         // workaround
         private bool initialized = false;
         private bool firstTime = true;
+        private bool preventChange = false;
 
         internal void ToggleFlyout(int index)
         {
@@ -44,6 +45,7 @@ namespace ufo.commander.Views
                 }
                 flyout.IsOpen = !flyout.IsOpen;
             }
+            preventChange = false;
         }
 
         public PerformanceOverview()
@@ -95,6 +97,11 @@ namespace ufo.commander.Views
                 var tdypgm = (UFOCollectionVM.TodaysProgramVM)dg.CurrentCell.Item;
 
                 ufoVM.SelectedPerformance = tdypgm.Performances[idx - 2];
+                if (!string.IsNullOrEmpty(ufoVM.SelectedPerformance.Artist) && !preventChange)
+                {
+                    ufoVM.toDeletePerformance = ufoVM.SelectedPerformance;
+                    preventChange = true;
+                }
 
                 ToggleFlyout(2);
                 //Debug
