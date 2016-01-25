@@ -32,7 +32,6 @@ namespace ufo.commander.Views
         // workaround
         private bool initialized = false;
         private bool firstTime = true;
-        private bool preventChange = false;
 
         internal void ToggleFlyout(int index)
         {
@@ -62,20 +61,23 @@ namespace ufo.commander.Views
             if (!initialized)
                 return;
             else {
-                var selectedItem = (DateTime)PerformanceDay.SelectedItem;
-                IsEnabled = false;
-                _controller = await mainWindow.ShowProgressAsync("Performances", "Loading...");
-                _controller.SetIndeterminate();
-
-                await Task.Factory.StartNew(() =>
+                if (PerformanceDay.SelectedItem != null)
                 {
-                    ufoVM.LoadPerformancesOfDay(selectedItem);
-                });
+                    var selectedItem = (DateTime)PerformanceDay.SelectedItem;
+                    IsEnabled = false;
+                    _controller = await mainWindow.ShowProgressAsync("Performances", "Loading...");
+                    _controller.SetIndeterminate();
 
-                await _controller.CloseAsync();
+                    await Task.Factory.StartNew(() =>
+                    {
+                        ufoVM.LoadPerformancesOfDay(selectedItem);
+                    });
 
-                IsEnabled = true;
-                _controller.SetProgress(1);
+                    await _controller.CloseAsync();
+
+                    IsEnabled = true;
+                    _controller.SetProgress(1);
+                }
             }
         }
 
@@ -97,10 +99,9 @@ namespace ufo.commander.Views
                 var tdypgm = (UFOCollectionVM.TodaysProgramVM)dg.CurrentCell.Item;
 
                 ufoVM.SelectedPerformance = tdypgm.Performances[idx - 2];
-                if (!string.IsNullOrEmpty(ufoVM.SelectedPerformance.Artist) && !preventChange)
+                if (!string.IsNullOrEmpty(ufoVM.SelectedPerformance.Artist))
                 {
                     ufoVM.ToDeletePerformance = ufoVM.SelectedPerformance;
-                    preventChange = true;
                 }
 
                 ToggleFlyout(2);

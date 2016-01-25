@@ -728,6 +728,10 @@ namespace ufo.commander.ViewModels
             commander.InsertPerformance(performance.Performance);
             // to update view
             LoadPerformancesOfDay(SelectedDate);
+            if (PerformanceDates.Where(x => x == performance.Date).Count() < 1)
+            {
+                PerformanceDates.Add(performance.Date);
+            }
             newPerformance = null;
             createPerformanceWindow.Close();
         }
