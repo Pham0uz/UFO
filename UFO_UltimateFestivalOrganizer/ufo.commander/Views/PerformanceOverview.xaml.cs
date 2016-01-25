@@ -99,7 +99,7 @@ namespace ufo.commander.Views
                 ufoVM.SelectedPerformance = tdypgm.Performances[idx - 2];
                 if (!string.IsNullOrEmpty(ufoVM.SelectedPerformance.Artist) && !preventChange)
                 {
-                    ufoVM.toDeletePerformance = ufoVM.SelectedPerformance;
+                    ufoVM.ToDeletePerformance = ufoVM.SelectedPerformance;
                     preventChange = true;
                 }
 

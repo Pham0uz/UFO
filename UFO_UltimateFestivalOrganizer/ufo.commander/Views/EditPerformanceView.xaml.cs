@@ -129,7 +129,7 @@ namespace ufo.commander.Views
             {
                 if (!commander.PerformanceIsPossible(ufoVM.SelectedPerformance.Performance))
                 {
-                    txtError.Text = "Artist needs at least 1 hour break between performances!";
+                    txtError.Text = "Artist needs 1 hour break and can't have 2 simultaneously!";
                     return;
                 }
             }

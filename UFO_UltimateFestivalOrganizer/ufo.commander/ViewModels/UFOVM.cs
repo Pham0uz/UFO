@@ -111,7 +111,7 @@ namespace ufo.commander.ViewModels
 
         private PerformanceVM newPerformance;
         private PerformanceVM selectedPerformance;
-        public PerformanceVM toDeletePerformance;
+        private PerformanceVM toDeletePerformance;
         private InsertPerformanceWindow createPerformanceWindow;
 
         #endregion
@@ -420,6 +420,20 @@ namespace ufo.commander.ViewModels
                     selectedPerformance = value;
                     RaisePropertyChangedEvent(nameof(SelectedPerformance));
                 }
+            }
+        }
+
+        public PerformanceVM ToDeletePerformance
+        {
+            get
+            {
+                return toDeletePerformance;
+            }
+            set
+            {
+                if (value != null && toDeletePerformance != value)
+                    toDeletePerformance = value;
+                RaisePropertyChangedEvent(nameof(ToDeletePerformance));
             }
         }
 
@@ -753,7 +767,7 @@ namespace ufo.commander.ViewModels
             else {
                 commander.UpdatePerformance(performance.Performance);
             }
-            commander.DeletePerformance(toDeletePerformance.Performance);
+            commander.DeletePerformance(ToDeletePerformance.Performance);
             LoadPerformancesOfDay(performance.Date);
             ToggleFlyout(2);
         }
