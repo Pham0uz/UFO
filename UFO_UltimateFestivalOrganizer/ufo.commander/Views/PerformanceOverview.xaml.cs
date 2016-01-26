@@ -44,7 +44,6 @@ namespace ufo.commander.Views
                 }
                 flyout.IsOpen = !flyout.IsOpen;
             }
-            preventChange = false;
         }
 
         public PerformanceOverview()

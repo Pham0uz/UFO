@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="12081477-2336-43cd-af93-51f14a32c414"
+  name="Ufo.Server (Business Logic)" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <importedPackagesInternal>
+    <packageImport
+      Id="35bac2f2-9ed9-403a-865f-4a5c2e98666d"
+      visibility="Public">
+      <packageMoniker
+        Id="848c3a8d-c4f6-4123-87a1-1e84d2627458"
+        LastKnownName="Ufo.DAL (Data Acess Layer)"
+        LastKnownLocation="Package_2353.uml" />
+    </packageImport>
+  </importedPackagesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="0bb681b2-6dbb-4b95-bea9-a59f84f6254f"
+        name="BLFactory"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="78ca3acb-f09d-4c9f-9581-bdde14df2023"
+            isDerived="false"
+            sourceEndRoleName="BLFactory"
+            targetEndRoleName="Database"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="32a5aa13-a3ba-425c-ba70-a8fc0e692508"
+              LastKnownName="Database"
+              LastKnownLocation="Package_2353.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="ed071e01-53bd-4319-93e2-788e6053a111"
+                  name="BLFactory"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="e1f5ef20-76d5-443c-b8ea-21bebab4e720"
+                  name="Database"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="ce13e8c3-03c6-4076-8fa3-39e80d240f48"
+            isDerived="false"
+            sourceEndRoleName="BLFactory"
+            targetEndRoleName="CommanderBL"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="59736993-f5e4-43ac-b72e-918316fa2ff6"
+              LastKnownName="CommanderBL"
+              LastKnownLocation="Package_2357.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="c71dee86-3b36-48d6-ab1e-61a67a27bfd8"
+                  name="BLFactory"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="aff33af4-0a42-4994-a0ee-e49ea83d75e9"
+                  name="CommanderBL"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="bfd4c700-a446-4fb4-83b9-0755caefde52"
+        name="ICommanderBL"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="90768708-eddf-4291-8d7e-eb3be94e2329"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="59736993-f5e4-43ac-b72e-918316fa2ff6"
+        name="CommanderBL"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="2e771354-ddf2-4181-82e9-acf514e5aeaa">
+            <interfaceMoniker
+              Id="bfd4c700-a446-4fb4-83b9-0755caefde52"
+              LastKnownName="ICommanderBL"
+              LastKnownLocation="Package_2357.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <targetEnds>
+          <association
+            Id="9f574dcc-5418-4b0a-8039-e4261ce5304b"
+            isDerived="false"
+            sourceEndRoleName="CommanderBL"
+            targetEndRoleName="Database"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="32a5aa13-a3ba-425c-ba70-a8fc0e692508"
+              LastKnownName="Database"
+              LastKnownLocation="Package_2353.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="fd80914f-1315-4b72-b9bc-419a5278cf44"
+                  name="CommanderBL"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="3578e2cb-0493-4b84-9df1-fc8aa42e0212"
+                  name="Database"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

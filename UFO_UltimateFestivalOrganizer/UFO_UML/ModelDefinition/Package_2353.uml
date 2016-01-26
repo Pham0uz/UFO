@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="848c3a8d-c4f6-4123-87a1-1e84d2627458"
+  name="Ufo.DAL (Data Acess Layer)" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="78fe1675-dc13-4ad4-b739-79938627c70c"
+        name="DomainClasses"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="ce16b9cc-93e5-46d4-b363-661402814a4f"
+        name="DALFactory"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="32dbb6f0-9b88-4810-87b0-fbd0d9651ac4"
+            isDerived="false"
+            sourceEndRoleName="DALFactory"
+            targetEndRoleName="Database"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="32a5aa13-a3ba-425c-ba70-a8fc0e692508"
+              LastKnownName="Database"
+              LastKnownLocation="Package_2353.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="62a5ce92-7b67-43f7-a3f6-6bc9c0728be0"
+                  name="DALFactory"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="c414e346-8b29-4795-9ce8-7a8ec5f809e4"
+                  name="Database"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="32a5aa13-a3ba-425c-ba70-a8fc0e692508"
+        name="Database"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="51c67ced-50ff-4ac6-b8fe-410028be6183">
+            <interfaceMoniker
+              Id="8629ea4f-86c8-403c-bf1b-f3bf67a8e1dc"
+              LastKnownName="IDatabase"
+              LastKnownLocation="Package_2353.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6560554c-21e8-48fa-bf0c-d74c6b13571b"
+        name="ArtistDao"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="ba9a3b78-d66a-4cb3-8756-5bc1acf85629">
+            <interfaceMoniker
+              Id="f0c577ad-42ea-4240-b4cb-8413b36e5326"
+              LastKnownName="DaoInterfaces"
+              LastKnownLocation="Package_2353.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <targetEnds>
+          <association
+            Id="03095cc6-d998-4cf1-96fa-bcb9dd90794f"
+            isDerived="false"
+            sourceEndRoleName="ArtistDao"
+            targetEndRoleName="DomainClasses"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="78fe1675-dc13-4ad4-b739-79938627c70c"
+              LastKnownName="DomainClasses"
+              LastKnownLocation="Package_2353.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="e9b05c94-8c49-4379-a984-b4e1da622ee1"
+                  name="ArtistDao"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="0fd85977-860c-4150-a1d2-0f46724c7ec7"
+                  name="DomainClasses"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="e9f5a884-d4c2-4d69-bd3c-66c88c036ee9"
+            isDerived="false"
+            sourceEndRoleName="ArtistDao"
+            targetEndRoleName="Database"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="32a5aa13-a3ba-425c-ba70-a8fc0e692508"
+              LastKnownName="Database"
+              LastKnownLocation="Package_2353.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="f2266011-5047-409c-8c4d-662e8db639f8"
+                  name="ArtistDao"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="1c871227-79c3-4c98-b272-03cbfdd364fe"
+                  name="Database"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="f0c577ad-42ea-4240-b4cb-8413b36e5326"
+        name="DaoInterfaces"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="2fd0c294-34dd-4bb1-83b5-52d0f28bd3f9"
+        name="CategoryDao"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c836d6db-0237-4636-8f14-ff5a7f86a9f8"
+        name="CountryDao"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="df780a2f-7ac9-47ec-9a47-6d6a55e3406e"
+        name="..."
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="8629ea4f-86c8-403c-bf1b-f3bf67a8e1dc"
+        name="IDatabase"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

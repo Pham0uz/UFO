@@ -622,6 +622,52 @@
         isAbstract="false"
         isLeaf="false" />
     </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="d8c3b23c-f993-43f1-b437-03e895f24867"
+        name="IDataBase"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="110932b8-07ac-4625-8d5b-aac28070d24c"
+        LastKnownName="Package1"
+        LastKnownLocation="Package_2341.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="848c3a8d-c4f6-4123-87a1-1e84d2627458"
+        LastKnownName="Ufo.DAL (Data Acess Layer)"
+        LastKnownLocation="Package_2353.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="12081477-2336-43cd-af93-51f14a32c414"
+        LastKnownName="Ufo.Server (Business Logic)"
+        LastKnownLocation="Package_2357.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="92500cfa-c3c9-4557-b8eb-66cb5c4ef102"
+        LastKnownName="Ufo.Commander (Presentation Layer)"
+        LastKnownLocation="Package_0005.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6c23dac3-68fa-4e40-b9e1-38f4541d34b7"
+        name="MainWindow"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="d977f0f2-528c-4f5f-904f-53f016565ef3"
+        LastKnownName="Ufo.WebService (WebService)"
+        LastKnownLocation="Package_0047.uml" />
+    </packageHasNamedElement>
   </packagedElements>
   <primitiveType
     Id="220a3521-e091-4221-bae9-3ef9018e845c"
