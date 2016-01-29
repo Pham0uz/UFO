@@ -36,6 +36,36 @@ namespace ufo.webservice
             return commander.PerformanceIsPossible(performance);
         }
 
+        [WebMethod]
+        public User Login(string email, string password)
+        {
+            User user = commander.GetUserByEMail(email);
+            if (user != null)
+            {
+                if (AuthenticateUser(email, password))
+                {
+                    commander.Login(user);
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        [WebMethod]
+        public void Logout(string email)
+        {
+            User user = commander.GetUserByEMail(email);
+            if (user != null)
+            {
+                commander.Logout(user);
+            }
+        }
+
+        public List<Performance> FilterPerformances(Artist artist, Venue venue, Category category, int from, int to)
+        {
+            return new List<Performance>(commander.FilterPerformances(artist, venue, category, from, to));
+        }
+
         #endregion
 
         #region Get Tables

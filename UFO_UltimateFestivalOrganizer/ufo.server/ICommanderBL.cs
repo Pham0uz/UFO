@@ -34,7 +34,7 @@ namespace swk5.ufo.server
         User GetUserByEMail(string email);
         Venue GetVenueByShortName(string name);
         Venue GetVenueByDescription(string descr);
-        
+
         #endregion
 
         #region Transactions
@@ -48,5 +48,15 @@ namespace swk5.ufo.server
         bool UpdateVenue(Venue venue);
         bool DeleteVenue(Venue venue);
         #endregion
+
+        bool IsAuthenticated(User user);
+
+        ICollection<Performance> FilterPerformances(Artist artist, Venue venue, Category category, int from, int to);
+
+        User GetAuthenticatedUser();
+
+        void Login(User user);
+
+        void Logout(User user);
     }
 }

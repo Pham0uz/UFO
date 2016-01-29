@@ -15,6 +15,7 @@ namespace swk5.ufo.server
         private IPerformanceDao performanceDao;
         private IUserDao userDao;
         private IVenueDao venueDao;
+        private static User authenticatedUser = new User();
 
         public Commander(IDatabase database)
         {
@@ -169,7 +170,7 @@ namespace swk5.ufo.server
 
         public bool DeletePerformance(Performance performance)
         {
-            return performanceDao.Delete(performance.Date,performance.Time, performance.Venue);
+            return performanceDao.Delete(performance.Date, performance.Time, performance.Venue);
         }
 
         public bool DeleteVenue(Venue venue)
@@ -212,5 +213,116 @@ namespace swk5.ufo.server
         }
 
         #endregion
+
+        public bool IsAuthenticated(User user)
+        {
+            return authenticatedUser != null;
+        }
+
+        public ICollection<Performance> FilterPerformances(Artist artist, Venue venue, Category category, int from, int to)
+        {
+            ICollection<Performance> performances = performanceDao.GetAll();
+            ICollection<Artist> artists = artistDao.GetAll();
+            HashSet<Performance> pList1 = null;
+            HashSet<Performance> pList2 = null;
+            HashSet<Performance> pList3 = null;
+            HashSet<Performance> pList4 = null;
+
+            // get performances containing artist
+            if (artist != null)
+            {
+                foreach (Performance p in performances)
+                {
+                    if (p.Artist == artist.Name)
+                        pList1.Add(p);
+                }
+            }
+
+            // get performances at venue
+            if (venue != null)
+            {
+                foreach (Performance p in performances)
+                {
+                    if (p.Venue == venue.ShortName)
+                        pList2.Add(p);
+                }
+            }
+
+            // get performances containing artists of category
+            if (category != null)
+            {
+                foreach (Artist a in artists)
+                {
+                    if (a.CategoryName == category.CategoryName)
+                    {
+                        foreach (Performance p in performances)
+                        {
+                            if (p.Artist == a.Name)
+                                pList3.Add(p);
+                        }
+                    }
+                }
+            }
+
+            // get performances from starting with 1400, to approx. 2400
+            if ((from >= 14 && from <= 23) && (to <= 24 && to >= 15))
+            {
+                foreach (Performance p in performances)
+                {
+                    if (p.Time >= from && p.Time <= to)
+                        pList4.Add(p);
+                }
+            }
+            else if (from >= 14 && from <= 23) // only from
+            {
+                {
+                    foreach (Performance p in performances)
+                    {
+                        if (p.Time >= from)
+                            pList4.Add(p);
+                    }
+                }
+            }
+            else if (to <= 24 && to >= 15) // only to
+            {
+                foreach (Performance p in performances)
+                {
+                    if (p.Time <= to)
+                        pList4.Add(p);
+                }
+            }
+
+            // create result out of partial results
+            HashSet<Performance> result = new HashSet<Performance>();
+            if (pList1 != null)
+                foreach (Performance p in pList1)
+                    result.Add(p);
+            if (pList2 != null)
+                foreach (Performance p in pList2)
+                    result.Add(p);
+            if (pList3 != null)
+                foreach (Performance p in pList3)
+                    result.Add(p);
+            if (pList4 != null)
+                foreach (Performance p in pList4)
+                    result.Add(p);
+
+            return new List<Performance>(result);
+        }
+
+        public User GetAuthenticatedUser()
+        {
+            return authenticatedUser;
+        }
+
+        public void Login(User user)
+        {
+            authenticatedUser = user;
+        }
+
+        public void Logout(User user)
+        {
+            authenticatedUser = null;
+        }
     }
 }
